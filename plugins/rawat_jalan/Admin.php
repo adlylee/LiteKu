@@ -129,7 +129,7 @@ class Admin extends AdminModule
           AND reg_periksa.kd_pj = penjab.kd_pj";
       
 		if ($username != '197307171998032008') {
-          if (!in_array($this->core->getUserInfo('role'), ['admin','apoteker','laboratorium','radiologi','manajemen'],true)) {
+          if (!in_array($this->core->getUserInfo('role'), ['admin','apoteker','laboratorium','radiologi','manajemen', 'ok'],true)) {
             $sql .= " AND reg_periksa.kd_poli IN ('$poliklinik')";
           }
         }
@@ -1072,6 +1072,115 @@ class Admin extends AdminModule
       exit();
 
     }
+
+     public function anyJadwalOperasi()
+  {
+
+    $i = 1;
+    $rows = $this->db('booking_operasi')
+      ->where('no_rawat', $_POST['no_rawat'])
+      ->toArray();
+
+    $result = [];
+    foreach ($rows as $row) {
+      // $row = $rows;
+      $row['nomor'] = $i++;
+
+      $pasien = $this->db('reg_periksa')
+        ->join('pasien', 'pasien.no_rkm_medis=reg_periksa.no_rkm_medis')
+        ->where('no_rawat', $row['no_rawat'])
+        ->oneArray();
+
+      $row['no_rkm_medis'] = $pasien['no_rkm_medis'];
+      $row['nm_pasien'] = $pasien['nm_pasien'];
+      $row['umur'] = $pasien['umur'];
+      $row['jk'] = $pasien['jk'];
+      $row['kd_poli'] = $pasien['kd_poli'];
+
+      $row['diagnosa'] = $this->db('diagnosa_pasien')
+        ->select(['nm_penyakit' => 'penyakit.nm_penyakit'])
+        ->join('penyakit', 'penyakit.kd_penyakit=diagnosa_pasien.kd_penyakit')
+        ->where('no_rawat', $row['no_rawat'])
+        ->asc('prioritas')
+        ->toArray();
+
+      $poli = $this->db('poliklinik')
+       ->where('kd_poli', $row['kd_poli'])
+       ->oneArray();
+      $row['nm_poli'] = $poli['nm_poli'];
+
+      $dokter = $this->db('dokter')
+        ->where('kd_dokter', $row['kd_dokter'])
+        ->oneArray();
+      $row['nm_dokter'] = $dokter['nm_dokter'];
+
+      $paket_operasi = $this->db('paket_operasi')
+        ->where('kode_paket', $row['kode_paket'])
+        ->oneArray();
+      $row['nm_perawatan'] = $paket_operasi['nm_perawatan'];
+
+      $result[] = $row;
+    }
+
+    echo $this->draw('jadwaloperasi.html', ['jadwaloperasi' => $result]);
+    exit();
+  }
+
+  public function postDokter()
+  {
+
+    if (isset($_POST["query"])) {
+      $output = '';
+      $key = "%" . $_POST["query"] . "%";
+      $rows = $this->db('dokter')->like('nm_dokter', $key)->limit(10)->toArray();
+      $output = '';
+      if (count($rows)) {
+        foreach ($rows as $row) {
+          $output .= '<li data-id="' . $row['kd_dokter'] . '" class="list-group-item link-class">' . $row["nm_dokter"] . '</li>';
+        }
+      }
+      echo $output;
+    }
+
+    exit();
+  }
+
+  public function postPaketOperasi()
+  {
+
+    if (isset($_POST["query"])) {
+      $output = '';
+      $key = "%" . $_POST["query"] . "%";
+      $rows = $this->db('paket_operasi')->like('nm_perawatan', $key)->limit(10)->toArray();
+      $output = '';
+      if (count($rows)) {
+        foreach ($rows as $row) {
+          $output .= '<li data-id="' . $row['kode_paket'] . '" class="list-group-item link-class">' . $row["nm_perawatan"] . '</li>';
+        }
+      }
+      echo $output;
+    }
+
+    exit();
+  }
+
+  public function postSaveJadwalOperasi()
+  {
+    $is_edit = $_POST['edit'];
+    unset($_POST['edit']);
+    if (!$this->db('booking_operasi')->where('no_rawat', $_POST['no_rawat'])->where('tanggal', $_POST['tanggal'])->oneArray()) {
+      $this->db('booking_operasi')->save($_POST);
+    } else if ($is_edit) {
+      $this->db('booking_operasi')->where('no_rawat', $_POST['no_rawat'])->where('tanggal', $_POST['tanggal'])->save($_POST);
+    }
+    exit();
+  }
+
+  public function postHapusJadwalOperasi()
+  {
+    $this->db('booking_operasi')->where('no_rawat', $_POST['no_rawat'])->where('tanggal', $_POST['tanggal'])->delete();
+    exit();
+  }
 
     public function postProviderList()
     {

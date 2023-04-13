@@ -812,11 +812,45 @@ class Site extends SiteModule
     $rows = $this->db('booking_operasi')
       ->join('reg_periksa', 'reg_periksa.no_rawat=booking_operasi.no_rawat')
       ->join('pasien', 'pasien.no_rkm_medis=reg_periksa.no_rkm_medis')
+      ->join('dokter', 'dokter.kd_dokter=booking_operasi.kd_dokter')
+      ->join('poliklinik', 'poliklinik.kd_poli=reg_periksa.kd_poli')
+      ->select(['nm_pasien' => 'pasien.nm_pasien',
+                'no_rkm_medis' => 'reg_periksa.no_rkm_medis',
+                'kd_dokter'    => 'booking_operasi.kd_dokter',
+                'status'       => 'booking_operasi.status',
+                'kode'         => 'dokter.kd_dokter',
+                'namadok'      => 'dokter.nm_dokter',
+                'kd_poli'      => 'reg_periksa.kd_poli',
+                'kodepoli'     => 'poliklinik.kd_poli',
+                'namapoli'     => 'poliklinik.nm_poli',
+                'no_rawat'     => 'booking_operasi.no_rawat'
+              ])
       ->where('tanggal', date('Y-m-d'))
-      //->asc('no_reg')
       ->toArray();
 
-    return $rows;
+   //return $rows;
+
+     $result = [];
+        if (count($rows)) {
+      foreach ($rows as $row) {
+         $norawat = $row['no_rawat'];
+       $row['kamar'] = $this->db('reg_periksa')
+       ->join('kamar_inap', 'reg_periksa.no_rawat=kamar_inap.no_rawat')
+       ->join('pasien', 'pasien.no_rkm_medis=reg_periksa.no_rkm_medis')
+       ->join('kamar', 'kamar.kd_kamar=kamar_inap.kd_kamar')
+       ->join('bangsal', 'bangsal.kd_bangsal=kamar.kd_bangsal')
+       ->where('reg_periksa.no_rawat', $norawat)
+       ->where('kamar_inap.tgl_keluar', '0000:00:00')
+       ->select(['namabangsal' => 'bangsal.nm_bangsal',
+                 'kodekmr' => 'kamar_inap.kd_kamar'
+     ])
+       ->select('bangsal.nm_bangsal')
+       ->oneArray();
+       
+        $result[] = $row;
+      }
+    }
+    return $result;
   }
 
   

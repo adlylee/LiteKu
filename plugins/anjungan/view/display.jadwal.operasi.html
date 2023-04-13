@@ -44,11 +44,16 @@
     <tbody class="bg-primary">
       <tr>
         <td>
-            <div id="list_lab" style="font-size: 24px; font-weight:bold;">
+            <div id="list_lab" style="font-size: 18px; font-weight:bold;">
               <ul class="list-unstyled">
                 {loop: $display}
                 <li style="padding:10px;">
-                  Nama: {$value.nm_pasien}, No. RM: {$value.no_rkm_medis}  <span class="pull-right">Status: <b {if: $value.status == 'Selesai'}style="color:red;"{/if}>{$value.status}</b></span><br>
+                  Nama: {$value.nm_pasien}, No. RM: {$value.no_rkm_medis}
+                  <span class="pull-right">Status: <b {if: $value.status == 'Selesai'}style="color:red;"{/if}>{$value.status}</b></span><br>
+                  [ Operator : {$value.namadok} ] [ Rujukan Dari :
+                  {if: $value.kd_poli == 'IGDK'}{$value.kamar.namabangsal} 
+                    {elseif: $value.kd_poli == 'U0027'}{$value.kamar.namabangsal}
+                    {else} {$value.namapoli}{/if} ]<br>
                 </li>
                 {/loop}
               </ul>
@@ -58,7 +63,7 @@
     </tbody>
   </table>
   <div class="row" style="bottom:0;position:absolute;width:100%;background-color:#fff;color:#ff0000;margin-top:20px;margin-bottom:40px;">
-    <h3 class="display-6"><marquee></marquee></h3>
+    <!-- <h3 class="display-6"><marquee></marquee></h3> -->
   </div>
 </div>
 <footer class="visible-lg visible-md bg-primary" style="padding:10px;z-index:1000;">

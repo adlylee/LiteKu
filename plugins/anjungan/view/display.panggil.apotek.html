@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="refresh" content="40">
+  <!-- <meta http-equiv="refresh" content="40"> -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
@@ -83,10 +83,11 @@
       </div>
       {/loop}
     </h1>
-    <table class="table table-bordered text-primary">
+    <table class="table table-bordered text-primary" id="autoref">
       <tbody class="bg-primary">
         <tr>
           <td>
+            <!-- id="serahkan_{$value.no_antrian}" -->
             <div id="list_lab" style="font-size: 24px; font-weight:bold;">
               <ul class="list-unstyled">
                 {loop: $display}
@@ -110,6 +111,7 @@
                       <button type="button" name="button" class="btn btn-xs btn-warning diserahkan"
                         data-no_antrian="{$value.no_antrian}"
                         data-jam_penyerahan="{$value.jam_penyerahan}"><span>Diserahkan</span></button>
+                      <!-- data-serah="serahkan_{$value.no_antrian}" -->
                       <!-- onClick="window.location.reload()" -->
                     </p>
                   </span>
@@ -189,19 +191,22 @@
   $("#display").on("click", ".diserahkan", function (event) {
     var no_antrian = $(this).attr("data-no_antrian");
     var jam_penyerahan = $(this).attr("data-jam_penyerahan");
+    // var serah = $(this).attr("data-serah");
+    var row = this.parentNode.parentNode.parentNode;
     console.log({
       no_antrian, jam_penyerahan
+      // serah
     });
     $.ajax({
       url: '{?=url()?}/anjungan/setdiserahkan',
       dataType: 'json',
       data: { no_antrian: no_antrian, jam_penyerahan: jam_penyerahan },
       success: function (xhr) {
+
         console.log(xhr.status);
         if (xhr.status == true) {
-          refresh(xhr.data);
           //alert('Obat Sudah diserahkan')
-          // const tes = setInterval(refresh, 500);
+          row.parentNode.removeChild(row);
         }
       },
       error: function (xhr) {
@@ -213,12 +218,43 @@
     });
   });
 </script>
-<script>
-  function refresh(data) {
-    $(document).ready(function () {
-      //  setTimeout(function () {
-      window.location.reload();
-      //  }, 500);
+
+<!-- <script>
+
+  response = $.parseJSON(response);
+
+$(function() {
+    $.each(response, function(i, item) {
+        var $tr = $('<tr>').append(
+            $('<td>').text(item.rank),
+            $('<td>').text(item.content),
+            $('<td>').text(item.UID)
+        ); //.appendTo('#records_table');
+        console.log($tr.wrap('<p>').html());
     });
-  }
-</script>
+});
+  $("#display").load('{?=url()?}/anjungan/panggilapotek');
+</script> -->
+<!-- <script type="text/javascript">
+   var no_antrian = $(this).attr("data-no_antrian");
+  $.ajax({
+           type: "get",
+                url: '{?=url()?}/anjungan/panggilapotek',
+                dataType: "json",
+                data: { no_antrian: no_antrian},
+                success: function(data) {
+                     var table = $('<table/>');
+                     $(data).each(function() {
+                           var row = $('<tr/>');
+                           row.append('<td>' + this.Value + '</td>');
+                           row.append('<td>' + this.Value + '</td>');
+                     });
+                     table.append(row);                   
+                     $('#display').html(table); // not refreshing table withdata
+                },
+                error: function(request, status, error) {
+
+                    alert(request.responseText);
+                }
+        });
+</script> -->

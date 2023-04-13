@@ -1,0 +1,61 @@
+<h4>Data Jadwal Operasi</h4>
+<div class="table-responsive no-margin">
+    <table class="table table-bordered no-padding" width="100%">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>No.Rawat</th>
+                <th>Nama Pasien</th>
+                <th>Umur</th>
+                <th>J.K</th>
+                <th>Tanggal</th>
+                <th>Mulai</th>
+                <th>Selesai</th>
+                <th>Status</th>
+                <th>Rujukan Dari</th>
+                <th>Diagnosa</th>
+                <th>Operasi</th>
+                <th>Operator</th>
+            </tr>
+        </thead>
+        <tbody>
+            {loop: $jadwaloperasi}
+            <tr>
+                <td>{$value.nomor}</td>
+                <td>{$value.no_rawat} </td>
+                <td>{$value.nm_pasien}</td>
+                <td>{$value.umur}</td>
+                <td>{$value.jk}</td>
+                <td>{$value.tanggal}</td>
+                <td>{$value.jam_mulai}</td>
+                <td>{$value.jam_selesai}</td>
+                <td>{$value.status}</td>
+                <td>{$value.nm_poli}</td>
+                <td>{loop: $value.diagnosa as $nama} - {$nama.nm_penyakit}<br> {/loop}</td>
+                <td>{$value.nm_perawatan}</td>
+                <td>{$value.nm_dokter}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <div class="">
+                        <button type="button" name="button" class="btn btn-success btn-xs edit_jadwaloperasi"
+                            data-no_rawat="{$value.no_rawat}" data-nm_pasien="{$value.nm_pasien}"
+                            data-umur="{$value.umur}" data-jk="{$value.jk}" data-tanggal="{$value.tanggal}"
+                            data-jam_mulai="{$value.jam_mulai}" data-jam_selesai="{$value.jam_selesai}"
+                            data-status="{$value.status}" data-nm_poli="{$value.nm_poli}"
+                            data-nm_penyakit="{$value.nm_penyakit}" data-kode_paket="{$value.kode_paket}"
+                            data-nm_perawatan="{$value.nm_perawatan}" data-kd_dokter="{$value.kd_dokter}"
+                            data-nm_dokter="{$value.nm_dokter}">
+                            <span class="fa fa-edit"></span>
+                            <span class="hidden-xs"> Edit</span></button>
+                        <button type="button" name="button" class="btn btn-danger btn-xs hapus_jadwaloperasi"
+                            data-no_rawat="{$value.no_rawat}" data-tanggal="{$value.tanggal}"><span
+                                class="fa fa-trash"></span>
+                            <span class="hidden-xs"> Hapus</span></button>
+                    </div>
+                </td>
+            </tr>
+            {/loop}
+        </tbody>
+    </table>

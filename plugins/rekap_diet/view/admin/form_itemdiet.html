@@ -1,0 +1,28 @@
+<div id="form">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form action="{?=url(ADMIN.'/rekap_diet/itemdietsave')?}" method="post">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="kd_diet">Kode Diet</label>
+                                <input type="text" id="kd_diet" name="kd_diet" class="form-control kd_diet" value="" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="pasien">Nama Diet</label>
+                                <input type="text" name="nama_diet" class="form-control" value="" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" name="button" class="btn btn-primary" id="simpan"><i class="fa fa-save"></i><span class="hidden-xs"> Simpan</span></button>
+                        <button class="btn btn-warning batal">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

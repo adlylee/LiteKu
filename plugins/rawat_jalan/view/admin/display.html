@@ -36,9 +36,13 @@
               <li><a href="#status_rawat" data-no_rawat="{$value.no_rawat}" data-stts="{$value.stts}">Status Rawat</a></li>
               <li><a href="#status_lanjut" data-no_rawat="{$value.no_rawat}">Status Lanjut</a></li>
               <li><a href="#surat_kontrol" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}" data-tgl_registrasi="{$value.tgl_registrasi}">Surat Kontrol</a></li>
+              <li><a href="#form_jadwaloperasi" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}" data-kd_kamar="{$value.kd_kamar}">Input Jadwal Operasi</a></li>
               {/if}
               {if: $this->core->getUserInfo('role') == 'laboratorium'}
               <li><a href="#berkas_digital" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}">Berkas Digital</a></li>
+              {/if}
+              {if: $this->core->getUserInfo('role') == 'ok'}
+              <li><a href="#form_jadwaloperasi" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}" data-kd_kamar="{$value.kd_kamar}">Input Jadwal Operasi</a></li>
               {/if}
             </ul>
           </td>
@@ -127,6 +131,7 @@
       $("#notif").hide();
       $("#form_soap").show();
       $("#soap").html(data).show();
+      $("#form_jadwaloperasi").hide();
     });
   });
 
@@ -151,6 +156,7 @@
       $("#form").hide();
       $("#notif").hide();
       $("#rincian").html(data).show();
+      $("#form_jadwaloperasi").hide();
     });
   });
 
@@ -176,6 +182,35 @@
       $("#notif").hide();
       $("#berkasdigital").html(data).show();
       $('.images').lightbox();
+      $("#form_jadwaloperasi").hide();
+    });
+  });
+
+    $('a[href="#form_jadwaloperasi"]').click(function (event) {
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+
+    var no_rawat = $(this).attr("data-no_rawat");
+    var no_rkm_medis = $(this).attr("data-no_rkm_medis");
+    var nm_pasien = $(this).attr("data-nm_pasien");
+
+    $('input:text[name=no_rawat]').val(no_rawat);
+    $('input:text[name=no_rkm_medis]').val(no_rkm_medis);
+    $('input:text[name=nm_pasien]').val(nm_pasien);
+    $("#display").hide();
+
+    var url = baseURL + '/rawat_jalan/jadwaloperasi?t=' + mlite.token;
+    $.post(url, {
+      no_rawat: no_rawat,
+    }, function (data) {
+      // tampilkan data
+      $("#form_rincian").hide();
+      $("#form").hide();
+      $("#notif").hide();
+      $("#form_soap").hide();
+      $("#soap").hide();
+      $("#form_jadwaloperasi").show();
+      $("#jadwaloperasi").html(data).show();
     });
   });
 

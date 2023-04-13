@@ -986,6 +986,8 @@ class Site extends SiteModule
             ->where('detail_periksa_lab.jam', $value['jam'])
             ->where('detail_periksa_lab.tgl_periksa', $value['tgl_periksa'])
             ->where('detail_periksa_lab.kd_jenis_prw', $value['kd_jenis_prw'])
+            ->where('detail_periksa_lab.tgl_periksa', $value['tgl_periksa'])
+            ->where('detail_periksa_lab.jam', $value['jam'])
             ->toArray();
           $pemeriksaan_laboratorium[] = $value;
         }

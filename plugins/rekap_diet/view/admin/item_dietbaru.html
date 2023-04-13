@@ -1,0 +1,65 @@
+<article class="row">
+  <div id="manage" class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Kelola Data Item Diet</h3>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div id="form">
+            {include: ../plugins/rekap_diet/view/admin/form_itemdiet.html}
+          </div>
+        </div>
+        <div>
+           <div class="input-group" id="index">
+                <input class="btn btn-default" type="button" id="bukaform" value="Tambah Item Diet" />
+            </div>
+        </div>
+        <div class="table-responsive no-margin" id="display">
+          <table class="table table-striped no-margin" id="pardah" width="100%">
+            <thead>
+              <tr>
+                <th>Kode Diet</th>
+                <th>Nama Diet</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {if: !empty($itemdiet.list)}
+              {loop: $itemdiet.list}
+              <tr>
+                <td>{$value.kd_diet}</td>
+                <td>{$value.nama_diet}</td>
+                <td>
+                  <a class="btn btn-xs btn-success edititem" data-kd_diet="{$value.kd_diet}" data-nama_diet="{$value.nama_diet}">
+                    <i class="fa fa-pencil"></i> <span class="hidden-xs">Edit</span>
+                  </a>
+                  <a href="{$value.delURL}"
+                    class="btn btn-xs btn-danger"
+                    data-confirm="Anda yakin akan menghapus data ini?">
+                    <!-- class="btn btn-xs btn-danger hapus_itemdiet" data-kd_diet={$value.kd_diet}"  -->
+                    <i class="fa fa-trash-o"></i> <span class="hidden-xs">Hapus</span>
+                  </a>
+                </td>
+              </tr>
+              {/loop}
+              {else}
+              <tr>
+                <td colspan="3" class="text-center">Kosong</td>
+              </tr>
+              {/if}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      ...
+    </div>
+  </div>
+</div>
+

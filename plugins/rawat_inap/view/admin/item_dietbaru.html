@@ -1,0 +1,62 @@
+<div id="form">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form action="{?=url(ADMIN.'/rawat_inap/itemdietsave')?}" method="post" enctype="multipart/form-data">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="hidden" name="id" id="id">
+                                <label for="">Tanggal</label>
+                                <input type="text" id="tgl_surat" name="tgl_surat" class="form-control tanggal"
+                                    value="">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="pasien">Kode Diet</label>
+                                <input type="text" name="no_berkas" class="form-control" value=" / /RSUD/{$list.year}" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="kd_poli">Nama Diet</label>
+                                <input type="text" name="alamat_penerima" class="form-control" value="" style="text-transform:uppercase">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="kd_poli">Perihal</label>
+                                <input type="text" name="perihal" class="form-control" value="" style="text-transform:uppercase">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="id_dokter">File Surat</label>
+                                <input type="file" name="nm_file" class="form-control" value="">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group bidang">
+                                <label for="id_bidang">Bagian/Bidang</label>
+                                <select class="form-control" name="id_bidang">
+                                    {loop: $list.bidang as $key => $value}
+                                    <option value="{$key}">{$value}</option>
+                                    {/loop}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" name="button" class="btn btn-primary" id="simpan"><i class="fa fa-save"></i><span class="hidden-xs"> Simpan</span></button>
+                        <button class="btn btn-warning batal">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

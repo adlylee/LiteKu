@@ -6,33 +6,39 @@
 </style>
 <script type="text/javascript" src="{?=url()?}/assets/jscripts/jquery.qrcode.js"></script>
 <script type="text/javascript" src="{?=url()?}/assets/jscripts/qrcode.js"></script>
-<div id="display_icd">
-  {include: ../plugins/icd/view/admin/display.html}
+<div class="{if: $admin_mode == 'simple'}hidden{/if}">
+  <div id="display_icd">
+    {include: ../plugins/icd/view/admin/display.html}
+  </div>
 </div>
 <h4>Rincian Riwayat</h4>
 <div class="table-responsive no-margin">
   <table class="table table-bordered no-padding" width="100%">
     <thead>
       <tr>
-        <th>No</th>
-        <th>Tanggal</th>
+        <th width="20">No</th>
+        <th width="200">Tanggal</th>
+        {if: $admin_mode == 'complex'}
         <th>Suhu(C)</th>
         <th>Tensi(mmHg)</th>
         <th>Nadi(/menit)</th>
         <th>RR(/menit)</th>
         <th>Tinggi(cm)</th>
         <th>Berat(Kg)</th>
-        <th>SPO2</th>
         <th>GCS(E,V,M)</th>
         <th>Alergi</th>
         <th>Instruksi</th>
+        {else}
+        <th colspan="3">SOAP</th>
+        {/if}
       </tr>
     </thead>
     <tbody>
       {loop: $pemeriksaan}
       <tr>
-        <td rowspan="5" style="vertical-align:top;">{$value.nomor}</td>
-        <td rowspan="4" style="vertical-align:top;white-space: nowrap;">
+        {if: $admin_mode == 'complex'}
+        <td rowspan="7" style="vertical-align:top;">{$value.nomor}</td>
+        <td rowspan="6" style="vertical-align:top;white-space: nowrap;">
           <b>Rawat Jalan</b><br>
           {$value.tgl_perawatan} {$value.jam_rawat}<br>
           {$value.departemen_petugas}
@@ -46,7 +52,7 @@
         <td>{$value.gcs}</td>
         <td>{$value.alergi}</td>
         <td rowspan="7" style="vertical-align:top;">
-          {$value.instruksi}<br><br>
+          <br>
           <div class="qrcodePetugas{$value.nomor}" style="margin-top:10px;width:40px;margin-right: 120px;"></div>
           {$value.nama_petugas}
           <script>
@@ -57,17 +63,27 @@
             });
           </script>
         </td>
+        {else}
+        <td rowspan="7" style="vertical-align:top;">{$value.nomor}</td>
+        <td rowspan="6" style="vertical-align:top;white-space: nowrap;">
+          <b>Rawat Jalan</b><br>
+          {$value.tgl_perawatan} {$value.jam_rawat}<br>
+          {$value.departemen_petugas}
+        </td>
+        {/if}
       </tr>
-      <!--
+      {if: $admin_mode == 'complex'}
+      
       <tr>
         <th colspan="2">Kesadaran</th>
         <td colspan="6">{$value.kesadaran}</td>
       </tr>
-	  -->
+    
       <tr>
         <th colspan="2">Imunisasi</th>
         <td colspan="6">{$value.imun_ke}</td>
       </tr>
+      {/if}
       <tr>
         <th colspan="2">Subyektif</th>
         <td colspan="6">{$value.keluhan}</td>
@@ -89,10 +105,11 @@
               data-no_rawat="{$value.no_rawat}" data-tgl_perawatan="{$value.tgl_perawatan}"
               data-jam_rawat="{$value.jam_rawat}" data-suhu_tubuh="{$value.suhu_tubuh}" data-tensi="{$value.tensi}"
               data-nadi="{$value.nadi}" data-respirasi="{$value.respirasi}" data-tinggi="{$value.tinggi}"
+              data-kesadaran="{$value.kesadaran}"
               data-berat="{$value.berat}" data-gcs="{$value.gcs}" data-alergi="{$value.alergi}"
               data-imun_ke="{$value.imun_ke}" data-keluhan="{$value.keluhan}" data-pemeriksaan="{$value.pemeriksaan}"
-              data-penilaian="{$value.penilaian}" data-rtl="{$value.rtl}" data-instruksi="{$value.instruksi}"
-              disabled><span class="fa fa-edit"></span><span class="hidden-xs"> Edit</span></button>
+              data-penilaian="{$value.penilaian}" data-rtl="{$value.rtl}" data-instruksi="{$value.instruksi}"><span
+                class="fa fa-edit"></span><span class="hidden-xs"> Edit</span></button>
             <button type="button" name="button" class="btn btn-danger btn-xs hapus_soap"
               data-no_rawat="{$value.no_rawat}" data-tgl_perawatan="{$value.tgl_perawatan}"
               data-jam_rawat="{$value.jam_rawat}"><span class="fa fa-trash"></span><span class="hidden-xs">
@@ -103,17 +120,16 @@
         <td colspan="6">{$value.rtl}</td>
       </tr>
       {/loop}
+      {if: $admin_mode == 'complex'}
       {loop: $pemeriksaan_ranap as $data}
-      <tr {if: $data.verified_at !=null } style="background-color: #e5e8e3 !important;" {/if}
-      <?php if($data.bidang=='Ikhtiyar' ) { echo 'style="background-color:#e1fce1;"' ; }
-      else if($data.bidang=='Mubarak' ) { echo 'style="background-color:#fcfab8;"' ; }
-      else{ echo 'style="background-color:#FFFFFF;"' ; } ?>
-      >
+      <tr>
+        <td rowspan="3" style="vertical-align:top;">{$data.nomor}</td>
+        <td rowspan="2" style="vertical-align:top;white-space: nowrap;">
         <td rowspan="6" style="vertical-align:top;">{$data.nomor}</td>
         <td rowspan="5" style="vertical-align:top;white-space: nowrap;">
           <b>Rawat Inap</b><br>
           {$data.tgl_perawatan} {$data.jam_rawat}<br>
-          {$data.departemen_petugas}<br>{$data.bidang}
+          {$data.departemen_petugas}
         </td>
         <td>{$data.suhu_tubuh}</td>
         <td>{$data.tensi}</td>
@@ -121,107 +137,65 @@
         <td>{$data.respirasi}</td>
         <td>{$data.tinggi}</td>
         <td>{$data.berat}</td>
-        <td>{$data.spo2}</td>
         <td>{$data.gcs}</td>
         <td>{$data.alergi}</td>
         <td rowspan="6" style="vertical-align:top;">
-          {if: $data.bidang != 'Mubarak' }
-          <h4 style="color: black;">Instruksi<br><br></h4>
           {$data.instruksi}<br><br>
-          {else} {/if}
-          <h4 style="color: black;">Evaluasi<br><br></h4>
-          {$data.evaluasi}<br><br>
-          <!-- <div class="qrcodePetugas{$data.nomor}" style="margin-top:10px;width:40px;margin-right: 120px;"></div>
+          <div class="qrcodePetugas{$data.nomor}" style="margin-top:10px;width:40px;margin-right: 120px;"></div>
           {$data.nama_petugas}
           <script>
-          	jQuery('.qrcodePetugas{$data.nomor}').qrcode({
+            jQuery('.qrcodePetugas{$data.nomor}').qrcode({
               width: 64,
               height: 64,
-          		text	: "Petugas: {$data.nama_petugas}"
-          	});
-          </script> -->
+              text: "Petugas: {$data.nama_petugas}"
+            });
+          </script>
         </td>
-        <!-- <td>
-          {$data.bidang}
-        </td> -->
       </tr>
       <tr>
-        <!-- <th colspan="2">Kesadaran</th>
-        <td colspan="6">{$data.kesadaran}</td> -->
+        <th colspan="2">Kesadaran</th>
+        <td colspan="6">{$data.kesadaran}</td>
       </tr>
-      <tr {if: $data.verified_at !=null } style="background-color: #e5e8e3 !important;" {/if} <?php
-        if($data.bidang=='Ikhtiyar' ) { echo 'style="background-color:#e1fce1;"' ; }else if($data.bidang=='Mubarak' ) {
-        echo 'style="background-color:#fcfab8;"' ; }else{ echo 'style="background-color:#FFFFFF;"' ; } ?>>
-        {if: $data.bidang == 'Mubarak' }
-        <th colspan="2">Assesment</th>
-        {else}
+      <tr>
         <th colspan="2">Subyektif</th>
-        {/if}
         <td colspan="6">{$data.keluhan}</td>
       </tr>
-
-      <tr {if: $data.verified_at !=null } style="background-color: #e5e8e3 !important;" {/if} <?php
-        if($data.bidang=='Ikhtiyar' ) { echo 'style="background-color:#e1fce1;"' ; }else if($data.bidang=='Mubarak' ) {
-        echo 'style="background-color:#fcfab8;"' ; }else{ echo 'style="background-color:#FFFFFF;"' ; } ?>>
-        {if: $data.bidang == 'Mubarak' }
-        <th colspan="2">Diagnosa</th>
-        {else}
+      <!--
+      <tr>
         <th colspan="2">Obyektif</th>
-        {/if}
         <td colspan="6">{$data.pemeriksaan}</td>
       </tr>
-      <tr {if: $data.verified_at !=null } style="background-color: #e5e8e3 !important;" {/if}
-      <?php if($data.bidang=='Ikhtiyar' ) { echo 'style="background-color:#e1fce1;"' ; }else if($data.bidang=='Mubarak' ) {
-        echo 'style="background-color:#fcfab8;"' ; }else{ echo 'style="background-color:#FFFFFF;"' ; } ?>>
-        {if: $data.bidang == 'Mubarak' }
-        <th colspan="2">Intervensi</th>
-        {else}
+      <tr>
         <th colspan="2">Assesment</th>
-        {/if}
         <td colspan="6">{$data.penilaian}</td>
       </tr>
-
-      <tr {if: $data.verified_at !=null } style="background-color: #e5e8e3 !important;" {/if} <?php
-        if($data.bidang=='Ikhtiyar' ) { echo 'style="background-color:#e1fce1;"' ; }else if($data.bidang=='Mubarak' ) {
-        echo 'style="background-color:#fcfab8;"' ; }else{ echo 'style="background-color:#FFFFFF;"' ; } ?>>
+    -->
+      <tr>
         <td>
-          {if: $this->core->getPegawaiInfo('bidang', $username) == $data.bidang || $this->core->getUserInfo('role') == 'admin' }
-          <div class="" {if: $data.verified_at !=null } style="display: none !important;" {/if}>
-            <button type="button" name="button" class="btn btn-primary btn-xs copy_soap"
-              data-no_rawat="{$data.no_rawat}" data-suhu_tubuh="{$data.suhu_tubuh}" data-tensi="{$data.tensi}"
-              data-nadi="{$data.nadi}" data-respirasi="{$data.respirasi}" data-tinggi="{$data.tinggi}"
-              data-berat="{$data.berat}" data-spo2="{$data.spo2}" data-gcs="{$data.gcs}"
-              data-kesadaran="{$data.kesadaran}" data-alergi="{$data.alergi}" data-keluhan="{$data.keluhan}"
-              data-pemeriksaan="{$data.pemeriksaan}" data-penilaian="{$data.penilaian}" data-rtl="{$data.rtl}"
-              data-instruksi="{$data.instruksi}" data-evaluasi="{$data.evaluasi}" ><span class="fa fa-edit"></span><span
-                class="hidden-xs"> Copy</span></button>
+          <div class="">
             <button type="button" name="button" class="btn btn-success btn-xs edit_soap"
               data-no_rawat="{$data.no_rawat}" data-tgl_perawatan="{$data.tgl_perawatan}"
               data-jam_rawat="{$data.jam_rawat}" data-suhu_tubuh="{$data.suhu_tubuh}" data-tensi="{$data.tensi}"
               data-nadi="{$data.nadi}" data-respirasi="{$data.respirasi}" data-tinggi="{$data.tinggi}"
-              data-berat="{$data.berat}" data-spo2="{$data.spo2}" data-gcs="{$data.gcs}"
-              data-kesadaran="{$data.kesadaran}" data-alergi="{$data.alergi}" data-keluhan="{$data.keluhan}"
-              data-pemeriksaan="{$data.pemeriksaan}" data-penilaian="{$data.penilaian}" data-rtl="{$data.rtl}"
-              data-instruksi="{$data.instruksi}" data-evaluasi="{$data.evaluasi}"><span class="fa fa-edit"></span><span
+              data-berat="{$data.berat}" data-gcs="{$data.gcs}" data-alergi="{$data.alergi}"
+              data-keluhan="{$data.keluhan}" data-pemeriksaan="{$data.pemeriksaan}" data-penilaian="{$data.penilaian}"
+              data-rtl="{$data.rtl}" data-instruksi="{$data.instruksi}" disabled><span class="fa fa-edit"></span><span
                 class="hidden-xs"> Edit</span></button>
             <button type="button" name="button" class="btn btn-danger btn-xs hapus_soap"
               data-no_rawat="{$data.no_rawat}" data-tgl_perawatan="{$data.tgl_perawatan}"
-              data-jam_rawat="{$data.jam_rawat}"><span class="fa fa-trash"></span><span class="hidden-xs">
+              data-jam_rawat="{$data.jam_rawat}" disabled><span class="fa fa-trash"></span><span class="hidden-xs">
                 Hapus</span></button>
-              {else}{/if}
           </div>
         </td>
-        <!-- <th colspan="2">Obyektif</th>
-        <td colspan="6">{$data.pemeriksaan}</td> -->
-        {if: $data.bidang == 'Mubarak' }
-        <th colspan="2">Monitoring</th>
-        {else}
+        <th colspan="2">Obyektif</th>
+        <td colspan="6">{$data.pemeriksaan}</td>
+        <!--
         <th colspan="2">Plan</th>
-        {/if}
         <td colspan="6">{$data.rtl}</td>
-
+    -->
       </tr>
       {/loop}
+      {/if}
     </tbody>
   </table>
 </div>

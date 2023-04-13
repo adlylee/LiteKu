@@ -8,6 +8,7 @@ $("#notif").hide();
 $('#provider').hide();
 $('#aturan_pakai').hide();
 $("#form_kontrol").hide();
+$("#form_jadwaloperasi").hide();
 
 // tombol buka form diklik
 $("#index").on('click', '#bukaform', function(){
@@ -264,6 +265,7 @@ $("#display").on("click", ".sep", function(event){
   $("#form").hide();
   $("#notif").hide();
   $("#form_soap").hide();
+  $("#form_jadwaloperasi").hide();
   $("#form_kontrol").hide();
   $("#form_sep").show();
   $("#bukaform").hide();
@@ -324,6 +326,7 @@ $('#manage').on('click', '#belum_periode_rawat_jalan', function(event){
     $("#display").html(data).show();
     $("#form_rincian").hide();
     $("#form_soap").hide();
+    $("#form_jadwaloperasi").hide();
     $("#form_sep").hide();
     $("#notif").hide();
     $("#rincian").hide();
@@ -358,6 +361,7 @@ $('#manage').on('click', '#selesai_periode_rawat_jalan', function(event){
     $("#display").html(data).show();
     $("#form_rincian").hide();
     $("#form_soap").hide();
+    $("#form_jadwaloperasi").hide();
     $("#form_sep").hide();
     $("#notif").hide();
     $("#rincian").hide();
@@ -392,6 +396,7 @@ $('#manage').on('click', '#lunas_periode_rawat_jalan', function(event){
     $("#display").html(data).show();
     $("#form_rincian").hide();
     $("#form_soap").hide();
+    $("#form_jadwaloperasi").hide();
     $("#form_sep").hide();
     $("#notif").hide();
     $("#rincian").hide();
@@ -428,7 +433,8 @@ $("#form_soap").on("click", "#simpan_soap", function(event){
     var tinggi          = $('input:text[name=tinggi]').val();
     var berat           = $('input:text[name=berat]').val();
     var gcs             = $('input:text[name=gcs]').val();
-    var kesadaran       = $('input:text[name=kesadaran]').val();
+   // var kesadaran       = $('input:text[name=kesadaran]').val();
+    var kesadaran       = $('select[name=kesadaran]').val();
     var alergi          = $('input:text[name=alergi]').val();
     var alergi          = $('input:text[name=alergi]').val();
     var imun_ke         = $('input:text[name=imun_ke]').val();
@@ -524,7 +530,8 @@ $("#soap").on("click",".edit_soap", function(event){
   $('input:text[name=tinggi]').val(tinggi);
   $('input:text[name=berat]').val(berat);
   $('input:text[name=gcs]').val(gcs);
-  $('input:text[name=kesadaran]').val(kesadaran);
+ // $('input:text[name=kesadaran]').val(kesadaran);
+  $('select[name=kesadaran]').val(kesadaran).change();
   $('input:text[name=alergi]').val(alergi);
   $('input:text[name=imun_ke]').val(imun_ke);
   $('textarea[name=keluhan]').val(keluhan);
@@ -593,6 +600,7 @@ $("#form_rincian").on("click", "#selesai", function(event){
   $("#form_berkasdigital").hide();
   $("#form_rincian").hide();
   $("#form_soap").hide();
+  $("#form_jadwaloperasi").hide();
   $("#form").show();
   $("#display").show();
   $("#rincian").hide();
@@ -609,6 +617,7 @@ $("#form_soap").on("click", "#selesai_soap", function(event){
   $("#form_berkasdigital").hide();
   $("#form_rincian").hide();
   $("#form_soap").hide();
+  $("#form_jadwaloperasi").hide();
   $("#form").show();
   $("#display").show();
   $("#rincian").hide();
@@ -625,6 +634,7 @@ $("#form_kontrol").on("click", "#selesai_kontrol", function(event){
   $("#form_berkasdigital").hide();
   $("#form_rincian").hide();
   $("#form_soap").hide();
+  $("#form_jadwaloperasi").hide();
   $("#form").show();
   $("#display").show();
   $("#rincian").hide();
@@ -891,6 +901,154 @@ $("#form_kontrol").on("click", "#simpan_kontrol", function(event){
     "</div>").show();
   });
 });
+
+//Jadwaloperasi
+// ketika tombol simpan diklik
+$("#form_jadwaloperasi").on("click", "#simpan_jadwaloperasi", function(event){
+  var baseURL = mlite.url + '/' + mlite.admin;
+  event.preventDefault();
+
+  var no_rawat        = $('input:text[name=no_rawat]').val();
+  var kode_paket      = $('input:hidden[name=kode_paket]').val();
+  var edit            = $('input:hidden[name=edit]').val();
+  var kd_dokter       = $('input:hidden[name=kd_dokter]').val();
+  var tanggal         = $('input:text[name=tanggal_hari]').val();
+  var jam_mulai       = $('input:text[name=jam_mulai]').val();
+  var jam_selesai     = $('input:text[name=jam_selesai]').val();
+  var status          = $('select[name=status]').val();
+
+  var url = baseURL + '/rawat_jalan/savejadwaloperasi?t=' + mlite.token;
+  $.post(url, {
+    no_rawat : no_rawat,
+    kode_paket: kode_paket,
+    kd_dokter: kd_dokter,
+    tanggal: tanggal,
+    jam_mulai: jam_mulai,
+    jam_selesai: jam_selesai,
+    status: status,
+    edit: edit
+  }, function(data) {
+    console.log(data);
+    // tampilkan data
+    var url = baseURL + '/rawat_jalan/jadwaloperasi?t=' + mlite.token;
+    $.post(url, {
+      no_rawat : no_rawat,
+    }, function(data) {
+      // tampilkan data
+     // console.log(data);
+      // $("#jadwaloperasi").html(data);
+      $("#jadwaloperasi").html(data).show();
+    });
+    $('input:hidden[name=edit]').val('0');
+    $('input:text[name=jam_mulai]').val("");
+    $('input:text[name=jam_selesai]').val("");
+    $('input:text[name=status]').val("");
+    $('input:text[name=nm_dokter]').val("");
+    $('input:text[name=nm_perawatan]').val("");
+    $('input:text[name=tanggal_hari]').val("{?=date('Y-m-d')?}");
+
+    $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+    "Data Jadwal Operasi telah disimpan!"+
+    "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+    "</div>").show();
+  });
+});
+
+// // ketika tombol edit ditekan
+$("#jadwaloperasi").on("click",".edit_jadwaloperasi", function(event){
+var baseURL = mlite.url + '/' + mlite.admin;
+event.preventDefault();
+var no_rawat        = $(this).attr("data-no_rawat");
+var nm_pasien       = $(this).attr("data-nm_pasien");
+var umur            = $(this).attr("data-umur");
+var jk              = $(this).attr("data-jk");
+var tanggal         = $(this).attr("data-tanggal");
+var jam_mulai       = $(this).attr("data-jam_mulai");
+var jam_selesai     = $(this).attr("data-jam_selesai");
+var status          = $(this).attr("data-status");
+var nm_poli         = $(this).attr("data-nm_poli");
+var nm_penyakit     = $(this).attr("data-nm_penyakit");
+var kode_paket      = $(this).attr("data-kode_paket");
+var nm_perawatan    = $(this).attr("data-nm_perawatan");
+var kd_dokter       = $(this).attr("data-kd_dokter");
+var nm_dokter       = $(this).attr("data-nm_dokter");
+
+$('input:hidden[name=edit]').val('1');
+$('input:text[name=no_rawat]').val(no_rawat);
+$('input:text[name=nm_pasien]').val(nm_pasien);
+$('input:text[name=umur]').val(umur);
+$('input:text[name=jk]').val(jk);
+$('input:text[name=tanggal_hari]').val(tanggal);
+$('input:text[name=jam_mulai]').val(jam_mulai);
+$('input:text[name=jam_selesai]').val(jam_selesai);
+$('select[name=status]').val(status).change();
+$('input:text[name=nm_poli]').val(nm_poli);
+$('input:text[name=nm_penyakit]').val(nm_penyakit);
+$('input:hidden[name=kode_paket]').val(kode_paket);
+$('input:text[name=nm_perawatan]').val(nm_perawatan);
+$('input:hidden[name=kd_dokter]').val(kd_dokter);
+$('input:text[name=nm_dokter]').val(nm_dokter);
+// alert("coba lagi"
+
+// );
+});
+
+// // ketika tombol hapus ditekan
+$("#jadwaloperasi").on("click",".hapus_jadwaloperasi", function(event){
+var baseURL = mlite.url + '/' + mlite.admin;
+event.preventDefault();
+var url = baseURL + '/rawat_jalan/hapusjadwaloperasi?t=' + mlite.token;
+var no_rawat = $(this).attr("data-no_rawat");
+var tanggal = $(this).attr("data-tanggal");
+
+// tampilkan dialog konfirmasi
+bootbox.confirm("Apakah Anda yakin ingin menghapus data ini?", function(result){
+  // ketika ditekan tombol ok
+  if (result){
+    // mengirimkan perintah penghapusan
+    $.post(url, {
+      no_rawat: no_rawat,
+      tanggal: tanggal,
+    } ,function(data) {
+      var url = baseURL + '/rawat_jalan/jadwaloperasi?t=' + mlite.token;
+      $.post(url, {no_rawat : no_rawat,
+      }, function(data) {
+        // tampilkan data
+        $("#jadwaloperasi").html(data).show();
+      });
+      $('input:text[name=jam_mulai]').val("");
+      $('input:text[name=jam_selesai]').val("");
+      $('input:text[name=status]').val("");
+      $('input:text[name=tanggal_hari]').val("{?=date('Y-m-d')?}");
+      $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+      "Jadwal Operasi telah dihapus!"+
+      "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+      "</div>").show();
+    });
+  }
+});
+});
+
+$("#form_jadwaloperasi").on("click", "#selesai_jadwaloperasi", function(event){
+bersih();
+$("#form_berkasdigital").hide();
+$("#form_rincian").hide();
+$("#form_soap").hide();
+$("#form").show();
+$("#display").show();
+$("#rincian").hide();
+$("#soap").hide();
+$("#berkasdigital").hide();
+$("#form_hais").hide();
+$("#hais").hide();
+$("#form_jadwaloperasi").hide();
+$("#jadwaloperasi").hide();
+$("#form_dietpasien").hide();
+$("#dietpasien").hide();
+$("#form_kerohanian").hide();
+$("#formkerohanian").hide();
+});
+
 
 function bersih(){
   $('input:text[name=no_rawat]').val("");
