@@ -641,8 +641,43 @@ class Admin extends AdminModule
           $row['resep_obat'][] = $value;
         }
 
-          
-        
+        // $row['periksa_ranap'] = $this->db('pemeriksaan_ranap')->where('no_rawat', $row['no_rawat'])->toArray(); 
+        $rows_data_triase_igd = $this->db('data_triase_igd')
+        ->join('petugas', 'petugas.nip=data_triase_igd.kd_petugas')
+        ->where('no_rawat', $row['no_rawat'])
+        ->toArray();
+
+        $row['data_triase_igd'] = [];
+        foreach ($rows_data_triase_igd as $value) {
+        $value['detail_imt'] = $this->db('pemeriksaan_ralan')
+        ->where('pemeriksaan_ralan.no_rawat', $value['no_rawat'])
+        ->where('pemeriksaan_ralan.tgl_perawatan', $value['tanggal'])
+        ->where('pemeriksaan_ralan.jam_rawat', $value['jam'])
+        ->toArray();
+
+        $value['imt_ranap'] =  $this->db('pemeriksaan_ranap')
+        ->join('petugas', 'petugas.nip=pemeriksaan_ranap.nip')
+        ->where('pemeriksaan_ranap.no_rawat', $value['no_rawat'])
+        ->desc('pemeriksaan_ranap.tgl_perawatan')
+        ->desc('pemeriksaan_ranap.jam_rawat')
+        ->limit(1)
+        ->oneArray();
+       
+        if($value['imt_ranap']['tinggi'] != '') {
+        $imt_gizi = $value['imt_ranap']['berat'] / (($value['imt_ranap']['tinggi'] / 100 )* ($value['imt_ranap']['tinggi'] / 100));
+        $value['imt_gizi'] = number_format($imt_gizi, 1);
+        }
+
+        $value['kamar'] = $this->db('kamar_inap')
+        ->join('kamar', 'kamar.kd_kamar=kamar_inap.kd_kamar')
+        ->join('bangsal', 'bangsal.kd_bangsal=kamar.kd_bangsal')
+        ->where('kamar_inap.no_rawat',  $value['no_rawat'])
+        ->where('kamar_inap.tgl_keluar', '0000:00:00')
+        ->oneArray();
+
+         $row['data_triase_igd'][] = $value;
+        }
+      
         //$row['detail_periksa_lab'] = $this->db('detail_periksa_lab')
         //  ->join('template_laboratorium', 'template_laboratorium.id_template = detail_periksa_lab.id_template')
         //  ->where('no_rawat', $row['no_rawat'])->toArray();
@@ -830,6 +865,7 @@ class Admin extends AdminModule
         
          $row['resep_obat'][] = $value;
        }
+
         
       
         // $row['detail_pemberian_obat'] = $this->db('aturan_pakai')
@@ -845,7 +881,7 @@ class Admin extends AdminModule
         //   //->select('detail_pemberian_obat.jml')
         //   //->select('resep_dokter.aturan_pakai')
         //   ->toArray();
-        
+   
         $row['hasil_radiologi'] = $this->db('hasil_radiologi')->where('no_rawat', $row['no_rawat'])->oneArray();
         $row['gambar_radiologi'] = $this->db('gambar_radiologi')->where('no_rawat', $row['no_rawat'])->toArray();
         $row['catatan_perawatan'] = $this->db('catatan_perawatan')->where('no_rawat', $row['no_rawat'])->oneArray();

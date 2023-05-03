@@ -59,6 +59,7 @@
               <tr>
                 <th>No.Rawat</th>
                 <th>Nama Pasien</th>
+                <th>Tgl.Lahir</th>
                 <th>Kamar</th>
                 <th>Tanggal</th>
                 <th>Waktu</th>
@@ -72,6 +73,7 @@
               <tr>
                 <td>{$value.no_rawat}</td>
                 <td>{$value.no_rkm_medis}, {$value.nm_pasien}</td>
+                <td>{$value.tgl_lahir}</td>
                 <td>{$value.kd_kamar}, {$value.nm_bangsal}</td>
                 <td>{$value.tanggal}</td>
                 <td>{$value.waktu}</td>
@@ -81,7 +83,7 @@
               {/loop}
               {else}
               <tr>
-                <td colspan="7" class="text-center">Kosong</td>
+                <td colspan="8" class="text-center">Kosong</td>
               </tr>
               {/if}
             </tbody>

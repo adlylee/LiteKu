@@ -34,18 +34,25 @@
                   <a class="btn btn-xs btn-success edititem" data-kd_diet="{$value.kd_diet}" data-nama_diet="{$value.nama_diet}">
                     <i class="fa fa-pencil"></i> <span class="hidden-xs">Edit</span>
                   </a>
+                     {if: $this->core->getUserInfo('role') == 'admin'}
                   <a href="{$value.delURL}"
                     class="btn btn-xs btn-danger"
                     data-confirm="Anda yakin akan menghapus data ini?">
                     <!-- class="btn btn-xs btn-danger hapus_itemdiet" data-kd_diet={$value.kd_diet}"  -->
                     <i class="fa fa-trash-o"></i> <span class="hidden-xs">Hapus</span>
                   </a>
+                  {else} <a href="{$value.delURL}"
+                    class="btn btn-xs btn-danger"
+                    data-confirm="Anda yakin akan menghapus data ini?" disabled>
+                    <!-- class="btn btn-xs btn-danger hapus_itemdiet" data-kd_diet={$value.kd_diet}"  -->
+                    <i class="fa fa-trash-o"></i> <span class="hidden-xs">Hapus</span>
+                  </a> {/if}
                 </td>
               </tr>
               {/loop}
               {else}
               <tr>
-                <td colspan="3" class="text-center">Kosong</td>
+                <td colspan="9" class="text-center">Kosong</td>
               </tr>
               {/if}
             </tbody>

@@ -1,0 +1,77 @@
+<article class="row">
+  <div id="manage" class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Kelola Data Non Medis</h3>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div id="form">
+            {include: ../plugins/data_nonmedis/view/admin/form_uploadexcel.html}  
+          </div>
+        </div>
+        <div>
+           <div class="input-group" id="index">
+                <input class="btn btn-default" type="button" id="bukaform" value="Upload File Excel" />
+            </div>
+            <br>
+        </div>
+        <div class="table-responsive no-margin">
+             <table class="table table-striped no-margin table-bordered" id="nonmedis" width="100%">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Tahun</th>
+                <th style="text-align: center;">Bidang</th>
+                <th>Kode Rek</th>
+                <th style="text-align: center;">Nama</th>
+                <th>Satuan</th>
+                <th>@Harga</th>
+                <th>Spek</th>
+                <th>Stok Awal</th>
+                <th>Stok Masuk</th>
+                <th>Stok Keluar</th>
+                <th>Stok Akhir</th>
+                <th>Saldo Awal</th>
+                <th>Saldo Masuk</th>
+                <th>Saldo Keluar</th>
+                <th>Saldo Akhir</th>
+                <th>Waktu Upload</th>
+              </tr>
+            </thead>
+            <tbody>
+              {loop: $itemnonmedis.list}
+              <tr>
+                <td>{$value.id}</td>
+                <td>{$value.tahun}</td>
+                <td>{$value.bidang}</td>
+                <td>{$value.kode_rek}</td>
+                <td>{$value.nama}</td>
+                <td>{$value.satuan}</td>
+                <td>{if: $value.harga ==''} {else}Rp {$value.harga}{/if}</td>
+                <td>{$value.spek}</td>
+                <td>{$value.stok_awal}</td>
+                <td>{$value.stok_masuk}</td>
+                <td>{$value.stok_keluar}</td>
+                <td>{$value.stok_akhir}</td>
+                <td>{if: $value.saldo_awal ==''} {else}Rp {$value.saldo_awal}{/if}</td>
+                <td>{if: $value.saldo_masuk ==''} {else}Rp {$value.saldo_masuk}{/if}</td>
+                <td>{if: $value.saldo_keluar ==''} {else}Rp {$value.saldo_keluar}{/if}</td>
+                <td>{if: $value.saldo_akhir ==''} {else}Rp {$value.saldo_akhir}{/if}</td>
+                <td>{$value.tgl_upload}</td>
+              </tr>
+              {/loop}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      ...
+    </div>
+  </div>
+</div>

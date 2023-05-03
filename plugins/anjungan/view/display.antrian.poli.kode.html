@@ -44,7 +44,11 @@
   <div class="col-md-8">
     <div class="card bg-dark text-white">
       <div class="embed-responsive embed-responsive-4by3">
+        {if: $slug[2] == 'U0005' || $slug[2] == 'U0050' || $slug[2] == 'U0004' || $slug[2] == 'U0046' || $slug[2] == 'U0003'}
+        <video controls autoplay loop style="background-color: #000000;"> <source src="{?=url()?}/uploads/video_antrian/{$slug[2]}.mp4" type="video/mp4"></video>
+        {else}
         <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{$vidio}?rel=0&modestbranding=1&autohide=1&mute=0&showinfo=0&controls=1&loop=1&autoplay=1&playlist={$vidio}" allowfullscreen></iframe>
+        {/if}
       </div>
     </div>
   </div>
@@ -52,13 +56,9 @@
   </div>
 </div>
 <div class="row" style="bottom:0;position:absolute;width:100%;background-color:#fff;color:#ff0000;margin-top:20px;margin-bottom:40px;margin-left:0;margin-right:0;">
-  <h3><marquee>
-    {if: empty($running_text)}
-    {loop: $jadwal}<i class="fa fa-user-md"></i> {$value.nm_dokter} [{$value.nm_poli}] - {$value.jam_mulai} s/d  {$value.jam_selesai} WITA {/loop}
-    {else}
-    {$running_text}
-    {/if}
+ <h3><marquee id="text_marquee" style="text-transform:uppercase">
   </marquee></h3>
+
 </div>
 <footer class="visible-lg visible-md bg-primary" style="padding:10px;z-index:1000;">
   <div class="canvas">
@@ -82,5 +82,24 @@ setInterval(function(){
     loadlink() // this will run after every 5 seconds
 }, 120000);
 </script>
+
+<script>
+    function updateDynamicText() {
+  $.ajax({
+    url: mlite.url + '/anjungan/runningtext/{$slug[2]}',
+    method: "GET",
+    success: function(data) {
+      $("#text_marquee").text(data);
+    }
+  });
+}
+
+$(document).ready(function() {
+  setInterval(function() {
+    updateDynamicText();
+  }, 1000); // refresh setiap 1 detik
+});
+</script>
+
 </body>
 </html>

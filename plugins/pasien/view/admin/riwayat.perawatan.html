@@ -739,6 +739,7 @@
         </td>
       </tr>
       {/if}
+      {if: $value.data_triase_igd}
       <tr class="isi">
         <td valign="top" width="20%">Skrinning Gizi </td>
         <td valign="top" width="1%" align="center">:</td>
@@ -747,7 +748,7 @@
             <tr>
               <td colspan="7">
                 <h3>
-                  <center>FORM SKRINNING GIZI DEWASA</center>
+                  <center>FORM SKRINNING AWAL GIZI DEWASA</center>
                 </h3>
                 <h4>
                   <center>NUTRITIONAL RISK SCREENING-2002</center>
@@ -756,30 +757,39 @@
             </tr>
             <br>
             <table width="100%" border="1" align="center" cellpadding="3px" cellspacing="0" class="tbl_form">
+              {loop: $value.data_triase_igd as $data1}
               <tr>
-                <td width="10%">Nama</td>
-                <td width="40%">{$riwayat.pasien.nm_pasien}</td>
-                <td width="10%">No.RM</td>
-                <td width="40%">{$riwayat.pasien.no_rkm_medis}</td>
+                <td width="15%">Nama</td>
+                <td width="35%">{$riwayat.pasien.nm_pasien}</td>
+                <td width="15%">No.RM</td>
+                <td width="35%">{$riwayat.pasien.no_rkm_medis}</td>
               </tr>
               <tr>
-                <td width="10%">Usia</td>
-                <td width="40%">{$riwayat.pasien.umur} </td>
-                <td width="10%">Tanggal</td>
-                <td width="40%"></td>
+                <td width="15%">Usia</td>
+                <td width="35%">{$riwayat.pasien.umur} </td>
+                <td width="15%">Tanggal</td>
+                <td width="35%">{$data1.tanggal}</td>
               </tr>
               <tr>
-                <td width="10%">Bangsal</td>
-                <td width="40%"></td>
-                <td width="10%">LLA</td>
-                <td width="40%"></td>
+                <td width="15%">Bangsal</td>
+                <td width="35%">{$value.nm_poli}</td>
+                <td width="15%">LILA</td>
+                <td width="35%">{$data1.lila}</td>
+              </tr>
+              {loop: $data1.detail_imt as $datagizi}
+              <tr>
+                <td width="15%">Jenis Kelamin</td>
+                <td width="35%">{if: $riwayat.pasien.jk == 'L'}Laki-Laki{else}Perempuan{/if}</td>
+                <td width="15%">Tinggi Badan</td>
+                <td width="35%">{$datagizi.tinggi}</td>
               </tr>
               <tr>
-                <td width="10%">Usia</td>
-                <td width="40%"></td>
-                <td width="10%">Tinggi Badan</td>
-                <td width="40%"></td>
+                <td width="15%"></td>
+                <td width="35%"></td>
+                <td width="15%">Berat Badan</td>
+                <td width="35%">{$datagizi.berat}</td>
               </tr>
+              {/loop}
             </table>
             <table width="100%" border="1" align="center" cellpadding="3px" cellspacing="0" class="tbl_form">
               <tr>
@@ -826,29 +836,167 @@
               <tr>
                 <td colspan="7">
                   Kesimpulan :<br>
-                  Skor = 0-1 tidak beresiko melnutrisi -> dilakukan skrinning ulan 3-6 bulan kemudian<br>
+                  Skor = 0-1 tidak beresiko melnutrisi -> dilakukan skrinning ulang 3-6 bulan kemudian<br>
                   Skor > 2 Resiko malnutrisi -> perlu perencanaan gizi secara dini Rujuk ahli gizi
 
                 </td>
               </tr>
-               <table width="100%" border="1" align="center" cellpadding="3px" cellspacing="0" class="tbl_form">
-              <tr>
-                <td width="20%">Petugas</td>
-                <td width="30%"></td>
-                <td width="20%">Tanggal</td>
-                <td width="30%"></td>
-              </tr>
-              <tr>
-                <td width="20%">Tanda Tangan</td>
-                <td width="30%"></td>
-                <td width="20%">Pukul</td>
-                <td width="30%"></td>
-              </tr>
-            </table>
-            </table>
-          </table>
+              <table width="100%" border="1" align="center" cellpadding="3px" cellspacing="0" class="tbl_form">
+                <tr>
+                  <td width="20%">Petugas</td>
+                  <td width="30%">{$data1.nama} ( IGD )</td>
+                  <td width="20%">Tanggal</td>
+                  <td width="30%">{$data1.tanggal}</td>
+                </tr>
+                <tr>
+                  <td width="20%">Tanda Tangan</td>
+                  <td width="30%"></td>
+                  <td width="20%">Pukul</td>
+                  <td width="30%">{$data1.jam}</td>
+                </tr>
+              </table>
+              <table width="100%" border="1" align="center" cellpadding="3px" cellspacing="0" class="tbl_form">
+                <tr>
+                  <td align="center">IMT = {$data1.imt}</td>
+                </tr>
+              </table>
+              {if: $value.pemeriksaan_ranap}
+              <table>
+                <tr class="isi">
+                  <table width="100%" border="1" align="center" cellpadding="3px" cellspacing="0" class="tbl_form">
+                    <tr>
+                      <td colspan="7">
+                        <h3>
+                          <center>FORM SKRINNING LANJUTAN GIZI</center>
+                        </h3>
+                        <h4>
+                          <center>NUTRITIONAL RISK SCREENING-2002</center>
+                        </h4>
+                      </td>
+                    </tr>
+                    <br>
+                    <table width="100%" border="1" align="center" cellpadding="3px" cellspacing="0" class="tbl_form">
+                      {loop: $value.data_triase_igd as $data1}
+                      <tr>
+                        <td width="15%">Nama</td>
+                        <td width="35%">{$riwayat.pasien.nm_pasien}</td>
+                        <td width="15%">No.RM</td>
+                        <td width="35%">{$riwayat.pasien.no_rkm_medis}</td>
+                      </tr>
+                      <tr>
+                        <td width="15%">Usia</td>
+                        <td width="35%">{$riwayat.pasien.umur} </td>
+                        <td width="15%">Tanggal</td>
+                        <td width="35%">{$data1.imt_ranap.tgl_perawatan}</td>
+                      </tr>
+                      <tr>
+                        <td width="15%">Bangsal</td>
+                        <td width="35%">{$data1.kamar.kd_kamar} {$data1.kamar.nm_bangsal}</td>
+                        <td width="15%">LILA</td>
+                        <td width="35%">{$data1.lila}</td>
+                      </tr>
+                      <tr>
+                        <td width="15%">Jenis Kelamin</td>
+                        <td width="35%">{if: $riwayat.pasien.jk == 'L'}Laki-Laki{else}Perempuan{/if}</td>
+                        <td width="15%">Tinggi Badan</td>
+                        <td width="35%">{$data1.imt_ranap.tinggi}</td>
+                      </tr>
+                      <tr>
+                        <td width="15%"></td>
+                        <td width="35%"></td>
+                        <td width="15%">Berat Badan</td>
+                        <td width="35%">{$data1.imt_ranap.berat}</td>
+                      </tr>
+                    </table>
+                    <table width="100%" border="1" align="center" cellpadding="3px" cellspacing="0" class="tbl_form">
+                      <tr>
+                        <td width="3%" align="center" rowspan="2">No</td>
+                        <td width="57%" align="center" rowspan="2" colspan="2">PERTANYAAN</td>
+                        <td width="20%" align="center" colspan="2">JAWABAN</td>
+
+                      </tr>
+                      <tr>
+                        <td width="10%" align="center">YA<br>(Skor=1)</td>
+                        <td width="10%" align="center">TIDAK<br>(Skor=0)</td>
+                      </tr>
+                      <tr>
+                        <td align="center">1</td>
+                        <td colspan="2">Apakah IMT < 18,5 kg/m2 atau LILA < 23,5 cm</td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                      </tr>
+                      <tr>
+                        <td align="center">2</td>
+                        <td colspan="2">Apakah pasien kehilangan BB atau merasa pakaian semakin longgar terutama dalam
+                          kurun
+                          waktu 3 bulan
+                          terakhir?</td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                      </tr>
+                      <tr>
+                        <td align="center">3</td>
+                        <td colspan="2">Apakah asupan makan pasien menurun dalam waktu 1 minggu terakhir?</td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                      </tr>
+                      <tr>
+                        <td align="center">4</td>
+                        <td colspan="2">Apakah pasien dengan penyakit berat dan atau membutuhkan terapi gizi?</td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                      </tr>
+                      <tr>
+                        <td align="center" colspan="3">JUMLAH SKOR</td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                      </tr>
+                      <tr>
+                        <td colspan="7">
+                          Kesimpulan :<br>
+                          Skor = 0-1 tidak beresiko melnutrisi -> dilakukan skrinning ulang 3-6 bulan kemudian<br>
+                          Skor > 2 Resiko malnutrisi -> perlu perencanaan gizi secara dini Rujuk ahli gizi
+
+                        </td>
+                      </tr>
+                      <table width="100%" border="1" align="center" cellpadding="3px" cellspacing="0" class="tbl_form">
+                        <tr>
+                          <td width="20%">Petugas</td>
+                          <td width="30%">{$data1.imt_ranap.nip} {$data1.imt_ranap.nama}</td>
+                          <td width="20%">Tanggal</td>
+                          <td width="30%">{$data1.imt_ranap.tgl_perawatan}</td>
+                        </tr>
+                        <tr>
+                          <td width="20%">Tanda Tangan</td>
+                          <td width="30%"></td>
+                          <td width="20%">Pukul</td>
+                          <td width="30%">{$data1.imt_ranap.jam_rawat}</td>
+                        </tr>
+                      </table>
+                      <table width="100%" border="1" align="center" cellpadding="3px" cellspacing="0" class="tbl_form">
+                        <tr>
+                          <td align="center">IMT = {$data1.imt_gizi}</td>
+                        </tr>
+                      </table>
+                      <table>
+                      </table>
+
+                    </table>
+                    {/loop}
+                  </table>
+                  {/if}
         </td>
       </tr>
+    </table>
+    </table>
+    {/loop}
+    </table>
+    </td>
+    </tr>
+
+
+    {/if}
+
     </table>
     <br>
     {/loop}

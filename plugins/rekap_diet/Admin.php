@@ -104,16 +104,15 @@ class Admin extends AdminModule
             foreach ($rows as $row) {
                 $row = htmlspecialchars_array($row);
 
-                $day = array(
-                    'Sun' => 'AKHAD',
-                    'Mon' => 'SENIN',
-                    'Tue' => 'SELASA',
-                    'Wed' => 'RABU',
-                    'Thu' => 'KAMIS',
-                    'Fri' => 'JUMAT',
-                    'Sat' => 'SABTU'
-                );
-
+                // $day = array(
+                //     'Sun' => 'AKHAD',
+                //     'Mon' => 'SENIN',
+                //     'Tue' => 'SELASA',
+                //     'Wed' => 'RABU',
+                //     'Thu' => 'KAMIS',
+                //     'Fri' => 'JUMAT',
+                //     'Sat' => 'SABTU'
+                // );
 
                 $pasien = $this->db('reg_periksa')
                   ->join('pasien', 'pasien.no_rkm_medis=reg_periksa.no_rkm_medis')
@@ -121,6 +120,7 @@ class Admin extends AdminModule
                   ->oneArray();
                 $row['nm_pasien'] = $pasien['nm_pasien'];
                 $row['no_rkm_medis'] = $pasien['no_rkm_medis'];
+                $row['tgl_lahir'] = $pasien['tgl_lahir'];
 
                 $row['diagnosa'] = $this->db('diagnosa_pasien')
                   ->select(['kd_penyakit' => 'diagnosa_pasien.kd_penyakit',
@@ -186,27 +186,34 @@ class Admin extends AdminModule
     $kd_diet =  $_POST['kd_diet'];
 
     $location = url([ADMIN, 'rekap_diet', 'itemdiet']);
-    
-    if (!$this->db('diet')->where('kd_diet', $_POST['kd_diet'])->oneArray()) {
+    $cek_kd_diet= $this->db('diet')->where('kd_diet', $_POST['kd_diet'])->oneArray();
+    if(!$cek_kd_diet) {
+    $max_id = $this->db('diet')->select(['kd_diet' => 'ifnull(MAX(CONVERT(RIGHT(kd_diet,3),signed)),0)'])->like('kd_diet', '%D%')->oneArray();
+          if(empty($max_id['kd_diet'])) {
+            $max_id['kd_diet'] = '000';
+          }
+          $_next_kd_diet = sprintf('%03s', ($max_id['kd_diet'] + 1));
+          $kd_diet = 'D'.''.$_next_kd_diet;
+    //if (!$this->db('diet')->where('kd_diet', $_POST['kd_diet'])->oneArray()) {
       $query = $this->db('diet')
         ->save([
             'kd_diet' => $kd_diet,
             'nama_diet' => $_POST['nama_diet']
           ]);
     } else {
+      $kd_diet = $cek_kd_diet['kd_diet'];
       $query = $this->db('diet')
         ->where('kd_diet', $_POST['kd_diet'])
         ->save([
             'nama_diet' => $_POST['nama_diet']
           ]);
     }  
-
     if ($query) {
         $this->notify('success','Berhasil Simpan');
     } else {
       $this->notify('failure','Gagal Simpan');
     }
-
+    
     redirect($location);
    }
 
@@ -217,8 +224,6 @@ class Admin extends AdminModule
         } else {
             $this->notify('failure', 'Gagal dihapus.');
         }
-   
-
     redirect(url([ADMIN, 'rekap_diet', 'itemdiet']));
   }
   
