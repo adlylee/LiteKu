@@ -1006,13 +1006,66 @@ $("#obat").on("click", ".pilih_obat", function(event){
   $('#rawat_jl_dr').show();
 });
 
+// // ketika tombol simpan diklik
+// $("#form_rincian").on("click", "#simpan_rincian", function(event){
+//   var baseURL = mlite.url + '/' + mlite.admin;
+//   event.preventDefault();
+
+//   var no_rawat        = $('input:text[name=no_rawat]').val();
+//   var kd_jenis_prw 	  = $('input:hidden[name=kd_jenis_prw]').val();
+//   var provider        = $('select[name=provider]').val();
+//   var kode_provider   = $('input:text[name=kode_provider]').val();
+//   var kode_provider2   = $('input:text[name=kode_provider2]').val();
+//   var tgl_perawatan   = $('input:text[name=tgl_perawatan]').val();
+//   var jam_rawat       = $('input:text[name=jam_rawat]').val();
+//   var biaya           = $('input:text[name=biaya]').val();
+//   var aturan_pakai    = $('input:text[name=aturan_pakai]').val();
+//   var kat             = $('input:hidden[name=kat]').val();
+//   var jml             = $('input:text[name=jml]').val();
+
+//   var url = baseURL + '/rawat_inap/savedetail?t=' + mlite.token;
+//   $.post(url, {no_rawat : no_rawat,
+//   kd_jenis_prw   : kd_jenis_prw,
+//   provider       : provider,
+//   kode_provider  : kode_provider,
+//   kode_provider2 : kode_provider2,
+//   tgl_perawatan  : tgl_perawatan,
+//   jam_rawat      : jam_rawat,
+//   biaya          : biaya,
+//   aturan_pakai   : aturan_pakai,
+//   kat            : kat,
+//   jml            : jml
+//   }, function(data) {
+
+//     // tampilkan data
+//     $("#display").hide();
+//     var url = baseURL + '/rawat_inap/rincian?t=' + mlite.token;
+//     $.post(url, {no_rawat : no_rawat,
+//     }, function(data) {
+//       // tampilkan data
+//       $("#rincian").html(data).show();
+//     });
+//     $('input:hidden[name=kd_jenis_prw]').val("");
+//     $('input:text[name=nm_perawatan]').val("");
+//     $('input:hidden[name=kat]').val("");
+//     $('input:text[name=biaya]').val("");
+//     $('input:text[name=nama_provider]').val("");
+//     $('input:text[name=nama_provider2]').val("");
+//     $('input:text[name=kode_provider]').val("");
+//     $('input:text[name=kode_provider2]').val("");
+//     $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+//     "Data pasien telah disimpan!"+
+//     "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+//     "</div>").show();
+//   });
+// });
 // ketika tombol simpan diklik
 $("#form_rincian").on("click", "#simpan_rincian", function(event){
   var baseURL = mlite.url + '/' + mlite.admin;
   event.preventDefault();
 
   var no_rawat        = $('input:text[name=no_rawat]').val();
-  var kd_jenis_prw 	  = $('input:hidden[name=kd_jenis_prw]').val();
+  var kd_jenis_prw    = $('input:hidden[name=kd_jenis_prw]').val();
   var provider        = $('select[name=provider]').val();
   var kode_provider   = $('input:text[name=kode_provider]').val();
   var kode_provider2   = $('input:text[name=kode_provider2]').val();
@@ -1059,7 +1112,6 @@ $("#form_rincian").on("click", "#simpan_rincian", function(event){
     "</div>").show();
   });
 });
-
 // ketika tombol hapus ditekan
 $("#rincian").on("click",".hapus_detail", function(event){
   var baseURL = mlite.url + '/' + mlite.admin;

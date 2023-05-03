@@ -347,12 +347,221 @@ class Admin extends AdminModule
     exit();
   }
 
+ // public function postSaveDetail()
+ //  {
+ //    if ($_POST['kat'] == 'tindakan') {
+ //      $jns_perawatan = $this->db('jns_perawatan')->where('kd_jenis_prw', $_POST['kd_jenis_prw'])->oneArray();
+ //      if ($_POST['provider'] == 'rawat_jl_dr') {
+ //        $this->db('rawat_jl_dr')->save([
+ //          'no_rawat' => $_POST['no_rawat'],
+ //          'kd_jenis_prw' => $_POST['kd_jenis_prw'],
+ //          'kd_dokter' => $_POST['kode_provider'],
+ //          'tgl_perawatan' => $_POST['tgl_perawatan'],
+ //          'jam_rawat' => $_POST['jam_rawat'],
+ //          'material' => $jns_perawatan['material'],
+ //          'bhp' => $jns_perawatan['bhp'],
+ //          'tarif_tindakandr' => $jns_perawatan['tarif_tindakandr'],
+ //          'kso' => $jns_perawatan['kso'],
+ //          'menejemen' => $jns_perawatan['menejemen'],
+ //          'biaya_rawat' => $jns_perawatan['total_byrdr'],
+ //          'stts_bayar' => 'Belum'
+ //        ]);
+ //      }
+ //      if ($_POST['provider'] == 'rawat_jl_pr') {
+ //        $this->db('rawat_jl_pr')->save([
+ //          'no_rawat' => $_POST['no_rawat'],
+ //          'kd_jenis_prw' => $_POST['kd_jenis_prw'],
+ //          'nip' => $_POST['kode_provider2'],
+ //          'tgl_perawatan' => $_POST['tgl_perawatan'],
+ //          'jam_rawat' => $_POST['jam_rawat'],
+ //          'material' => $jns_perawatan['material'],
+ //          'bhp' => $jns_perawatan['bhp'],
+ //          'tarif_tindakanpr' => $jns_perawatan['tarif_tindakanpr'],
+ //          'kso' => $jns_perawatan['kso'],
+ //          'menejemen' => $jns_perawatan['menejemen'],
+ //          'biaya_rawat' => $jns_perawatan['total_byrdr'],
+ //          'stts_bayar' => 'Belum'
+ //        ]);
+ //      }
+ //      if ($_POST['provider'] == 'rawat_jl_drpr') {
+ //        $this->db('rawat_jl_drpr')->save([
+ //          'no_rawat' => $_POST['no_rawat'],
+ //          'kd_jenis_prw' => $_POST['kd_jenis_prw'],
+ //          'kd_dokter' => $_POST['kode_provider'],
+ //          'nip' => $_POST['kode_provider2'],
+ //          'tgl_perawatan' => $_POST['tgl_perawatan'],
+ //          'jam_rawat' => $_POST['jam_rawat'],
+ //          'material' => $jns_perawatan['material'],
+ //          'bhp' => $jns_perawatan['bhp'],
+ //          'tarif_tindakandr' => $jns_perawatan['tarif_tindakandr'],
+ //          'tarif_tindakanpr' => $jns_perawatan['tarif_tindakanpr'],
+ //          'kso' => $jns_perawatan['kso'],
+ //          'menejemen' => $jns_perawatan['menejemen'],
+ //          'biaya_rawat' => $jns_perawatan['total_byrdr'],
+ //          'stts_bayar' => 'Belum'
+ //        ]);
+ //      }
+ //    }
+ //    if ($_POST['kat'] == 'obat') {
+
+ //      $cek_resep = $this->db('resep_obat')->where('no_rawat', $_POST['no_rawat'])->where('tgl_perawatan', date('Y-m-d'))->oneArray();
+ //      if (!$cek_resep) {
+ //        $max_id = $this->db('resep_obat')->select(['no_resep' => 'ifnull(MAX(CONVERT(RIGHT(no_resep,4),signed)),0)'])->where('tgl_perawatan', date('Y-m-d'))->oneArray();
+ //        if (empty($max_id['no_resep'])) {
+ //          $max_id['no_resep'] = '0000';
+ //        }
+ //        $_next_no_resep = sprintf('%04s', ($max_id['no_resep'] + 1));
+ //        $no_resep = date('Ymd') . '' . $_next_no_resep;
+
+ //        $resep_obat = $this->db('resep_obat')
+ //          ->save([
+ //            'no_resep' => $no_resep,
+ //            'tgl_perawatan' => $_POST['tgl_perawatan'],
+ //            'jam' => $_POST['jam_rawat'],
+ //            'no_rawat' => $_POST['no_rawat'],
+ //            'kd_dokter' => $_POST['kode_provider'],
+ //            'tgl_peresepan' => $_POST['tgl_perawatan'],
+ //            'jam_peresepan' => $_POST['jam_rawat'],
+ //            'status' => 'ralan'
+ //          ]);
+ //        $this->db('resep_dokter')
+ //          ->save([
+ //            'no_resep' => $no_resep,
+ //            'kode_brng' => $_POST['kd_jenis_prw'],
+ //            'jml' => $_POST['jml'],
+ //            'aturan_pakai' => $_POST['aturan_pakai']
+ //          ]);
+ //      } else {
+ //        $no_resep = $cek_resep['no_resep'];
+ //        $this->db('resep_dokter')
+ //          ->save([
+ //            'no_resep' => $no_resep,
+ //            'kode_brng' => $_POST['kd_jenis_prw'],
+ //            'jml' => $_POST['jml'],
+ //            'aturan_pakai' => $_POST['aturan_pakai']
+ //          ]);
+ //      }
+ //    }
+ //    exit();
+ //  }
+
+ //  public function postHapusDetail()
+ //  {
+ //    if ($_POST['provider'] == 'rawat_jl_dr') {
+ //      $this->db('rawat_jl_dr')
+ //        ->where('no_rawat', $_POST['no_rawat'])
+ //        ->where('kd_jenis_prw', $_POST['kd_jenis_prw'])
+ //        ->where('tgl_perawatan', $_POST['tgl_perawatan'])
+ //        ->where('jam_rawat', $_POST['jam_rawat'])
+ //        ->delete();
+ //    }
+ //    if ($_POST['provider'] == 'rawat_jl_pr') {
+ //      $this->db('rawat_jl_pr')
+ //        ->where('no_rawat', $_POST['no_rawat'])
+ //        ->where('kd_jenis_prw', $_POST['kd_jenis_prw'])
+ //        ->where('tgl_perawatan', $_POST['tgl_perawatan'])
+ //        ->where('jam_rawat', $_POST['jam_rawat'])
+ //        ->delete();
+ //    }
+ //    if ($_POST['provider'] == 'rawat_jl_drpr') {
+ //      $this->db('rawat_jl_drpr')
+ //        ->where('no_rawat', $_POST['no_rawat'])
+ //        ->where('kd_jenis_prw', $_POST['kd_jenis_prw'])
+ //        ->where('tgl_perawatan', $_POST['tgl_perawatan'])
+ //        ->where('jam_rawat', $_POST['jam_rawat'])
+ //        ->delete();
+ //    }
+ //    exit();
+ //  }
+
+  //  public function postSaveDetail()
+  // {
+  //  if($_POST['kat'] == 'tindakan') {
+  //       $jns_perawatan = $this->core->mysql('jns_perawatan_inap')->where('kd_jenis_prw', $_POST['kd_jenis_prw'])->oneArray();
+  //       if($_POST['provider'] == 'rawat_inap_dr') {
+  //         $this->db('rawat_inap_dr')->save([
+  //           'no_rawat' => $_POST['no_rawat'],
+  //           'kd_jenis_prw' => $_POST['kd_jenis_prw'],
+  //           'kd_dokter' => $_POST['kode_provider'],
+  //           'tgl_perawatan' => $_POST['tgl_perawatan'],
+  //           'jam_rawat' => $_POST['jam_rawat'],
+  //           'material' => $jns_perawatan['material'],
+  //           'bhp' => $jns_perawatan['bhp'],
+  //           'tarif_tindakandr' => $jns_perawatan['tarif_tindakandr'],
+  //           'kso' => $jns_perawatan['kso'],
+  //           'menejemen' => $jns_perawatan['menejemen'],
+  //           'biaya_rawat' => $jns_perawatan['total_byrdr']
+  //         ]);
+  //       }
+  //       if($_POST['provider'] == 'rawat_inap_pr') {
+  //         $this->db('rawat_inap_pr')->save([
+  //           'no_rawat' => $_POST['no_rawat'],
+  //           'kd_jenis_prw' => $_POST['kd_jenis_prw'],
+  //           'nip' => $_POST['kode_provider2'],
+  //           'tgl_perawatan' => $_POST['tgl_perawatan'],
+  //           'jam_rawat' => $_POST['jam_rawat'],
+  //           'material' => $jns_perawatan['material'],
+  //           'bhp' => $jns_perawatan['bhp'],
+  //           'tarif_tindakanpr' => $jns_perawatan['tarif_tindakanpr'],
+  //           'kso' => $jns_perawatan['kso'],
+  //           'menejemen' => $jns_perawatan['menejemen'],
+  //           'biaya_rawat' => $jns_perawatan['total_byrdr']
+  //         ]);
+  //       }
+  //       if($_POST['provider'] == 'rawat_inap_drpr') {
+  //         $this->db('rawat_inap_drpr')->save([
+  //           'no_rawat' => $_POST['no_rawat'],
+  //           'kd_jenis_prw' => $_POST['kd_jenis_prw'],
+  //           'kd_dokter' => $_POST['kode_provider'],
+  //           'nip' => $_POST['kode_provider2'],
+  //           'tgl_perawatan' => $_POST['tgl_perawatan'],
+  //           'jam_rawat' => $_POST['jam_rawat'],
+  //           'material' => $jns_perawatan['material'],
+  //           'bhp' => $jns_perawatan['bhp'],
+  //           'tarif_tindakandr' => $jns_perawatan['tarif_tindakandr'],
+  //           'tarif_tindakanpr' => $jns_perawatan['tarif_tindakanpr'],
+  //           'kso' => $jns_perawatan['kso'],
+  //           'menejemen' => $jns_perawatan['menejemen'],
+  //           'biaya_rawat' => $jns_perawatan['total_byrdr']
+  //         ]);
+  //       }
+  //     }
+  //     if($_POST['kat'] == 'obat') {
+
+  //       $no_resep = $this->core->setNoResep($_POST['tgl_perawatan']);
+
+  //       $resep_obat = $this->db('resep_obat')
+  //         ->save([
+  //           'no_resep' => $no_resep,
+  //           'tgl_perawatan' => '0000-00-00',
+  //           'jam' => '00:00:00',
+  //           'no_rawat' => $_POST['no_rawat'],
+  //           'kd_dokter' => $_POST['kode_provider'],
+  //           'tgl_peresepan' => $_POST['tgl_perawatan'],
+  //           'jam_peresepan' => $_POST['jam_rawat'],
+  //           'status' => 'ranap',
+  //           'tgl_penyerahan' => '0000-00-00',
+  //           'jam_penyerahan' => '00:00:00'
+  //         ]);
+
+  //       $this->db('resep_dokter')
+  //         ->save([
+  //           'no_resep' => $no_resep,
+  //           'kode_brng' => $_POST['kd_jenis_prw'],
+  //           'jml' => $_POST['jml'],
+  //           'aturan_pakai' => $_POST['aturan_pakai']
+  //         ]);
+
+  //     }
+  //     exit();
+  // }
+
   public function postSaveDetail()
   {
     if ($_POST['kat'] == 'tindakan') {
-      $jns_perawatan = $this->db('jns_perawatan')->where('kd_jenis_prw', $_POST['kd_jenis_prw'])->oneArray();
-      if ($_POST['provider'] == 'rawat_jl_dr') {
-        $this->db('rawat_jl_dr')->save([
+      $jns_perawatan = $this->db('jns_perawatan_inap')->where('kd_jenis_prw', $_POST['kd_jenis_prw'])->oneArray();
+      if ($_POST['provider'] == 'rawat_inap_dr') {
+        $this->db('rawat_inap_dr')->save([
           'no_rawat' => $_POST['no_rawat'],
           'kd_jenis_prw' => $_POST['kd_jenis_prw'],
           'kd_dokter' => $_POST['kode_provider'],
@@ -363,12 +572,11 @@ class Admin extends AdminModule
           'tarif_tindakandr' => $jns_perawatan['tarif_tindakandr'],
           'kso' => $jns_perawatan['kso'],
           'menejemen' => $jns_perawatan['menejemen'],
-          'biaya_rawat' => $jns_perawatan['total_byrdr'],
-          'stts_bayar' => 'Belum'
+          'biaya_rawat' => $jns_perawatan['total_byrdr']
         ]);
       }
-      if ($_POST['provider'] == 'rawat_jl_pr') {
-        $this->db('rawat_jl_pr')->save([
+      if ($_POST['provider'] == 'rawat_inap_pr') {
+        $this->db('rawat_inap_pr')->save([
           'no_rawat' => $_POST['no_rawat'],
           'kd_jenis_prw' => $_POST['kd_jenis_prw'],
           'nip' => $_POST['kode_provider2'],
@@ -379,12 +587,11 @@ class Admin extends AdminModule
           'tarif_tindakanpr' => $jns_perawatan['tarif_tindakanpr'],
           'kso' => $jns_perawatan['kso'],
           'menejemen' => $jns_perawatan['menejemen'],
-          'biaya_rawat' => $jns_perawatan['total_byrdr'],
-          'stts_bayar' => 'Belum'
+          'biaya_rawat' => $jns_perawatan['total_byrdr']
         ]);
       }
-      if ($_POST['provider'] == 'rawat_jl_drpr') {
-        $this->db('rawat_jl_drpr')->save([
+      if ($_POST['provider'] == 'rawat_inap_drpr') {
+        $this->db('rawat_inap_drpr')->save([
           'no_rawat' => $_POST['no_rawat'],
           'kd_jenis_prw' => $_POST['kd_jenis_prw'],
           'kd_dokter' => $_POST['kode_provider'],
@@ -397,74 +604,59 @@ class Admin extends AdminModule
           'tarif_tindakanpr' => $jns_perawatan['tarif_tindakanpr'],
           'kso' => $jns_perawatan['kso'],
           'menejemen' => $jns_perawatan['menejemen'],
-          'biaya_rawat' => $jns_perawatan['total_byrdr'],
-          'stts_bayar' => 'Belum'
+          'biaya_rawat' => $jns_perawatan['total_byrdr']
         ]);
       }
     }
     if ($_POST['kat'] == 'obat') {
 
-      $cek_resep = $this->db('resep_obat')->where('no_rawat', $_POST['no_rawat'])->where('tgl_perawatan', date('Y-m-d'))->oneArray();
-      if (!$cek_resep) {
-        $max_id = $this->db('resep_obat')->select(['no_resep' => 'ifnull(MAX(CONVERT(RIGHT(no_resep,4),signed)),0)'])->where('tgl_perawatan', date('Y-m-d'))->oneArray();
-        if (empty($max_id['no_resep'])) {
-          $max_id['no_resep'] = '0000';
-        }
-        $_next_no_resep = sprintf('%04s', ($max_id['no_resep'] + 1));
-        $no_resep = date('Ymd') . '' . $_next_no_resep;
+      $no_resep = $this->core->setNoResep($_POST['tgl_perawatan']);
 
-        $resep_obat = $this->db('resep_obat')
+        $resep_obat = $this->core->mysql('resep_obat')
           ->save([
             'no_resep' => $no_resep,
-            'tgl_perawatan' => $_POST['tgl_perawatan'],
-            'jam' => $_POST['jam_rawat'],
+            'tgl_perawatan' => '0000-00-00',
+            'jam' => '00:00:00',
             'no_rawat' => $_POST['no_rawat'],
             'kd_dokter' => $_POST['kode_provider'],
             'tgl_peresepan' => $_POST['tgl_perawatan'],
             'jam_peresepan' => $_POST['jam_rawat'],
-            'status' => 'ralan'
+            'status' => 'ranap',
+            'tgl_penyerahan' => '0000-00-00',
+            'jam_penyerahan' => '00:00:00'
           ]);
-        $this->db('resep_dokter')
+
+        $this->core->mysql('resep_dokter')
           ->save([
             'no_resep' => $no_resep,
             'kode_brng' => $_POST['kd_jenis_prw'],
             'jml' => $_POST['jml'],
             'aturan_pakai' => $_POST['aturan_pakai']
           ]);
-      } else {
-        $no_resep = $cek_resep['no_resep'];
-        $this->db('resep_dokter')
-          ->save([
-            'no_resep' => $no_resep,
-            'kode_brng' => $_POST['kd_jenis_prw'],
-            'jml' => $_POST['jml'],
-            'aturan_pakai' => $_POST['aturan_pakai']
-          ]);
-      }
     }
     exit();
   }
 
   public function postHapusDetail()
   {
-    if ($_POST['provider'] == 'rawat_jl_dr') {
-      $this->db('rawat_jl_dr')
+    if ($_POST['provider'] == 'rawat_inap_dr') {
+      $this->db('rawat_inap_dr')
         ->where('no_rawat', $_POST['no_rawat'])
         ->where('kd_jenis_prw', $_POST['kd_jenis_prw'])
         ->where('tgl_perawatan', $_POST['tgl_perawatan'])
         ->where('jam_rawat', $_POST['jam_rawat'])
         ->delete();
     }
-    if ($_POST['provider'] == 'rawat_jl_pr') {
-      $this->db('rawat_jl_pr')
+    if ($_POST['provider'] == 'rawat_inap_pr') {
+      $this->db('rawat_inap_pr')
         ->where('no_rawat', $_POST['no_rawat'])
         ->where('kd_jenis_prw', $_POST['kd_jenis_prw'])
         ->where('tgl_perawatan', $_POST['tgl_perawatan'])
         ->where('jam_rawat', $_POST['jam_rawat'])
         ->delete();
     }
-    if ($_POST['provider'] == 'rawat_jl_drpr') {
-      $this->db('rawat_jl_drpr')
+    if ($_POST['provider'] == 'rawat_inap_drpr') {
+      $this->db('rawat_inap_drpr')
         ->where('no_rawat', $_POST['no_rawat'])
         ->where('kd_jenis_prw', $_POST['kd_jenis_prw'])
         ->where('tgl_perawatan', $_POST['tgl_perawatan'])
@@ -494,65 +686,128 @@ class Admin extends AdminModule
   }
 
   public function anyRincian()
-  {
-    $rows_rawat_jl_dr = $this->db('rawat_jl_dr')->where('no_rawat', $_POST['no_rawat'])->toArray();
-    $rows_rawat_jl_pr = $this->db('rawat_jl_pr')->where('no_rawat', $_POST['no_rawat'])->toArray();
-    $rows_rawat_jl_drpr = $this->db('rawat_jl_drpr')->where('no_rawat', $_POST['no_rawat'])->toArray();
+    {
+      $rows_rawat_inap_dr = $this->db('rawat_inap_dr')->where('no_rawat', $_POST['no_rawat'])->toArray();
+      $rows_rawat_inap_pr = $this->db('rawat_inap_pr')->where('no_rawat', $_POST['no_rawat'])->toArray();
+      $rows_rawat_inap_drpr = $this->db('rawat_inap_drpr')->where('no_rawat', $_POST['no_rawat'])->toArray();
 
-    $jumlah_total = 0;
-    $rawat_jl_dr = [];
-    $rawat_jl_pr = [];
-    $rawat_jl_drpr = [];
-    $i = 1;
+      $jumlah_total = 0;
+      $rawat_inap_dr = [];
+      $rawat_inap_pr = [];
+      $rawat_inap_drpr = [];
+      $i = 1;
 
-    if ($rows_rawat_jl_dr) {
-      foreach ($rows_rawat_jl_dr as $row) {
-        $jns_perawatan = $this->db('jns_perawatan')->where('kd_jenis_prw', $row['kd_jenis_prw'])->oneArray();
-        $row['nm_perawatan'] = $jns_perawatan['nm_perawatan'];
-        $jumlah_total = $jumlah_total + $row['biaya_rawat'];
-        $row['provider'] = 'rawat_jl_dr';
-        $rawat_jl_dr[] = $row;
+      if($rows_rawat_inap_dr) {
+        foreach ($rows_rawat_inap_dr as $row) {
+          $jns_perawatan = $this->db('jns_perawatan_inap')->where('kd_jenis_prw', $row['kd_jenis_prw'])->oneArray();
+          $row['nm_perawatan'] = $jns_perawatan['nm_perawatan'];
+          $jumlah_total = $jumlah_total + $row['biaya_rawat'];
+          $row['provider'] = 'rawat_inap_dr';
+          $rawat_inap_dr[] = $row;
+        }
       }
+
+      if($rows_rawat_inap_pr) {
+        foreach ($rows_rawat_inap_pr as $row) {
+          $jns_perawatan = $this->db('jns_perawatan_inap')->where('kd_jenis_prw', $row['kd_jenis_prw'])->oneArray();
+          $row['nm_perawatan'] = $jns_perawatan['nm_perawatan'];
+          $jumlah_total = $jumlah_total + $row['biaya_rawat'];
+          $row['provider'] = 'rawat_inap_pr';
+          $rawat_inap_pr[] = $row;
+        }
+      }
+
+      if($rows_rawat_inap_drpr) {
+        foreach ($rows_rawat_inap_drpr as $row) {
+          $jns_perawatan = $this->db('jns_perawatan_inap')->where('kd_jenis_prw', $row['kd_jenis_prw'])->oneArray();
+          $row['nm_perawatan'] = $jns_perawatan['nm_perawatan'];
+          $jumlah_total = $jumlah_total + $row['biaya_rawat'];
+          $row['provider'] = 'rawat_inap_drpr';
+          $rawat_inap_drpr[] = $row;
+        }
+      }
+
+      $rows = $this->db('resep_obat')
+        ->join('dokter', 'dokter.kd_dokter=resep_obat.kd_dokter')
+        ->where('no_rawat', $_POST['no_rawat'])
+        ->where('resep_obat.status', 'ranap')
+        ->toArray();
+      $resep = [];
+      $jumlah_total_resep = 0;
+      foreach ($rows as $row) {
+        $row['nomor'] = $i++;
+        $row['resep_dokter'] = $this->db('resep_dokter')->join('databarang', 'databarang.kode_brng=resep_dokter.kode_brng')->where('no_resep', $row['no_resep'])->toArray();
+        foreach ($row['resep_dokter'] as $value) {
+          $value['dasar'] = $value['jml'] * $value['dasar'];
+          $jumlah_total_resep += floatval($value['dasar']);
+        }
+        $resep[] = $row;
+      }
+      echo $this->draw('rincian.html', ['rawat_inap_dr' => $rawat_inap_dr, 'rawat_inap_pr' => $rawat_inap_pr, 'rawat_inap_drpr' => $rawat_inap_drpr, 'jumlah_total' => $jumlah_total, 'jumlah_total_resep' => $jumlah_total_resep, 'resep' =>$resep, 'no_rawat' => $_POST['no_rawat']]);
+      exit();
     }
 
-    if ($rows_rawat_jl_pr) {
-      foreach ($rows_rawat_jl_pr as $row) {
-        $jns_perawatan = $this->db('jns_perawatan')->where('kd_jenis_prw', $row['kd_jenis_prw'])->oneArray();
-        $row['nm_perawatan'] = $jns_perawatan['nm_perawatan'];
-        $jumlah_total = $jumlah_total + $row['biaya_rawat'];
-        $row['provider'] = 'rawat_jl_pr';
-        $rawat_jl_pr[] = $row;
-      }
-    }
 
-    if ($rows_rawat_jl_drpr) {
-      foreach ($rows_rawat_jl_drpr as $row) {
-        $jns_perawatan = $this->db('jns_perawatan')->where('kd_jenis_prw', $row['kd_jenis_prw'])->oneArray();
-        $row['nm_perawatan'] = $jns_perawatan['nm_perawatan'];
-        $jumlah_total = $jumlah_total + $row['biaya_rawat'];
-        $row['provider'] = 'rawat_jl_drpr';
-        $rawat_jl_drpr[] = $row;
-      }
-    }
+  // public function anyRincian()
+  // {
+  //   $rows_rawat_jl_dr = $this->db('rawat_jl_dr')->where('no_rawat', $_POST['no_rawat'])->toArray();
+  //   $rows_rawat_jl_pr = $this->db('rawat_jl_pr')->where('no_rawat', $_POST['no_rawat'])->toArray();
+  //   $rows_rawat_jl_drpr = $this->db('rawat_jl_drpr')->where('no_rawat', $_POST['no_rawat'])->toArray();
 
-    $rows = $this->db('resep_obat')
-      ->join('dokter', 'dokter.kd_dokter=resep_obat.kd_dokter')
-      ->where('no_rawat', $_POST['no_rawat'])
-      ->toArray();
-    $resep = [];
-    $jumlah_total_resep = 0;
-    foreach ($rows as $row) {
-      $row['nomor'] = $i++;
-      $row['resep_dokter'] = $this->db('resep_dokter')->join('databarang', 'databarang.kode_brng=resep_dokter.kode_brng')->where('no_resep', $row['no_resep'])->toArray();
-      foreach ($row['resep_dokter'] as $value) {
-        $value['ralan'] = $value['jml'] * $value['ralan'];
-        $jumlah_total_resep += floatval($value['ralan']);
-      }
-      $resep[] = $row;
-    }
-    echo $this->draw('rincian.html', ['rawat_jl_dr' => $rawat_jl_dr, 'rawat_jl_pr' => $rawat_jl_pr, 'rawat_jl_drpr' => $rawat_jl_drpr, 'jumlah_total' => $jumlah_total, 'jumlah_total_resep' => $jumlah_total_resep, 'resep' => $resep, 'no_rawat' => $_POST['no_rawat']]);
-    exit();
-  }
+  //   $jumlah_total = 0;
+  //   $rawat_jl_dr = [];
+  //   $rawat_jl_pr = [];
+  //   $rawat_jl_drpr = [];
+  //   $i = 1;
+
+  //   if ($rows_rawat_jl_dr) {
+  //     foreach ($rows_rawat_jl_dr as $row) {
+  //       $jns_perawatan = $this->db('jns_perawatan')->where('kd_jenis_prw', $row['kd_jenis_prw'])->oneArray();
+  //       $row['nm_perawatan'] = $jns_perawatan['nm_perawatan'];
+  //       $jumlah_total = $jumlah_total + $row['biaya_rawat'];
+  //       $row['provider'] = 'rawat_jl_dr';
+  //       $rawat_jl_dr[] = $row;
+  //     }
+  //   }
+
+  //   if ($rows_rawat_jl_pr) {
+  //     foreach ($rows_rawat_jl_pr as $row) {
+  //       $jns_perawatan = $this->db('jns_perawatan')->where('kd_jenis_prw', $row['kd_jenis_prw'])->oneArray();
+  //       $row['nm_perawatan'] = $jns_perawatan['nm_perawatan'];
+  //       $jumlah_total = $jumlah_total + $row['biaya_rawat'];
+  //       $row['provider'] = 'rawat_jl_pr';
+  //       $rawat_jl_pr[] = $row;
+  //     }
+  //   }
+
+  //   if ($rows_rawat_jl_drpr) {
+  //     foreach ($rows_rawat_jl_drpr as $row) {
+  //       $jns_perawatan = $this->db('jns_perawatan')->where('kd_jenis_prw', $row['kd_jenis_prw'])->oneArray();
+  //       $row['nm_perawatan'] = $jns_perawatan['nm_perawatan'];
+  //       $jumlah_total = $jumlah_total + $row['biaya_rawat'];
+  //       $row['provider'] = 'rawat_jl_drpr';
+  //       $rawat_jl_drpr[] = $row;
+  //     }
+  //   }
+
+  //   $rows = $this->db('resep_obat')
+  //     ->join('dokter', 'dokter.kd_dokter=resep_obat.kd_dokter')
+  //     ->where('no_rawat', $_POST['no_rawat'])
+  //     ->toArray();
+  //   $resep = [];
+  //   $jumlah_total_resep = 0;
+  //   foreach ($rows as $row) {
+  //     $row['nomor'] = $i++;
+  //     $row['resep_dokter'] = $this->db('resep_dokter')->join('databarang', 'databarang.kode_brng=resep_dokter.kode_brng')->where('no_resep', $row['no_resep'])->toArray();
+  //     foreach ($row['resep_dokter'] as $value) {
+  //       $value['ralan'] = $value['jml'] * $value['ralan'];
+  //       $jumlah_total_resep += floatval($value['ralan']);
+  //     }
+  //     $resep[] = $row;
+  //   }
+  //   echo $this->draw('rincian.html', ['rawat_jl_dr' => $rawat_jl_dr, 'rawat_jl_pr' => $rawat_jl_pr, 'rawat_jl_drpr' => $rawat_jl_drpr, 'jumlah_total' => $jumlah_total, 'jumlah_total_resep' => $jumlah_total_resep, 'resep' => $resep, 'no_rawat' => $_POST['no_rawat']]);
+  //   exit();
+  // }
 
   public function anySoap()
   {
@@ -642,16 +897,26 @@ class Admin extends AdminModule
     exit();
   }
 
-  public function anyLayanan()
-  {
-    $layanan = $this->db('jns_perawatan')
-      ->where('status', '1')
-      ->like('nm_perawatan', '%' . $_POST['layanan'] . '%')
-      ->limit(10)
-      ->toArray();
-    echo $this->draw('layanan.html', ['layanan' => $layanan]);
-    exit();
-  }
+  // public function anyLayanan()
+  // {
+  //   $layanan = $this->db('jns_perawatan')
+  //     ->where('status', '1')
+  //     ->like('nm_perawatan', '%' . $_POST['layanan'] . '%')
+  //     ->limit(10)
+  //     ->toArray();
+  //   echo $this->draw('layanan.html', ['layanan' => $layanan]);
+  //   exit();
+  // }
+   public function anyLayanan()
+    {
+      $layanan = $this->db('jns_perawatan_inap')
+        ->where('status', '1')
+        ->like('nm_perawatan', '%'.$_POST['layanan'].'%')
+        ->limit(10)
+        ->toArray();
+      echo $this->draw('layanan.html', ['layanan' => $layanan]);
+      exit();
+    }
 
   public function anyObat()
   {

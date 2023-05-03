@@ -39,6 +39,7 @@ class Admin extends AdminModule
         $tgl_kunjungan_akhir = date('Y-m-d');
         $status_periksa = '';
         $status_bayar = '';
+        
 
         if(isset($_POST['periode_rawat_jalan'])) {
           $tgl_kunjungan = $_POST['periode_rawat_jalan'];
@@ -52,6 +53,8 @@ class Admin extends AdminModule
         if(isset($_POST['status_bayar'])) {
           $status_bayar = $_POST['status_bayar'];
         }
+
+ 
         $cek_vclaim = $this->db('mlite_modules')->where('dir', 'vclaim')->oneArray();
         $master_berkas_digital = $this->db('master_berkas_digital')->toArray();
         $maping_dokter_dpjpvclaim = $this->db('maping_dokter_dpjpvclaim')->toArray();
@@ -90,6 +93,7 @@ class Admin extends AdminModule
         if(isset($_POST['status_bayar'])) {
           $status_bayar = $_POST['status_bayar'];
         }
+
         $cek_vclaim = $this->db('mlite_modules')->where('dir', 'vclaim')->oneArray();
         $responsivevoice =  $this->settings->get('settings.responsivevoice');
         $this->_Display($tgl_kunjungan, $tgl_kunjungan_akhir, $status_periksa, $status_bayar);
@@ -104,7 +108,8 @@ class Admin extends AdminModule
           $this->core->addJS(url('assets/jscripts/responsivevoice.js'));
         }
         $this->_addHeaderFiles();
-		$username = $this->core->getUserInfo('username', null, true);
+		    $username = $this->core->getUserInfo('username', null, true);
+       
         $this->assign['poliklinik']     = $this->db('poliklinik')->where('status', '1')->where('kd_poli', '<>', $this->settings->get('settings.igd'))->toArray();
         $this->assign['dokter']         = $this->db('dokter')->where('status', '1')->toArray();
         $this->assign['penjab']       = $this->db('penjab')->toArray();
@@ -126,7 +131,8 @@ class Admin extends AdminModule
           AND reg_periksa.tgl_registrasi BETWEEN '$tgl_kunjungan' AND '$tgl_kunjungan_akhir'
           AND reg_periksa.kd_dokter = dokter.kd_dokter
           AND reg_periksa.kd_poli = poliklinik.kd_poli
-          AND reg_periksa.kd_pj = penjab.kd_pj";
+          AND reg_periksa.kd_pj = penjab.kd_pj
+          ";
       
 		if ($username != '197307171998032008') {
           if (!in_array($this->core->getUserInfo('role'), ['admin','apoteker','laboratorium','radiologi','manajemen', 'ok'],true)) {
@@ -149,6 +155,8 @@ class Admin extends AdminModule
 
         $this->assign['list'] = [];
         foreach ($rows as $row) {
+          $cek_kronis = $this->db('mlite_veronisa')->where('no_rawat', $row['no_rawat'])->oneArray();
+          $row['kronis'] = $cek_kronis['no_rawat'];
           $this->assign['list'][] = $row;
         }
 
@@ -1286,6 +1294,7 @@ class Admin extends AdminModule
         return $row[$field];
     }
 
+
     public function setNoRawat()
     {
         $date = date('Y-m-d');
@@ -1536,6 +1545,29 @@ class Admin extends AdminModule
       }
       return $this->draw('rujukan.internal.html', ['rujukaninternal' => $this->assign, 'master_berkas_digital' => $master_berkas_digital]);
     }
+
+        public function postObatKronis()
+    {
+      if (isset($_POST['no_rawat']) && $_POST['no_rawat'] !='') {
+        $reg_periksa = $this->db('reg_periksa')->where('no_rawat', $_POST['no_rawat'])->oneArray();
+        $bridging_sep = $this->db('bridging_sep')->where('no_rawat', $_POST['no_rawat'])->oneArray();
+        if(!$bridging_sep) {
+          $bridging_sep['no_sep'] = '';
+        }
+        $this->db('mlite_veronisa')->save([
+          'id' => NULL,
+          'tanggal' => date('Y-m-d'),
+          'no_rkm_medis' => $reg_periksa['no_rkm_medis'],
+          'no_rawat' => $_POST['no_rawat'],
+          'tgl_registrasi' => $reg_periksa['tgl_registrasi'],
+          'nosep' => $bridging_sep['no_sep'],
+          'status' => 'Belum',
+          'username' => $this->core->getUserInfo('username', null, true)
+        ]);
+      }
+      exit();
+    }
+
   
     public function getJavascript()
     {

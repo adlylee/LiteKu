@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <!-- <meta http-equiv="refresh" content="40"> -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <title>{$title} - {$settings.nama_instansi}</title>
   <link rel="icon" href="{?=url()?}/favicon.png" type="image/x-icon">
@@ -58,6 +58,35 @@
       padding-bottom: 0;
     }
 
+    /* .racikan {
+      position: absolute;
+      right: 300px;
+      top: 0px;
+      width: 20%;
+      padding: 30px;
+      padding-top: 0;
+      padding-bottom: 0;
+    } */
+    .nonracikan {
+      position: absolute;
+      left: 642px;
+      top: 70px;
+      /* width: 20%;
+      padding: 30px; */
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .racikan {
+      position: absolute;
+      right: 25px;
+      top: 70px;
+      /* width: 20%;
+        padding: 30px; */
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
     .panel-footer .no_antrian {
       /* font-size: 65px; */
       color: #000;
@@ -71,30 +100,100 @@
   <div class="container-fluid" id="display">
     <h1 class="display-3 text-left text-white m-3" style="font-size: 40px;"><img class="logo" src="{?=url()?}/{$logo}"
         alt="" width="110px" height="115px"> Antrian Apotek {$settings.nama_instansi}</h1>
-    <h1 class="display-3 text-center kanan">
+    <!-- <h1 class="display-3 text-center kanan">
       {loop: $antrian}
       <div class="panel border-success">
         <div class="panel-footer bg-transparent border-success">
           <div class="no_antrian">
-            <p style="font-size: 20px; font-weight:bold;">NOMOR ANTRIAN</p><b
+            <p style="font-size: 15px; font-weight:bold;">ANTRIAN NON-RACIKAN</p><b
               style="font-size: 55px;">{$value.no_antrian}</b>
           </div>
         </div>
       </div>
       {/loop}
     </h1>
-    <table class="table table-bordered text-primary"  >
+    <h1 class="display-3 text-center racikan">
+      {loop: $antrian1}
+      <div class="panel border-success">
+        <div class="panel-footer bg-transparent border-success">
+          <div class="no_antrian">
+            <p style="font-size: 15px; font-weight:bold;">ANTRIAN RACIKAN</p><b
+              style="font-size: 55px;">{$value.no_antrian}</b>
+          </div>
+        </div>
+      </div>
+      {/loop}
+    </h1> -->
+    <table class="table table-bordered text-primary" id="autoref">
       <tbody class="bg-primary">
         <tr>
-          <td>
-            <!-- id="serahkan_{$value.no_antrian}" -->
-            <div id="list_lab" style="font-size: 24px; font-weight:bold;">
+          <td class="col-md-6">
+            <h3 class="display-3 text-center">Antrian Non Racikan</h3>
+            <h4 class="display-3 text-center nonracikan ">
+              {loop: $antrian}
+              <div class="panel border-success">
+                <div class="panel-footer bg-transparent border-success">
+                  <div class="no_antrian">
+                    <p style="font-size: 10px; font-weight:bold;">NOMOR ANTRIAN</p><b
+                      style="font-size: 30px;">{$value.no_antrian}</b>
+                  </div>
+                </div>
+              </div>
+              {/loop}
+            </h4>
+            <br>
+            <div id="list_lab" style="font-size: 20px; font-weight:bold;">
               <ul class="list-unstyled">
                 {loop: $display}
                 <li style="padding:10px;">
                   <button type="button" class="btn btn-lg btn-warning" style="color:black;"><b
+                      style="font-size: 20px;">{$value.no_antrian}</b></button>
+                  {$value.nm_pasien} - [{$value.no_rkm_medis}], Jam: {$value.jam_peresepan}
+                  <span style="font-size: 18px;" class="pull-right">Status:
+                    <b id="coba_{$value.no_antrian}" {if: $value.status_selesai=='Sudah' }style="color:red;"
+                      {/if}>{$value.status_selesai}</b>
+                    <p>{if: $responsivevoice == 'true'}
+                      <button type="button" name="button" class="btn btn-xs btn-primary panggil"
+                        data-nm_pasien="{?=strtolower($value.nm_pasien)?}"
+                        data-no_antrian="{?=strtolower($value.no_antrian)?}"
+                        data-nm_poli="{?=strtolower($value.nm_poli)?}" data-jam_selesai="{$value.jam_selesai}"
+                        data-panggil="coba_{$value.no_antrian}"><i class="
+                        fa fa-bullhorn"></i><span class="hidden-xs hidden-sm">
+                          Panggil</span></button>{/if}
+                      <button type="button" name="button" class="btn btn-xs btn-warning diserahkan"
+                        data-no_antrian="{$value.no_antrian}"
+                        data-jam_penyerahan="{$value.jam_penyerahan}"><span>Diserahkan</span></button>
+                    </p>
+
+                  </span>
+                </li>
+                {/loop}
+              </ul>
+            </div>
+          </td>
+          <td class="col-md-6">
+            <h3 class="display-3 text-center">Antrian Racikan</h3>
+            <h4 class="display-3 text-center racikan">
+              {loop: $antrian1}
+              <div class="panel border-success">
+                <div class="panel-footer bg-transparent border-success">
+                  <div class="no_antrian">
+                    <p style="font-size: 10px; font-weight:bold;">NOMOR ANTRIAN</p><b
+                      style="font-size: 30px;">{$value.no_antrian}</b>
+                  </div>
+                </div>
+              </div>
+              {/loop}
+            </h4>
+            <br>
+            <!-- id="serahkan_{$value.no_antrian}" -->
+            <div id="list_lab" style="font-size: 20px; font-weight:bold;">
+              <ul class="list-unstyled">
+                {loop: $display1}
+                <li style="padding:10px;">
+                  <button type="button" class="btn btn-lg btn-warning" style="color:black;"><b
                       style="font-size: 20px;">{$value.no_antrian}</b></button> {$value.nm_pasien} -
-                  [{$value.no_rkm_medis}], Jam: {$value.jam_peresepan} - [ {$value.jns_racikan} ]
+                  [{$value.no_rkm_medis}], Jam: {$value.jam_peresepan}
                   <span style="font-size: 18px;" class="pull-right">Status:
                     <!-- <b style="color:red;" id="coba"></b> -->
                     <!-- {$value.status_selesai} -->
@@ -218,3 +317,43 @@
     });
   });
 </script>
+
+<!-- <script>
+
+  response = $.parseJSON(response);
+
+$(function() {
+    $.each(response, function(i, item) {
+        var $tr = $('<tr>').append(
+            $('<td>').text(item.rank),
+            $('<td>').text(item.content),
+            $('<td>').text(item.UID)
+        ); //.appendTo('#records_table');
+        console.log($tr.wrap('<p>').html());
+    });
+});
+  $("#display").load('{?=url()?}/anjungan/panggilapotek');
+</script> -->
+<!-- <script type="text/javascript">
+   var no_antrian = $(this).attr("data-no_antrian");
+  $.ajax({
+           type: "get",
+                url: '{?=url()?}/anjungan/panggilapotek',
+                dataType: "json",
+                data: { no_antrian: no_antrian},
+                success: function(data) {
+                     var table = $('<table/>');
+                     $(data).each(function() {
+                           var row = $('<tr/>');
+                           row.append('<td>' + this.Value + '</td>');
+                           row.append('<td>' + this.Value + '</td>');
+                     });
+                     table.append(row);                   
+                     $('#display').html(table); // not refreshing table withdata
+                },
+                error: function(request, status, error) {
+
+                    alert(request.responseText);
+                }
+        });
+</script> -->

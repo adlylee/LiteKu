@@ -47,12 +47,18 @@
       color: #fff;
     }
 
-    .kanan {
+    .nonracikan {
       position: absolute;
-      right: 20px;
-      top: 0px;
-      width: 20%;
-      padding: 30px;
+      left: 625px;
+      top: 70px;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .racikan {
+      position: absolute;
+      right: 25px;
+      top: 70px;
       padding-top: 0;
       padding-bottom: 0;
     }
@@ -61,31 +67,32 @@
       /* font-size: 65px; */
       color: #000;
       padding-top: 0;
-      padding-bottom: 0;
+      /* padding-bottom: 0; */
     }
   </style>
 </head>
 
 <body>
   <div class="container-fluid">
-    <h1 class="display-3 text-left text-white m-3" style="font-size: 40px;"><img class="logo" src="{?=url()?}/{$logo}"
+    <h1 class="display-3 text-center text-white m-3" style="font-size: 40px;"><img class="logo" src="{?=url()?}/{$logo}"
         alt="" width="110px" height="115px"> Antrian Apotek {$settings.nama_instansi}</h1>
-    <h1 class="display-3 text-center kanan">
-      {loop: $antrian}
-      <div class="panel border-success">
-        <div class="panel-footer bg-transparent border-success">
-          <div class="no_antrian">
-            <p style="font-size: 20px; font-weight:bold;">NOMOR ANTRIAN</p><b
-              style="font-size: 55px;">{$value.no_antrian}</b>
-          </div>
-        </div>
-      </div>
-      {/loop}
-    </h1>
     <table class="table table-bordered text-primary">
       <tbody class="bg-primary">
         <tr>
-          <td>
+          <td class="col-md-6">
+            <h2 class="display-3 text-center">Antrian Non Racikan</h2>
+            <h4 class="display-3 text-center nonracikan">
+              {loop: $antrian}
+              <div class="panel border-success">
+                <div class="panel-footer bg-transparent border-success">
+                  <div class="no_antrian">
+                    <p style="font-size: 10px; font-weight:bold;">NOMOR ANTRIAN</p><b
+                      style="font-size: 35px;">{$value.no_antrian}</b>
+                  </div>
+                </div>
+              </div>
+              {/loop}
+            </h4><br>
             <marquee direction="up" scrollamount="3" height="700">
               <div id="list_lab" style="font-size: 24px; font-weight:bold;">
                 <ul class="list-unstyled">
@@ -93,9 +100,39 @@
                   <li style="padding:10px;">
                     <button type="button" class="btn btn-lg btn-warning" style="color:black;"><b
                         style="font-size: 25px;">{$value.no_antrian}</b></button> {$value.nm_pasien} -
-                    [{$value.no_rkm_medis}], Jam: {$value.jam_peresepan} - [ {$value.jns_racikan} ] <span
-                      class="pull-right">Status: <b {if: $value.status_selesai=='Sudah' }style="color:red;"
-                        {/if}>{$value.status_selesai}</b></span><br>
+                    [{$value.no_rkm_medis}] <span class="pull-right">Status: <b {if: $value.status_selesai=='Sudah'
+                        }style="color:red;" {/if}>{$value.status_selesai}</b></span><br>Jam: {$value.jam_peresepan} - [
+                    {$value.jns_racikan} ]
+                  </li>
+                  {/loop}
+                </ul>
+              </div>
+            </marquee>
+          </td>
+          <td class="col-md-6">
+            <h2 class="display-3 text-center">Antrian Racikan</h2>
+            <h4 class="display-3 text-center racikan">
+              {loop: $antrian1}
+              <div class="panel border-success">
+                <div class="panel-footer bg-transparent border-success">
+                  <div class="no_antrian">
+                    <p style="font-size: 10px; font-weight:bold;">NOMOR ANTRIAN</p><b
+                      style="font-size: 35px;">{$value.no_antrian}</b>
+                  </div>
+                </div>
+              </div>
+              {/loop}
+            </h4><br>
+            <marquee direction="up" scrollamount="3" height="700">
+              <div id="list_lab" style="font-size: 24px; font-weight:bold;">
+                <ul class="list-unstyled">
+                  {loop: $display1}
+                  <li style="padding:10px;">
+                    <button type="button" class="btn btn-lg btn-warning" style="color:black;"><b
+                        style="font-size: 25px;">{$value.no_antrian}</b></button> {$value.nm_pasien} -
+                    [{$value.no_rkm_medis}] <span class="pull-right">Status: <b {if: $value.status_selesai=='Sudah'
+                        }style="color:red;" {/if}>{$value.status_selesai}</b></span><br>Jam: {$value.jam_peresepan} - [
+                    {$value.jns_racikan} ]
                   </li>
                   {/loop}
                 </ul>

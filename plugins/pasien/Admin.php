@@ -894,6 +894,24 @@ class Admin extends AdminModule
       exit();
     }
 
+    public function getAmbilSeries()
+    {
+
+    //$no_rkm_medis = $_GET['no_rkm_medis'];
+    // $this->core->getRegPeriksaInfo('no_rkm_medis',$value['no_rawat']);
+    // $tanggal1 = date('Y-m-d');
+    // $tanggal2 = date('Y-m-d');
+    $ambil = [
+    'Level' => 'Study',
+    'Expand' => true,
+    'Query' => [ "StudyDate : ", "PatientID : "]
+   ];
+
+    header('Content-type:application/json');
+    echo json_encode($ambil);
+
+    }
+
     public function postCetak()
     {
       $this->core->db()->pdo()->exec("DELETE FROM `mlite_temporary`");
