@@ -686,9 +686,13 @@ class Admin extends AdminModule
         $row['catatan_perawatan'] = $this->db('catatan_perawatan')->where('no_rawat', $row['no_rawat'])->oneArray();
         $row['berkas_digital'] = $this->db('berkas_digital_perawatan')->where('no_rawat', $row['no_rawat'])->toArray();
 
+        // $no_rawat =  $row['no_rawat'];
+        
+        // $this->getBridgingOrthanc($no_rawat);
 
         $riwayat['reg_periksa'][] = $row;
       }
+
       $this->tpl->set('riwayat', $this->tpl->noParse_array(htmlspecialchars_array($riwayat)));
       echo $this->draw('riwayat.perawatan.html');
       exit();

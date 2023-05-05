@@ -8,7 +8,7 @@ use Systems\Lib\QRCode;
 class Admin extends AdminModule
 {
 
-  private $_uploads = WEBAPPS_PATH . '/berkasrawat/pages/upload';
+  private $_uploads = WEBAPPS_PATH . '/berkasrawat/pages/uploadvero';
 
   public function init()
   {
@@ -99,7 +99,7 @@ class Admin extends AdminModule
         }
 
       } else {
-        $dir    = $this->_uploads;
+         $dir    = $this->_uploads;
         $cntr   = 0;
 
         $image = $_FILES['files']['tmp_name'];
@@ -108,13 +108,29 @@ class Admin extends AdminModule
         if ($img->load($image)) {
           $imgName = time() . $cntr++;
           $imgPath = $dir . '/' . $id . '_' . $imgName . '.' . $img->getInfos('type');
-          $lokasi_file = 'pages/upload/' . $id . '_' . $imgName . '.' . $img->getInfos('type');
+          $lokasi_file = 'pages/uploadvero/' . $id . '_' . $imgName . '.' . $img->getInfos('type');
           $img->save($imgPath);
           $query = $this->db('berkas_digital_perawatan')->save(['no_rawat' => $_POST['no_rawat'], 'kode' => $_POST['kode'], 'lokasi_file' => $lokasi_file]);
           if ($query) {
             $this->notify('success', 'Simpan berkas digital perawatan sukses.');
           }
         }
+        // $dir    = $this->_uploads;
+        // $cntr   = 0;
+
+        // $image = $_FILES['files']['tmp_name'];
+        // $img = new \Systems\Lib\Image();
+        // $id = convertNorawat($_POST['no_rawat']);
+        // if ($img->load($image)) {
+        //   $imgName = time() . $cntr++;
+        //   $imgPath = $dir . '/' . $id . '_' . $imgName . '.' . $img->getInfos('type');
+        //   $lokasi_file = 'pages/upload/' . $id . '_' . $imgName . '.' . $img->getInfos('type');
+        //   $img->save($imgPath);
+        //   $query = $this->db('berkas_digital_perawatan')->save(['no_rawat' => $_POST['no_rawat'], 'kode' => $_POST['kode'], 'lokasi_file' => $lokasi_file]);
+        //   if ($query) {
+        //     $this->notify('success', 'Simpan berkas digital perawatan sukses.');
+        //   }
+        // }
       }
     }
 
@@ -437,6 +453,247 @@ class Admin extends AdminModule
 
     $no_rawat = $this->revertNorawat($id);
 
+    // billing versi vedika
+    $check_billing = $this->db()->pdo()->query("SHOW TABLES LIKE 'billing'");
+    $check_billing->execute();
+    $check_billing = $check_billing->fetch();
+
+    if($check_billing) {
+      $query = $this->db()->pdo()->prepare("select no,nm_perawatan,pemisah,if(biaya=0,'',biaya),if(jumlah=0,'',jumlah),if(tambahan=0,'',tambahan),if(totalbiaya=0,'',totalbiaya),totalbiaya from billing where no_rawat='$no_rawat'");
+      $query->execute();
+      $rows = $query->fetchAll();
+      $total = 0;
+      foreach ($rows as $key => $value) {
+        $total = $total + $value['7'];
+      }
+      $total = $total;
+    } else {
+      $rows = [];
+      $total = '';
+    }
+
+    $this->tpl->set('total', $total);
+
+    $instansi['logo'] = $this->settings->get('settings.logo');
+    $instansi['nama_instansi'] = $this->settings->get('settings.nama_instansi');
+    $instansi['alamat'] = $this->settings->get('settings.alamat');
+    $instansi['kota'] = $this->settings->get('settings.kota');
+    $instansi['propinsi'] = $this->settings->get('settings.propinsi');
+    $instansi['nomor_telepon'] = $this->settings->get('settings.nomor_telepon');
+    $instansi['email'] = $this->settings->get('settings.email');
+
+    $this->tpl->set('billing', $rows);
+
+// /* Menggunakan billing bawaan mLITE */
+
+//     if($this->settings->get('vedika.billing') == 'mlite') {
+//         $settings = $this->settings('settings');
+//         $this->tpl->set('settings', $this->tpl->noParse_array(htmlspecialchars_array($settings)));
+
+//        $reg_periksa = $this->db('reg_periksa')->where('no_rawat', $no_rawat)->oneArray();
+//        if($reg_periksa['status_lanjut'] == 'Ralan') {
+//           $result_detail['billing'] = $this->db('mlite_billing')->where('no_rawat', $no_rawat)->like('kd_billing', 'RJ%')->desc('id_billing')->oneArray();
+//           $result_detail['fullname'] = $this->core->getUserInfo('fullname', $result_detail['billing']['id_user'], true);
+
+//           $result_detail['poliklinik'] = $this->db('poliklinik')
+//             ->join('reg_periksa', 'reg_periksa.kd_poli = poliklinik.kd_poli')
+//             ->where('reg_periksa.no_rawat', $no_rawat)
+//             ->oneArray();
+
+//           $result_detail['rawat_jl_dr'] = $this->db('rawat_jl_dr')
+//             ->select('jns_perawatan.nm_perawatan')
+//             ->select(['biaya_rawat' => 'rawat_jl_dr.biaya_rawat'])
+//             ->select(['jml' => 'COUNT(rawat_jl_dr.kd_jenis_prw)'])
+//             ->select(['total_biaya_rawat_dr' => 'SUM(rawat_jl_dr.biaya_rawat)'])
+//             ->join('jns_perawatan', 'jns_perawatan.kd_jenis_prw = rawat_jl_dr.kd_jenis_prw')
+//             ->where('rawat_jl_dr.no_rawat', $no_rawat)
+//             ->group('jns_perawatan.nm_perawatan')
+//             ->toArray();
+
+//           $total_rawat_jl_dr = 0;
+//           foreach ($result_detail['rawat_jl_dr'] as $row) {
+//             $total_rawat_jl_dr += $row['biaya_rawat'];
+//           }
+
+//           $result_detail['rawat_jl_pr'] = $this->db('rawat_jl_pr')
+//             ->select('jns_perawatan.nm_perawatan')
+//             ->select(['biaya_rawat' => 'rawat_jl_pr.biaya_rawat'])
+//             ->select(['jml' => 'COUNT(rawat_jl_pr.kd_jenis_prw)'])
+//             ->select(['total_biaya_rawat_pr' => 'SUM(rawat_jl_pr.biaya_rawat)'])
+//             ->join('jns_perawatan', 'jns_perawatan.kd_jenis_prw = rawat_jl_pr.kd_jenis_prw')
+//             ->where('rawat_jl_pr.no_rawat', $no_rawat)
+//             ->group('jns_perawatan.nm_perawatan')
+//             ->toArray();
+
+//           $total_rawat_jl_pr = 0;
+//           foreach ($result_detail['rawat_jl_pr'] as $row) {
+//             $total_rawat_jl_pr += $row['biaya_rawat'];
+//           }
+
+//           $result_detail['rawat_jl_drpr'] = $this->db('rawat_jl_drpr')
+//             ->select('jns_perawatan.nm_perawatan')
+//             ->select(['biaya_rawat' => 'rawat_jl_drpr.biaya_rawat'])
+//             ->select(['jml' => 'COUNT(rawat_jl_drpr.kd_jenis_prw)'])
+//             ->select(['total_biaya_rawat_drpr' => 'SUM(rawat_jl_drpr.biaya_rawat)'])
+//             ->join('jns_perawatan', 'jns_perawatan.kd_jenis_prw = rawat_jl_drpr.kd_jenis_prw')
+//             ->where('rawat_jl_drpr.no_rawat', $no_rawat)
+//             ->group('jns_perawatan.nm_perawatan')
+//             ->toArray();
+
+//           $total_rawat_jl_drpr = 0;
+//           foreach ($result_detail['rawat_jl_drpr'] as $row) {
+//             $total_rawat_jl_drpr += $row['biaya_rawat'];
+//           }
+
+//           $result_detail['detail_pemberian_obat'] = $this->db('detail_pemberian_obat')
+//             ->join('databarang', 'databarang.kode_brng=detail_pemberian_obat.kode_brng')
+//             ->where('no_rawat', $no_rawat)
+//             ->where('detail_pemberian_obat.status', 'Ralan')
+//             ->toArray();
+
+//           $total_detail_pemberian_obat = 0;
+//           foreach ($result_detail['detail_pemberian_obat'] as $row) {
+//             $total_detail_pemberian_obat += $row['total'];
+//           }
+
+//           $result_detail['periksa_lab'] = $this->db('periksa_lab')
+//             ->join('jns_perawatan_lab', 'jns_perawatan_lab.kd_jenis_prw=periksa_lab.kd_jenis_prw')
+//             ->where('no_rawat', $no_rawat)
+//             ->where('periksa_lab.status', 'Ralan')
+//             ->toArray();
+
+//           $total_periksa_lab = 0;
+//           foreach ($result_detail['periksa_lab'] as $row) {
+//             $total_periksa_lab += $row['biaya'];
+//           }
+
+//           $result_detail['periksa_radiologi'] = $this->db('periksa_radiologi')
+//             ->join('jns_perawatan_radiologi', 'jns_perawatan_radiologi.kd_jenis_prw=periksa_radiologi.kd_jenis_prw')
+//             ->where('no_rawat', $no_rawat)
+//             ->where('periksa_radiologi.status', 'Ralan')
+//             ->toArray();
+
+//           $total_periksa_radiologi = 0;
+//           foreach ($result_detail['periksa_radiologi'] as $row) {
+//             $total_periksa_radiologi += $row['biaya'];
+//           }
+
+//           $result_detail['tambahan_biaya'] = $this->db('tambahan_biaya')
+//             ->where('status', 'ralan')
+//             ->where('no_rawat', $no_rawat)
+//             ->toArray();
+
+//           $total_tambahan_biaya = 0;
+//           foreach ($result_detail['tambahan_biaya'] as $row) {
+//             $total_tambahan_biaya += $row['besar_biaya'];
+//           }
+
+//           $jumlah_total_operasi = 0;
+//           $operasis = $this->db('operasi')->join('paket_operasi', 'paket_operasi.kode_paket=operasi.kode_paket')->where('no_rawat', $no_rawat)->where('operasi.status', 'Ralan')->toArray();
+//           $result_detail['operasi'] = [];
+//           foreach ($operasis as $operasi) {
+//             $operasi['jumlah'] = $operasi['biayaoperator1']+$operasi['biayaoperator2']+$operasi['biayaoperator3']+$operasi['biayaasisten_operator1']+$operasi['biayaasisten_operator2']+$operasi['biayadokter_anak']+$operasi['biayaperawaat_resusitas']+$operasi['biayadokter_anestesi']+$operasi['biayaasisten_anestesi']+$operasi['biayabidan']+$operasi['biayaperawat_luar'];
+//             $jumlah_total_operasi += $operasi['jumlah'];
+//             $result_detail['operasi'][] = $operasi;
+//           }
+//           $jumlah_total_obat_operasi = 0;
+//           $obat_operasis = $this->db('beri_obat_operasi')->join('obatbhp_ok', 'obatbhp_ok.kd_obat=beri_obat_operasi.kd_obat')->where('no_rawat', $no_rawat)->toArray();
+//           $result_detail['obat_operasi'] = [];
+//           foreach ($obat_operasis as $obat_operasi) {
+//             $obat_operasi['harga'] = $obat_operasi['hargasatuan'] * $obat_operasi['jumlah'];
+//             $jumlah_total_obat_operasi += $obat_operasi['harga'];
+//             $result_detail['obat_operasi'][] = $obat_operasi;
+//           }
+
+//        } else {
+
+//          $result_detail['billing'] = $this->db('mlite_billing')->where('no_rawat', $no_rawat)->like('kd_billing', 'RI%')->desc('id_billing')->oneArray();
+//          $result_detail['fullname'] = $this->core->getUserInfo('fullname', $result_detail['billing']['id_user'], true);
+
+//          $result_detail['kamar_inap'] = $this->db('kamar_inap')
+//            ->join('reg_periksa', 'reg_periksa.no_rawat = kamar_inap.no_rawat')
+//            ->where('reg_periksa.no_rawat', $no_rawat)
+//            ->oneArray();
+
+//          $result_detail['rawat_inap_dr'] = $this->db('rawat_inap_dr')
+//            ->select('jns_perawatan_inap.nm_perawatan')
+//            ->select(['biaya_rawat' => 'rawat_inap_dr.biaya_rawat'])
+//            ->select(['jml' => 'COUNT(rawat_inap_dr.kd_jenis_prw)'])
+//            ->select(['total_biaya_rawat_dr' => 'SUM(rawat_inap_dr.biaya_rawat)'])
+//            ->join('jns_perawatan_inap', 'jns_perawatan_inap.kd_jenis_prw = rawat_inap_dr.kd_jenis_prw')
+//            ->where('rawat_inap_dr.no_rawat', $no_rawat)
+//            ->group('jns_perawatan_inap.nm_perawatan')
+//            ->toArray();
+
+//          $result_detail['rawat_inap_pr'] = $this->db('rawat_inap_pr')
+//            ->select('jns_perawatan_inap.nm_perawatan')
+//            ->select(['biaya_rawat' => 'rawat_inap_pr.biaya_rawat'])
+//            ->select(['jml' => 'COUNT(rawat_inap_pr.kd_jenis_prw)'])
+//            ->select(['total_biaya_rawat_pr' => 'SUM(rawat_inap_pr.biaya_rawat)'])
+//            ->join('jns_perawatan_inap', 'jns_perawatan_inap.kd_jenis_prw = rawat_inap_pr.kd_jenis_prw')
+//            ->where('rawat_inap_pr.no_rawat', $no_rawat)
+//            ->group('jns_perawatan_inap.nm_perawatan')
+//            ->toArray();
+
+//          $result_detail['rawat_inap_drpr'] = $this->db('rawat_inap_drpr')
+//            ->select('jns_perawatan_inap.nm_perawatan')
+//            ->select(['biaya_rawat' => 'rawat_inap_drpr.biaya_rawat'])
+//            ->select(['jml' => 'COUNT(rawat_inap_drpr.kd_jenis_prw)'])
+//            ->select(['total_biaya_rawat_drpr' => 'SUM(rawat_inap_drpr.biaya_rawat)'])
+//            ->join('jns_perawatan_inap', 'jns_perawatan_inap.kd_jenis_prw = rawat_inap_drpr.kd_jenis_prw')
+//            ->where('rawat_inap_drpr.no_rawat', $no_rawat)
+//            ->group('jns_perawatan_inap.nm_perawatan')
+//            ->toArray();
+
+//          $result_detail['detail_pemberian_obat'] = $this->db('detail_pemberian_obat')
+//            ->join('databarang', 'databarang.kode_brng=detail_pemberian_obat.kode_brng')
+//            ->where('no_rawat', $no_rawat)
+//            ->where('detail_pemberian_obat.status', 'Ranap')
+//            ->toArray();
+
+//          $result_detail['periksa_lab'] = $this->db('periksa_lab')
+//            ->join('jns_perawatan_lab', 'jns_perawatan_lab.kd_jenis_prw=periksa_lab.kd_jenis_prw')
+//            ->where('no_rawat', $no_rawat)
+//            ->where('periksa_lab.status', 'Ranap')
+//            ->toArray();
+
+//          $result_detail['periksa_radiologi'] = $this->db('periksa_radiologi')
+//            ->join('jns_perawatan_radiologi', 'jns_perawatan_radiologi.kd_jenis_prw=periksa_radiologi.kd_jenis_prw')
+//            ->where('no_rawat', $no_rawat)
+//            ->where('periksa_radiologi.status', 'Ranap')
+//            ->toArray();
+
+//          $result_detail['tambahan_biaya'] = $this->db('tambahan_biaya')
+//            ->where('status', 'ranap')
+//            ->where('no_rawat', $no_rawat)
+//            ->toArray();
+
+//          $jumlah_total_operasi = 0;
+//          $operasis = $this->db('operasi')->join('paket_operasi', 'paket_operasi.kode_paket=operasi.kode_paket')->where('no_rawat', $no_rawat)->where('operasi.status', 'Ranap')->toArray();
+//          $result_detail['operasi'] = [];
+//          foreach ($operasis as $operasi) {
+//            $operasi['jumlah'] = $operasi['biayaoperator1']+$operasi['biayaoperator2']+$operasi['biayaoperator3']+$operasi['biayaasisten_operator1']+$operasi['biayaasisten_operator2']+$operasi['biayadokter_anak']+$operasi['biayaperawaat_resusitas']+$operasi['biayadokter_anestesi']+$operasi['biayaasisten_anestesi']+$operasi['biayabidan']+$operasi['biayaperawat_luar'];
+//            $jumlah_total_operasi += $operasi['jumlah'];
+//            $result_detail['operasi'][] = $operasi;
+//          }
+//          $jumlah_total_obat_operasi = 0;
+//          $obat_operasis = $this->db('beri_obat_operasi')->join('obatbhp_ok', 'obatbhp_ok.kd_obat=beri_obat_operasi.kd_obat')->where('no_rawat', $no_rawat)->toArray();
+//          $result_detail['obat_operasi'] = [];
+//          foreach ($obat_operasis as $obat_operasi) {
+//            $obat_operasi['harga'] = $obat_operasi['hargasatuan'] * $obat_operasi['jumlah'];
+//            $jumlah_total_obat_operasi += $obat_operasi['harga'];
+//            $result_detail['obat_operasi'][] = $obat_operasi;
+//          }
+
+//        }
+
+//        $this->tpl->set('billing', $result_detail);
+
+//     }
+
+    /* End menggunakan billing bawaan mlITE */
+
+
     /** Billing versi mlite */
 
     $billing_mlite_settings = $this->settings('settings');
@@ -574,13 +831,13 @@ class Admin extends AdminModule
 
     /** End billing versi mlite **/
 
-    $instansi['logo'] = $this->settings->get('settings.logo');
-    $instansi['nama_instansi'] = $this->settings->get('settings.nama_instansi');
-    $instansi['alamat'] = $this->settings->get('settings.alamat');
-    $instansi['kota'] = $this->settings->get('settings.kota');
-    $instansi['propinsi'] = $this->settings->get('settings.propinsi');
-    $instansi['nomor_telepon'] = $this->settings->get('settings.nomor_telepon');
-    $instansi['email'] = $this->settings->get('settings.email');
+    // $instansi['logo'] = $this->settings->get('settings.logo');
+    // $instansi['nama_instansi'] = $this->settings->get('settings.nama_instansi');
+    // $instansi['alamat'] = $this->settings->get('settings.alamat');
+    // $instansi['kota'] = $this->settings->get('settings.kota');
+    // $instansi['propinsi'] = $this->settings->get('settings.propinsi');
+    // $instansi['nomor_telepon'] = $this->settings->get('settings.nomor_telepon');
+    // $instansi['email'] = $this->settings->get('settings.email');
 
     $this->tpl->set('instansi', $instansi);
 
@@ -617,6 +874,17 @@ class Admin extends AdminModule
       ->oneArray();
     $this->tpl->set('resume_pasien', $resume_pasien);
     */
+    $resume_pasien = $this->db('resume_pasien')
+      ->join('dokter', 'dokter.kd_dokter = resume_pasien.kd_dokter')
+      ->where('no_rawat', $this->revertNorawat($id))
+      ->oneArray();
+    if(!$this->db('resume_pasien')->where('no_rawat', $this->revertNorawat($id))->oneArray()) {
+      $resume_pasien = $this->db('resume_pasien_ranap')
+        ->join('dokter', 'dokter.kd_dokter = resume_pasien_ranap.kd_dokter')
+        ->where('no_rawat', $this->revertNorawat($id))
+        ->oneArray();
+    }
+    $this->tpl->set('resume_pasien', $resume_pasien);
 
     $pasien = $this->db('pasien')
       ->join('kecamatan', 'kecamatan.kd_kec = pasien.kd_kec')
@@ -715,6 +983,13 @@ class Admin extends AdminModule
     $hasil_radiologi = $this->db('hasil_radiologi')
       ->where('no_rawat', $this->revertNorawat($id))
       ->toArray();
+    $klinis_radiologi = $this->db('diagnosa_pasien_klinis')
+      ->join('permintaan_radiologi', 'permintaan_radiologi.noorder=diagnosa_pasien_klinis.noorder')
+      ->where('no_rawat', $this->revertNorawat($id))
+      ->toArray();
+    $saran_rad = $this->db('saran_kesan_rad')
+      ->where('no_rawat', $this->revertNorawat($id))
+      ->toArray();
     $pemeriksaan_laboratorium = [];
     $rows_pemeriksaan_laboratorium = $this->db('periksa_lab')
       ->join('jns_perawatan_lab', 'jns_perawatan_lab.kd_jenis_prw=periksa_lab.kd_jenis_prw')
@@ -780,6 +1055,8 @@ class Admin extends AdminModule
     $this->tpl->set('operasi', $operasi);
     $this->tpl->set('tindakan_radiologi', $tindakan_radiologi);
     $this->tpl->set('hasil_radiologi', $hasil_radiologi);
+    $this->tpl->set('klinis_radiologi', $klinis_radiologi);
+    $this->tpl->set('saran_rad', $saran_rad);
     $this->tpl->set('pemeriksaan_laboratorium', $pemeriksaan_laboratorium);
     $this->tpl->set('pemberian_obat', $pemberian_obat);
     $this->tpl->set('obat_operasi', $obat_operasi);
@@ -791,6 +1068,7 @@ class Admin extends AdminModule
     $this->tpl->set('hasil_radiologi', $this->db('hasil_radiologi')->where('no_rawat', $this->revertNorawat($id))->toArray());
     $this->tpl->set('gambar_radiologi', $this->db('gambar_radiologi')->where('no_rawat', $this->revertNorawat($id))->toArray());
     $this->tpl->set('veronisa', htmlspecialchars_array($this->settings('veronisa')));
+    // $this->tpl->set('pengaturan_billing', $this->settings->get('veronisa.billing'));
     echo $this->tpl->draw(MODULES . '/veronisa/view/admin/pdf.html', true);
     exit();
   }
@@ -872,6 +1150,34 @@ class Admin extends AdminModule
     }
     $this->notify('success', 'Pengaturan telah disimpan');
     redirect(url([ADMIN, 'veronisa', 'settings']));
+  }
+
+  public function getHapusBerkas($no_rawat, $nama_file)
+  {
+    $berkasPerawatan = $this->db('berkas_digital_perawatan')->where('no_rawat', revertNorawat($no_rawat))->like('lokasi_file', '%'.$nama_file.'%')->oneArray();
+    if ($berkasPerawatan) {
+      $lokasi_file = $berkasPerawatan['lokasi_file'];
+      $fileLoc = WEBAPPS_PATH . '/berkasrawat/' . $lokasi_file;
+      //if (file_exists($fileLoc)) {
+        //unlink($fileLoc);
+        $query = $this->db('berkas_digital_perawatan')->where('no_rawat', revertNorawat($no_rawat))->where('lokasi_file', $lokasi_file)->delete();
+        if ($query) {
+          $this->notify('success', 'Hapus sukses');
+          // echo 'Hapus berkas sukses';
+        } else {
+          // echo 'Hapus berkas gagal';
+          $this->notify('failure', 'Hapus gagal');
+
+        }
+      /*} else {
+        echo 'Hapus berkas gagal, berkas tidak ditemukan.';
+      }*/
+    } else {
+      $this->notify('failure', 'Hapus Berkas gagal, tidak ada data perawatan');
+      // echo 'Hapus berkas gagal, tidak ada data perawatan.';
+    }
+    redirect(url([ADMIN, 'veronisa', 'index']));
+    exit();
   }
 
   public function getJavascript()
