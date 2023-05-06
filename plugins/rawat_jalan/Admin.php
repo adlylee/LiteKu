@@ -1546,7 +1546,7 @@ class Admin extends AdminModule
       return $this->draw('rujukan.internal.html', ['rujukaninternal' => $this->assign, 'master_berkas_digital' => $master_berkas_digital]);
     }
 
-        public function postObatKronis()
+    public function postObatKronis()
     {
       if (isset($_POST['no_rawat']) && $_POST['no_rawat'] !='') {
         $reg_periksa = $this->db('reg_periksa')->where('no_rawat', $_POST['no_rawat'])->oneArray();
@@ -1568,7 +1568,12 @@ class Admin extends AdminModule
       exit();
     }
 
-  
+    public function postHapusObatKronis()
+    {
+      $this->db('mlite_veronisa')->where('no_rawat', $_POST['no_rawat'])->delete();
+      exit();
+    }
+
     public function getJavascript()
     {
         header('Content-type: text/javascript');

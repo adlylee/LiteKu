@@ -5,6 +5,7 @@ use Systems\AdminModule;
 use Systems\Lib\Fpdf\PDF_MC_Table;
 use Plugins\Pasien\DB_Wilayah;
 use Plugins\Icd\DB_ICD;
+// use Plugins\Orthanc;
 
 class Admin extends AdminModule
 {
@@ -596,7 +597,9 @@ class Admin extends AdminModule
 
           $row['periksa_radiologi'][] = $value;
         }
-
+        $no_rawat =  $row['no_rawat'];
+        $orthanc = Plugins\Orthanc\getBridgingOrthanc($no_rawat);
+        $row['orthanc'] = $orthanc;
         $row['klinis'] = $this->db('diagnosa_pasien_klinis')
             ->join('permintaan_radiologi', 'permintaan_radiologi.noorder=diagnosa_pasien_klinis.noorder')
             ->where('permintaan_radiologi.no_rawat', $row['no_rawat'])
@@ -677,7 +680,7 @@ class Admin extends AdminModule
 
          $row['data_triase_igd'][] = $value;
         }
-      
+
         //$row['detail_periksa_lab'] = $this->db('detail_periksa_lab')
         //  ->join('template_laboratorium', 'template_laboratorium.id_template = detail_periksa_lab.id_template')
         //  ->where('no_rawat', $row['no_rawat'])->toArray();
@@ -685,10 +688,6 @@ class Admin extends AdminModule
         $row['gambar_radiologi'] = $this->db('gambar_radiologi')->where('no_rawat', $row['no_rawat'])->toArray();
         $row['catatan_perawatan'] = $this->db('catatan_perawatan')->where('no_rawat', $row['no_rawat'])->oneArray();
         $row['berkas_digital'] = $this->db('berkas_digital_perawatan')->where('no_rawat', $row['no_rawat'])->toArray();
-
-        // $no_rawat =  $row['no_rawat'];
-        
-        // $this->getBridgingOrthanc($no_rawat);
 
         $riwayat['reg_periksa'][] = $row;
       }
@@ -898,24 +897,6 @@ class Admin extends AdminModule
       exit();
     }
 
-    public function getAmbilSeries()
-    {
-
-    //$no_rkm_medis = $_GET['no_rkm_medis'];
-    // $this->core->getRegPeriksaInfo('no_rkm_medis',$value['no_rawat']);
-    // $tanggal1 = date('Y-m-d');
-    // $tanggal2 = date('Y-m-d');
-    $ambil = [
-    'Level' => 'Study',
-    'Expand' => true,
-    'Query' => [ "StudyDate : ", "PatientID : "]
-   ];
-
-    header('Content-type:application/json');
-    echo json_encode($ambil);
-
-    }
-
     public function postCetak()
     {
       $this->core->db()->pdo()->exec("DELETE FROM `mlite_temporary`");
@@ -1081,6 +1062,25 @@ class Admin extends AdminModule
         }
       	return $umur;
     }
+
+    public function getAmbilSeries()
+    {
+
+    //$no_rkm_medis = $_GET['no_rkm_medis'];
+    // $this->core->getRegPeriksaInfo('no_rkm_medis',$value['no_rawat']);
+    // $tanggal1 = date('Y-m-d');
+    // $tanggal2 = date('Y-m-d');
+    $ambil = [
+    'Level' => 'Study',
+    'Expand' => true,
+    'Query' => [ "StudyDate : ", "PatientID : "]
+   ];
+
+    header('Content-type:application/json');
+    echo json_encode($ambil);
+
+    }
+
 
     public function getJavascript()
     {
