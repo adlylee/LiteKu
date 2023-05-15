@@ -5,8 +5,6 @@ use Systems\AdminModule;
 use Systems\Lib\Fpdf\PDF_MC_Table;
 use Plugins\Pasien\DB_Wilayah;
 use Plugins\Icd\DB_ICD;
-// use Plugins\Orthanc;
-
 class Admin extends AdminModule
 {
 
@@ -550,26 +548,6 @@ class Admin extends AdminModule
           $row['periksa_lab'][] = $value;
         }
 
-        //  $row['periksa_radiologi'] = $this->db('periksa_radiologi')
-        // //  ->join('hasil_radiologi', 'hasil_radiologi.no_rawat=periksa_radiologi.no_rawat')
-        //  ->join('jns_perawatan_radiologi', 'jns_perawatan_radiologi.kd_jenis_prw=periksa_radiologi.kd_jenis_prw')
-        //  ->where('periksa_radiologi.no_rawat', $row['no_rawat'])
-        //  ->toArray();
-
-      //   $row['periksa_radiologi'] = $this->db('periksa_radiologi')
-      //   ->join('hasil_radiologi', 'hasil_radiologi.no_rawat=periksa_radiologi.no_rawat')
-      //   ->join('jns_perawatan_radiologi', 'jns_perawatan_radiologi.kd_jenis_prw=periksa_radiologi.kd_jenis_prw')
-      //   ->where('periksa_radiologi.no_rawat', $row['no_rawat'])
-      //   ->toArray();
-      
-      //  $row['saran_kesan_rad'] = $this->db('saran_kesan_rad')
-      //   ->join('hasil_radiologi', 'hasil_radiologi.no_rawat=saran_kesan_rad.no_rawat')
-      //   ->join('permintaan_radiologi', 'permintaan_radiologi.no_rawat=hasil_radiologi.no_rawat')
-      //   ->join('diagnosa_pasien_klinis', 'diagnosa_pasien_klinis.noorder=permintaan_radiologi.noorder')
-      //   ->where('saran_kesan_rad.no_rawat', $row['no_rawat'])
-      //   ->toArray();
-
-
         $rows_periksa_radiologi = $this->db('periksa_radiologi')
             ->join('jns_perawatan_radiologi', 'jns_perawatan_radiologi.kd_jenis_prw=periksa_radiologi.kd_jenis_prw')
             ->where('no_rawat', $row['no_rawat'])
@@ -583,12 +561,6 @@ class Admin extends AdminModule
             ->where('hasil_radiologi.jam', $value['jam'])
             ->toArray();
 
-          // $value['klinis'] = $this->db('diagnosa_pasien_klinis')
-          //   ->join('permintaan_radiologi', 'permintaan_radiologi.noorder=diagnosa_pasien_klinis.noorder')
-          //   ->join('hasil_radiologi', 'hasil_radiologi.no_rawat=permintaan_radiologi.no_rawat')
-          //   ->where('permintaan_radiologi.no_rawat', $value['no_rawat'])
-          //   ->toArray();
-
           $value['saran_kesan_rad'] = $this->db('saran_kesan_rad')
             ->where('saran_kesan_rad.no_rawat', $value['no_rawat'])
             ->where('saran_kesan_rad.tgl_periksa', $value['tgl_periksa'])
@@ -597,28 +569,17 @@ class Admin extends AdminModule
 
           $row['periksa_radiologi'][] = $value;
         }
-        $no_rawat =  $row['no_rawat'];
-        $orthanc = Plugins\Orthanc\getBridgingOrthanc($no_rawat);
-        $row['orthanc'] = $orthanc;
+         
         $row['klinis'] = $this->db('diagnosa_pasien_klinis')
             ->join('permintaan_radiologi', 'permintaan_radiologi.noorder=diagnosa_pasien_klinis.noorder')
             ->where('permintaan_radiologi.no_rawat', $row['no_rawat'])
             ->toArray();
-        // $klinis_radiologi = $this->db('diagnosa_pasien_klinis')
-        // ->join('permintaan_radiologi', 'permintaan_radiologi.noorder=diagnosa_pasien_klinis.noorder')
-        // ->where('no_rawat', $this->revertNorawat($id))
-        // ->toArray();
            
         $row['detail_pemberian_obat__'] = $this->db('aturan_pakai')
           ->join('databarang', 'databarang.kode_brng = aturan_pakai.kode_brng')
           ->join('detail_pemberian_obat', 'detail_pemberian_obat.no_rawat = aturan_pakai.no_rawat')
-          //->join('resep_dokter', 'resep_dokter.no_resep = resep_obat.no_resep')
           ->where('aturan_pakai.no_rawat', $row['no_rawat'])
-          //->where('resep_dokter.kode_brng', 'detail_pemberian_obat.kode_brng')
           ->group('aturan_pakai.kode_brng')
-          //->select('databarang.nama_brng')
-          //->select('detail_pemberian_obat.jml')
-          //->select('resep_dokter.aturan_pakai')
           ->toArray();
 
         $rows_resep_obat= $this->db('resep_obat')
@@ -630,11 +591,9 @@ class Admin extends AdminModule
         foreach ($rows_resep_obat as $value) {
           $value['detail_pemberian_obat'] = $this->db('detail_pemberian_obat')
           ->join('databarang', 'databarang.kode_brng = detail_pemberian_obat.kode_brng')
-          // ->join('resep_dokter', 'databarang.kode_brng = resep_dokter.kode_brng')
           ->where('detail_pemberian_obat.no_rawat', $value['no_rawat'])
           ->where('detail_pemberian_obat.tgl_perawatan', $value['tgl_perawatan'])
           ->where('detail_pemberian_obat.jam', $value['jam'])
-          // ->where('resep_dokter.no_resep', $value['no_resep'])
           ->toArray();
 
           $value['aturan_pakai'] = $this->db('resep_dokter')
@@ -644,7 +603,6 @@ class Admin extends AdminModule
           $row['resep_obat'][] = $value;
         }
 
-        // $row['periksa_ranap'] = $this->db('pemeriksaan_ranap')->where('no_rawat', $row['no_rawat'])->toArray(); 
         $rows_data_triase_igd = $this->db('data_triase_igd')
         ->join('petugas', 'petugas.nip=data_triase_igd.kd_petugas')
         ->where('no_rawat', $row['no_rawat'])
@@ -681,10 +639,6 @@ class Admin extends AdminModule
          $row['data_triase_igd'][] = $value;
         }
 
-        //$row['detail_periksa_lab'] = $this->db('detail_periksa_lab')
-        //  ->join('template_laboratorium', 'template_laboratorium.id_template = detail_periksa_lab.id_template')
-        //  ->where('no_rawat', $row['no_rawat'])->toArray();
-        //$row['hasil_radiologi'] = $this->db('hasil_radiologi')->where('no_rawat', $row['no_rawat'])->oneArray();
         $row['gambar_radiologi'] = $this->db('gambar_radiologi')->where('no_rawat', $row['no_rawat'])->toArray();
         $row['catatan_perawatan'] = $this->db('catatan_perawatan')->where('no_rawat', $row['no_rawat'])->oneArray();
         $row['berkas_digital'] = $this->db('berkas_digital_perawatan')->where('no_rawat', $row['no_rawat'])->toArray();
@@ -795,19 +749,6 @@ class Admin extends AdminModule
           $row['periksa_lab'][] = $value;
         }
 
-    //  $row['periksa_radiologi'] = $this->db('periksa_radiologi')
-    //     ->join('hasil_radiologi', 'hasil_radiologi.no_rawat=periksa_radiologi.no_rawat')
-    //     ->join('jns_perawatan_radiologi', 'jns_perawatan_radiologi.kd_jenis_prw=periksa_radiologi.kd_jenis_prw')
-    //     ->where('periksa_radiologi.no_rawat', $row['no_rawat'])
-    //     ->toArray();
-      
-    //  $row['saran_kesan_rad'] = $this->db('saran_kesan_rad')
-    //    ->join('hasil_radiologi', 'hasil_radiologi.no_rawat=saran_kesan_rad.no_rawat')
-    //    ->join('permintaan_radiologi', 'permintaan_radiologi.no_rawat=hasil_radiologi.no_rawat')
-    //    ->join('diagnosa_pasien_klinis', 'diagnosa_pasien_klinis.noorder=permintaan_radiologi.noorder')
-    //    ->where('saran_kesan_rad.no_rawat', $row['no_rawat'])
-    //    ->toArray();
-
       $rows_periksa_radiologi = $this->db('periksa_radiologi')
           ->join('jns_perawatan_radiologi', 'jns_perawatan_radiologi.kd_jenis_prw=periksa_radiologi.kd_jenis_prw')
           ->where('no_rawat', $row['no_rawat'])
@@ -834,17 +775,6 @@ class Admin extends AdminModule
         ->join('permintaan_radiologi', 'permintaan_radiologi.noorder=diagnosa_pasien_klinis.noorder')
         ->where('permintaan_radiologi.no_rawat', $row['no_rawat'])
         ->toArray();
-
-         
-        //  $rows_detail_pemberian_obat = $this->db('detail_pemberian_obat')
-        //  ->join('databarang', 'databarang.kode_brng=detail_pemberian_obat.kode_brng')
-        //  ->where('no_rawat', $row['no_rawat'])
-        //  ->toArray();
-
-        //  select databarang.nama_brng, detail_pemberian_obat.tgl_perawatan, detail_pemberian_obat.jam, detail_pemberian_obat.jml, aturan_pakai.aturan 
-        //  from detail_pemberian_obat inner join databarang ON detail_pemberian_obat.kode_brng=databarang.kode_brng 
-        //  left join aturan_pakai on aturan_pakai.no_rawat=detail_pemberian_obat.no_rawat and aturan_pakai.kode_brng=databarang.kode_brng 
-        //  where detail_pemberian_obat.no_rawat='2022/02/08/000196'
          
         $rows_resep_obat = $this->db('resep_obat')
           ->join('dokter', 'dokter.kd_dokter=resep_obat.kd_dokter')
@@ -868,22 +798,6 @@ class Admin extends AdminModule
         
          $row['resep_obat'][] = $value;
        }
-
-        
-      
-        // $row['detail_pemberian_obat'] = $this->db('aturan_pakai')
-        //   ->join('databarang', 'databarang.kode_brng = aturan_pakai.kode_brng')
-        //   ->join('detail_pemberian_obat', 'detail_pemberian_obat.no_rawat = aturan_pakai.no_rawat')
-        //   ->join('resep_obat', 'resep_obat.no_rawat = aturan_pakai.no_rawat')
-        //   ->join('dokter', 'dokter.kd_dokter=resep_obat.kd_dokter')
-        //   //->join('resep_dokter', 'resep_dokter.no_resep = resep_obat.no_resep')
-        //   ->where('aturan_pakai.no_rawat', $row['no_rawat'])
-        //   //->where('resep_dokter.kode_brng', 'detail_pemberian_obat.kode_brng')
-        //   ->group('aturan_pakai.kode_brng')
-        //   //->select('databarang.nama_brng')
-        //   //->select('detail_pemberian_obat.jml')
-        //   //->select('resep_dokter.aturan_pakai')
-        //   ->toArray();
    
         $row['hasil_radiologi'] = $this->db('hasil_radiologi')->where('no_rawat', $row['no_rawat'])->oneArray();
         $row['gambar_radiologi'] = $this->db('gambar_radiologi')->where('no_rawat', $row['no_rawat'])->toArray();
@@ -1063,24 +977,101 @@ class Admin extends AdminModule
       	return $umur;
     }
 
-    public function getAmbilSeries()
+     public function getDataOrthanc($no_rkm_medis)
     {
+      $riwayat['settings'] = $this->settings('settings');
+      $riwayat['pasien'] = $this->db('pasien')->where('no_rkm_medis', $no_rkm_medis)->oneArray();
+      $reg_periksa = $this->db('reg_periksa')
+        ->join('poliklinik', 'poliklinik.kd_poli=reg_periksa.kd_poli')
+        ->join('dokter', 'dokter.kd_dokter=reg_periksa.kd_dokter')
+        ->join('penjab', 'penjab.kd_pj=reg_periksa.kd_pj')
+        ->where('no_rkm_medis', $no_rkm_medis)
+        ->toArray();
 
-    //$no_rkm_medis = $_GET['no_rkm_medis'];
-    // $this->core->getRegPeriksaInfo('no_rkm_medis',$value['no_rawat']);
-    // $tanggal1 = date('Y-m-d');
-    // $tanggal2 = date('Y-m-d');
-    $ambil = [
-    'Level' => 'Study',
-    'Expand' => true,
-    'Query' => [ "StudyDate : ", "PatientID : "]
-   ];
+      $riwayat['reg_periksa'] = [];
+      foreach ($reg_periksa as $row) {
+        $no_rawat =  $row['no_rawat'];
+        // $no_rawatconv = convertNorawat($row['no_rawat']);
+        // $orthanc = $this->getLihatOrthanc($no_rawat);
+        // $row['orthanc'] = $orthanc;
 
-    header('Content-type:application/json');
-    echo json_encode($ambil);
+        $pacs = [];
 
+        $pacs['data'] = $this->core->getRegPeriksaInfo('no_rkm_medis', $no_rawat);
+
+        $url_orthanc = $this->settings->get('orthanc.server');
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url_orthanc .  '/tools/lookup');
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($curl, CURLOPT_USERPWD,  $this->settings->get('orthanc.username').":".$this->settings->get('orthanc.password'));
+        curl_setopt ($curl, CURLOPT_TIMEOUT, 30);
+        curl_setopt ($curl, CURLOPT_POST, 1);
+        curl_setopt ($curl, CURLOPT_POSTFIELDS, $pacs['data']);
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        $patient = json_decode($response, TRUE);
+
+        $pacs['patientUUID'] = $patient[0]["ID"];
+
+        if ($pacs['patientUUID'] != "") {
+
+          $curl = curl_init();
+          curl_setopt ($curl, CURLOPT_URL, $url_orthanc . '/patients/' . $pacs['patientUUID']);
+          curl_setopt ($curl, CURLOPT_RETURNTRANSFER, 1);
+          curl_setopt ($curl, CURLOPT_USERPWD, $this->settings->get('orthanc.username').":".$this->settings->get('orthanc.password'));
+          curl_setopt ($curl, CURLOPT_TIMEOUT, 30);
+          $response = curl_exec($curl);
+          curl_close($curl);
+
+          $study = json_decode($response, TRUE);
+
+          $pacs['Studies'] = $study["Studies"][0];
+
+          if($pacs['Studies'] != "") {
+            $curl = curl_init();
+            curl_setopt ($curl, CURLOPT_URL, $url_orthanc . '/studies/' . $pacs['Studies']);
+            curl_setopt ($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt ($curl, CURLOPT_USERPWD, $this->settings->get('orthanc.username').":".$this->settings->get('orthanc.password'));
+            curl_setopt ($curl, CURLOPT_TIMEOUT, 30);
+            $response = curl_exec($curl);
+            curl_close($curl);
+
+            $series = json_decode($response, TRUE);
+            // echo json_encode($series['Series']);
+
+            $pacs['Series'] = json_encode($series["Series"]);
+
+          if($pacs['Series'] != "") {
+          foreach (json_decode($pacs['Series'], true) as $series) {
+            $curl = curl_init();
+            curl_setopt ($curl, CURLOPT_URL, $url_orthanc . '/series/' . $series);
+            curl_setopt ($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt ($curl, CURLOPT_USERPWD, $this->settings->get('orthanc.username').":".$this->settings->get('orthanc.password'));
+            curl_setopt ($curl, CURLOPT_TIMEOUT, 30);
+            $response = curl_exec($curl);
+            curl_close($curl);
+
+            $Instances = json_decode($response, TRUE);
+            // echo json_encode($Instances);
+
+            $pacs['Instances'][] = $Instances;
+              }
+            }
+          }
+        }
+
+        $riwayat['reg_periksa'][] = $row;
+      }
+      $this->tpl->set('pacs', $pacs);
+      $this->tpl->set('url_orthanc', $url_orthanc);
+      $this->tpl->set('riwayat', $this->tpl->noParse_array(htmlspecialchars_array($riwayat)));
+      echo $this->draw('data.orthanc.html');
+      exit();
     }
-
+         
 
     public function getJavascript()
     {

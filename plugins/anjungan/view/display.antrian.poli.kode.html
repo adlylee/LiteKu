@@ -44,7 +44,7 @@
   <div class="col-md-8">
     <div class="card bg-dark text-white">
       <div class="embed-responsive embed-responsive-4by3">
-        {if: $slug[2] == 'U0005' || $slug[2] == 'U0050' || $slug[2] == 'U0004' || $slug[2] == 'U0046' || $slug[2] == 'U0003' || $slug[2] == 'U0017'}
+        {if: $slug[2] == 'U0005' || $slug[2] == 'U0050' || $slug[2] == 'U0004' || $slug[2] == 'U0046' || $slug[2] == 'U0003' || $slug[2] == 'U0017' || $slug[2] == 'U0054' || $slug[2] == 'U0002' || $slug[2] == 'U0048' || $slug[2] == 'U0012'  || $slug[2] == 'U0052'}
         <video controls autoplay loop style="background-color: #000000;"> <source src="{?=url()?}/uploads/video_antrian/{$slug[2]}.mp4" type="video/mp4"></video>
         {else}
         <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{$vidio}?rel=0&modestbranding=1&autohide=1&mute=0&showinfo=0&controls=1&loop=1&autoplay=1&playlist={$vidio}" allowfullscreen></iframe>

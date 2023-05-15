@@ -1,0 +1,39 @@
+<style media="screen">
+  table td,
+  table th {
+    padding: 5px;
+  }
+</style>
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+    Tutup</button>
+  <h4 class="modal-title">Data Bridging PACS</h4>
+</div>
+<div class="modal-body">
+  <h4>Data Orthanc</h4>
+  <div class="table table-responsive">
+    <div class="container-fluid">
+    <div class="row">
+      {loop: $pacs.Instances}
+      <div>
+        <a href="{$url_orthanc}/web-viewer/app/viewer.html?series={$value.ID}" target="_blank"><img
+            class="img-responsive" src="{$url_orthanc}/instances/{$value.Instances[0]}/rendered/?width=600"></a><br>
+        <div class="title">Tanggal: {?=date('d-m-Y', strtotime($value.MainDicomTags.SeriesDate))?}</div>
+        Deskripsi: {$value.MainDicomTags.AcquisitionDeviceProcessingDescription}<br><br>
+      </div>
+      {/loop}
+    </div>
+    </div>
+    <br>
+  </div>
+</div>
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      ...
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+</div>

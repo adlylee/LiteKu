@@ -75,6 +75,8 @@
 
     {loop: $riwayat.reg_periksa}
     <table width="100%" border="1" align="center" cellpadding="3px" cellspacing="0" class="tbl_form">
+    <!-- <a href="{?=url([ADMIN, 'pasien', 'ambilseries', $value.no_rawat])?}" class="btn btn-xs btn-success" data-toggle="modal" data-target="#editModal">
+                    <i class="fa fa-pencil"></i> <span class="hidden-xs">Lihat Data Orthanc</span> </a> -->
       <tr class="isi">
         <td valign="top" width="20%">No.Rawat</td>
         <td valign="top" width="1%" align="center">:</td>
@@ -601,90 +603,7 @@
         </td>
       </tr>
       {/if}
-      <!-- {if: $value.periksa_radiologi}
-      <tr class="isi">
-        <td valign="top" width="20%">Radiologi</td>
-        <td valign="top" width="1%" align="center">:</td>
-        <td valign="top" width="79%">
-          <table width="100%" border="1" align="center" cellpadding="3px" cellspacing="0" class="tbl_form">
-            <tr align="center">
-              <td valign="top" width="20%" bgcolor="#eee">Tanggal</td>
-              <td valign="top" width="30%" bgcolor="#eee">Nama Tindakan</td>
-              <td valign="top" width="50%" bgcolor="#eee">Keterangan</td>
-            </tr>
-            {loop: $value.periksa_radiologi as $data}
-            <tr>
-              <td valign="top" width="20%">{$data.tgl_periksa}</td>
-              <td valign="top" width="30%">{$data.nm_perawatan}</td>
-              <td valign="top" width="50%">{?=nl2br($data.hasil)?}</td>
-            </tr>
-            {/loop}
-          </table>
-        </td>
-      </tr>  -->
-      <!--<tr class="isi">
-        <td valign="top" width="20%">Radiologi</td>
-        <td valign="top" width="1%" align="center">:</td>
-        <td valign="top" width="79%">
-          <table width="100%" border="1" align="center" cellpadding="3px" cellspacing="0" class="tbl_form">
-            <tr align="center">
-              <td valign="top" width="20%" bgcolor="#eee">Tanggal</td>
-              <td valign="top" width="30%" bgcolor="#eee">Nama Tindakan</td>
-            </tr>
-            {loop: $value.periksa_radiologi as $data}
-            <tr>
-              <td valign="top" width="20%">{$data.tgl_periksa} {$data.jam}</td>
-              <td valign="top" width="30%">{$data.nm_perawatan}</td>
-            </tr>
-            {loop: $value.saran_kesan_rad}
-            <tr>
-              <td valign='top'>Klinis</td>
-              <td colspan="2">{if: !empty($value.klinis)} {$value.klinis} <br>{/if}</td>
-            </tr>
-            <tr>
-              <td valign='top'>Judul</td>
-              <td colspan="2">{$value.judul}</td>
-            </tr>
-
-            <tr>
-              <td valign='top'>Hasil Interpretasi</td>
-              <td colspan="2">{?=nl2br($data.hasil)?}</td>
-            </tr>
-            <tr>
-              <td valign='top'>Kesan</td>
-              <td colspan="2">{$value.kesan}</td>
-            </tr>
-            <tr>
-              <td valign='top'>Saran</td>
-              <td colspan="2">{$value.saran}</td>
-            </tr>
-            {/loop}
-            {/loop}-->
-      <!-- </table>
-        </td>
-      </tr>
-      {/if} -->
       {if: $value.periksa_radiologi}
-      <!-- <tr class="isi">
-        <td valign="top" width="20%">Radiologi</td>
-        <td valign="top" width="1%" align="center">:</td>
-        <td valign="top" width="79%">
-          <table width="100%" border="1" align="center" cellpadding="3px" cellspacing="0" class="tbl_form">
-            <tr align="center">
-              <td valign="top" width="20%" bgcolor="#eee">Tanggal</td>
-              <td valign="top" width="30%" bgcolor="#eee">Nama Tindakan</td>
-              <td valign="top" width="50%" bgcolor="#eee">Keterangan</td>
-            </tr>
-            {loop: $value.periksa_radiologi as $data}
-            <tr>
-              <td valign="top" width="20%">{$data.tgl_periksa}</td>
-              <td valign="top" width="30%">{$data.nm_perawatan}</td>
-              <td valign="top" width="50%">{?=nl2br($data.hasil)?}</td>
-            </tr>
-            {/loop}
-          </table>
-        </td>
-      </tr> -->
       <tr class="isi">
         <td valign="top" width="20%">Radiologi</td>
         <td valign="top" width="1%" align="center">:</td>
@@ -723,7 +642,7 @@
             <tr>
               <td valign="top" width="20%">{$value2.tgl_periksa} {$value2.jam}</td>
               <td valign="top" width="20%">Saran</td>
-              <td valign="top" width="60%">{$value2.saran}</td>
+              <td valign="top" width="60%">{$value2.saran} </td>
             </tr>
             {/loop}
             {/loop}
@@ -1000,6 +919,13 @@
     </table>
     <br>
     {/loop}
+  </div>
+</div>
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      ...
+    </div>
   </div>
 </div>
 <div class="modal-footer">

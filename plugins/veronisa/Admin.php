@@ -62,7 +62,8 @@ class Admin extends AdminModule
           'id' => NULL,
           'nosep' => $_POST['nosep'],
           'tanggal' => date('Y-m-d'),
-          'catatan' => $_POST['catatan'],
+          // 'catatan' => $_POST['catatan'],
+           'catatan' => $_POST['status'].' - '.$_POST['catatan'],
           'username' => $this->core->getUserInfo('username', null, true)
         ]);
       }

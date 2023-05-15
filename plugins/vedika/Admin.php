@@ -1308,7 +1308,7 @@ class Admin extends AdminModule
 
     if($data['response']['dpjp']['kdDPJP'] =='0')
     {
-	    $data['response']['dpjp']['kdDPJP'] = $this->db('maping_dokter_dpjpvclaim')->where('kd_dokter', $_POST['kd_dokter'])->oneArray()['kd_dokter_bpjs'];
+      $data['response']['dpjp']['kdDPJP'] = $this->db('maping_dokter_dpjpvclaim')->where('kd_dokter', $_POST['kd_dokter'])->oneArray()['kd_dokter_bpjs'];
       $data['response']['dpjp']['nmDPJP'] = $this->db('maping_dokter_dpjpvclaim')->where('kd_dokter', $_POST['kd_dokter'])->oneArray()['nm_dokter_bpjs'];
     }
 
@@ -1800,7 +1800,6 @@ class Admin extends AdminModule
     $hasil_radiologi = $this->db('hasil_radiologi')
       ->where('no_rawat', $this->revertNorawat($id))
       ->toArray();
-
      $klinis_radiologi = $this->db('diagnosa_pasien_klinis')
       ->join('permintaan_radiologi', 'permintaan_radiologi.noorder=diagnosa_pasien_klinis.noorder')
       ->where('no_rawat', $this->revertNorawat($id))
@@ -2242,79 +2241,7 @@ class Admin extends AdminModule
     exit();
   }
 
-
-  // public function getSanding(){
-  //   $this->_addHeaderFiles();
-  //   if (isset($_GET['y'])) {
-  //     $tahun = $_GET['y'];
-  //   } else {
-  //     $tahun = date('Y');
-  //   }
-  //   if (isset($_GET['bln'])) {
-  //     $bln = $_GET['bln'];
-  //   } else {
-  //     $bln = date('m');
-  //   }
-  //   $perpage = '10';
-  //   switch ($bln) {
-  //     case 'Des':
-  //       $bulan = '12';
-  //       break;
-  //     case 'Nov':
-  //       $bulan = '11';
-  //       break;
-  //     case 'Jan':
-  //       $bulan = '01';
-  //       break;
-  //     case 'Feb':
-  //       $bulan = '02';
-  //       break;
-  //     case 'Mar':
-  //       $bulan = '03';
-  //       break;
-  //     case 'Apr':
-  //       $bulan = '04';
-  //       break;
-  //     case 'Mei':
-  //       $bulan = '05';
-  //       break;
-
-
-  //     default:
-  //       $bulan = $bln;
-  //       break;
-  //   }
-  //   $this->assign['list'] = [];
-  //   $no = 1;
-  //   $eklaim = $this->db('mlite_purif')->where('yearMonth',$tahun.'-'.$bulan)
-  //   ->limit(2000)->offset(0)
-  //   //  ->offset(0)
-  //   // ->limit($perpage)
-  //   ->toArray();
-
-  //   foreach ($eklaim as $value) {
-  //     $value['vedika'] = $this->db('mlite_vedika')->where('nosep', $value['no_sep'])->oneArray();
-  //     $value['no'] = $no++;
-  //      if($value['vedika'] == ''){
-  //       $this->assign['list'][] = $value;
-  //      }
-  //   }
-  //  // $eklaim = $this->db('mlite_purif')->like('yearMonth','%'.$tahun.'-'.$bulan.'%')->toArray();
-  // //   foreach ($eklaim as $value) {
-  // //     $value['vedika'] = $this->db('mlite_vedika')->where('nosep',$value['no_sep'])->oneArray();
-  // //     $value['no'] = $no++;
-  // //     $this->assign['list'][] = $value;
-  // //   }
-  //   $this->assign['ym'] = 'Bulan '.$bulan.' Tahun '.$tahun;
-  //   $this->assign['bulan'] = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
-  //    $this->core->addCSS(url('assets/css/dataTables.bootstrap.min.css'));
-  //       $this->core->addCSS(url([ADMIN, 'vedika', 'css']));
-  //       $this->core->addJS(url('assets/jscripts/jquery.dataTables.min.js'));
-  //       $this->core->addJS(url('assets/jscripts/dataTables.bootstrap.min.js'));
-  //   return $this->draw('sanding.html',['sanding' => $this->assign]);
-  // }
-
-   public function anySanding($page = 1){
+  public function anySanding($page = 1){
     $this->_addHeaderFiles();
     if (isset($_GET['y'])) {
       $tahun = $_GET['y'];
@@ -2430,9 +2357,6 @@ class Admin extends AdminModule
                 case 'Apr':
                   $bulan = '04';
                   break;
-                case 'Mei':
-                  $bulan = '05';
-                  break;
 
                 default:
                   $bulan = '00';
@@ -2476,81 +2400,6 @@ class Admin extends AdminModule
     }
     redirect(url([ADMIN, 'vedika', 'purif']));
   }
-
-
-
-  // public function postUploadFileXl(){
-  //   if(isset($_FILES['xls_file']['tmp_name'])){
-  //     $file_type = $_FILES['xls_file']['name'];
-  //     $FileType = strtolower(pathinfo($file_type,PATHINFO_EXTENSION));
-  //     $target = UPLOADS.'/purif/sanding.'.$FileType;
-  //     if ($FileType != "xls" && $FileType != "xlsx") {
-  //       echo "<script>alert('Salah File Bro!! ini bukan ".$FileType."');history.go(-1);</script>";
-  //     } else {
-  //       include(BASE_DIR. "/vendor/php-excel-reader-master/src/PHPExcelReader/SpreadsheetReader.php"); //better use autoloading
-  //       move_uploaded_file($_FILES['xls_file']['tmp_name'], $target);
-  //       $data = new \PHPExcelReader\SpreadsheetReader($target);
-  //       $jumlah_baris = $data->rowcount($sheet_index=0);
-  //       $berhasil = 0;
-  //       $sukses = false;
-  //       $bulans = ['Jan','Peb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
-  //       for ($i=5; $i<=$jumlah_baris; $i++){
-  //         $bulanTahun = $data->val($i,3);
-  //         foreach ($bulans as $bln) {
-  //           if (strpos($bulanTahun, $bln) !== false) {
-  //             switch ($bln) {
-  //               case 'Des':
-  //                 $bulan = '12';
-  //                 break;
-  //               case 'Nov':
-  //                 $bulan = '11';
-  //                 break;
-  //               case 'Jan':
-  //                 $bulan = '01';
-  //                 break;
-
-  //               default:
-  //                 $bulan = '00';
-  //                 break;
-  //             }
-  //           }
-  //         }
-  //         $tahun = substr($bulanTahun,-4);
-  //         $ym = $tahun.'-'.$bulan;
-  //         $no_sep     = $data->val($i, 6);
-  //         $no_rm   = $data->val($i, 4);
-  //         $nama  = $data->val($i, 5);
-  //         $biaya  = $data->val($i, 9);
-  //         $biaya = ltrim($biaya , '* ');
-  //         $biaya = str_replace([',','.'],'',$biaya);
-  //         $cek = $this->db('mlite_purif')->where('no_sep',$no_sep)->oneArray();
-
-  //           // menangkap data dan memasukkan ke variabel sesuai dengan kolumnya masing-masing
-
-  //         if($no_sep != "" && $no_rm != "" && $nama != ""){
-  //           if (!$cek) {
-  //               # code...
-  //               $this->db('mlite_purif')->save([
-  //                 'no_sep' => $no_sep,
-  //                 'no_rkm_medis' => $no_rm,
-  //                 'nama' => $nama,
-  //                 'tarif' => $biaya,
-  //                 'yearMonth' => $ym
-  //               ]);
-  //               $berhasil++;
-  //           }
-  //             // input data ke database (table data_pegawai)
-  //         }
-  //         $sukses = true;
-  //       }
-  //       if ($sukses == true) {
-  //         # code...
-  //         $this->notify('success', 'Upload telah berhasil disimpan');
-  //       }
-  //     }
-  //   }
-  //   redirect(url([ADMIN, 'vedika', 'purif']));
-  // }
 
   public function getDisplayResume($no_rawat)
   {
@@ -3271,6 +3120,15 @@ class Admin extends AdminModule
             'tanggal' => date('Y-m-d'),
             'status' => 'Pengajuan'
           ]);
+        if ($simpan_status) {
+          $this->db('mlite_vedika_feedback')->save([
+            'id' => NULL,
+            'nosep' => $nosep,
+            'tanggal' => date('Y-m-d'),
+            'catatan' => 'Pengajuan - Kirim ke Data Center',
+            'username' => $this->core->getUserInfo('username', null, true)
+          ]);
+        }        
       }
       unlink($image);
 
@@ -3651,29 +3509,18 @@ class Admin extends AdminModule
   private function _addHeaderFiles()
   {
     // CSS
-     $this->core->addCSS(url('assets/css/jquery-ui.css'));
-        $this->core->addCSS(url('assets/jscripts/lightbox/lightbox.min.css'));
-        $this->core->addCSS(url('assets/css/bootstrap-datetimepicker.css'));
-        $this->core->addCSS(url('assets/css/dataTables.bootstrap.min.css'));
-
+    $this->core->addCSS(url('assets/css/dataTables.bootstrap.min.css'));
+    $this->core->addCSS(url('assets/css/bootstrap-datetimepicker.css'));
 
     // JS
     $this->core->addJS(url('assets/jscripts/jquery.dataTables.min.js'), 'footer');
     $this->core->addJS(url('assets/jscripts/dataTables.bootstrap.min.js'), 'footer');
     $this->core->addJS(url('assets/jscripts/moment-with-locales.js'));
     $this->core->addJS(url('assets/jscripts/bootstrap-datetimepicker.js'));
-      // $this->core->addJS(url('assets/jscripts/jquery.dataTables.min.js'), 'footer');
-      // $this->core->addJS(url('assets/jscripts/dataTables.bootstrap.min.js'), 'footer');
-      // $this->core->addJS(url('assets/jscripts/jquery-ui.js'), 'footer');
-      // $this->core->addJS(url('assets/jscripts/lightbox/lightbox.min.js'), 'footer');
-      // $this->core->addJS(url('assets/jscripts/moment-with-locales.js'));
-      // $this->core->addJS(url('assets/jscripts/bootstrap-datetimepicker.js'));
 
     // MODULE SCRIPTS
     $this->core->addCSS(url([ADMIN, 'vedika', 'css']));
     $this->core->addJS(url([ADMIN, 'vedika', 'javascript']), 'footer');
   }
-
- 
 
 }
