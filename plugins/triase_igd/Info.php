@@ -13,12 +13,10 @@ return [
           `no_rawat` varchar(20) NOT NULL,
           `warna_triase` varchar(10) NOT NULL,
           `bed` varchar(5) NOT NULL,
-          `created_at` varchar(40) NULL,
-          `status` varchar(2) NOT NULL
+          `created_at` varchar(40) NOT NULL,
+          `status` varchar(2) NOT NULL,
+          PRIMARY KEY (id)
         ) ENGINE=InnoDB DEFAULT CHARSET=latin1;");
-
-    $core->db()->pdo()->exec("ALTER TABLE `triase_igd`
-          ADD PRIMARY KEY (`id`);");
   },
   'uninstall'     =>  function () use ($core) {
   }

@@ -2,8 +2,11 @@
 <div class="row">
   <div class="col-md-12">
     <ul class="nav nav-tabs">
-      <li>
+      <li class="active">
         <a href="{?=url('/vero/')?}?t={?=$_SESSION['veronisa_token']?}" role="tab">Dashboard</a>
+      </li>
+       <li>
+        <a href="{?=url('/vero/perbaikan')?}" role="tab">Perbaikan</a>
       </li>
       <li class="pull-right">
         <a href="{?=url('/vero/logout')?}"><i class="fa fa-key"></i> Logout</a>
@@ -51,27 +54,27 @@
 <br>
 <div class="row">
   <div class="col-md-12">
-    <div class="table-responsive no-margin">
+		<div class="table-responsive no-margin">
       <div class="table-responsive no-margin">
-        <table class="table table-striped no-margin display" width="100%">
-          <thead>
-            <tr>
+				<table class="table table-striped no-margin display" width="100%">
+					<thead>
+						<tr>
               <th>Aksi dan Proses</th>
               <th colspan="2">Data Pasien</th>
               <th>Berkas Digital</th>
-            </tr>
-          </thead>
-          <tbody>
-          {if: !empty($veronisa.list)}
-            {loop: $veronisa.list}
-            <tr>
+						</tr>
+					</thead>
+					<tbody>
+    			{if: !empty($veronisa.list)}
+						{loop: $veronisa.list}
+						<tr>
               <td>
                 <span class="btn btn-primary btn-xs">
                     <a href="{$value.downloadURL}" target="_blank"><i class="fa fa-download"></i></a> <a href="{$value.pdfURL}" target="_blank">{$value.nosep}</a>
-                </span><br>
+								</span><br>
                 <a href="{$value.catatanURL}" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#moduleModal">
                   <i class="fa fa-folder-open"></i> Feedback
-                </a>
+								</a>
                 {loop: $value.status_pengajuan as $data}
                   {if: $data.status == 'Setuju'}
                     <span class="label label-success"><i class="fa fa-check"></i></span>
@@ -82,7 +85,7 @@
                   {/if}
                 {/loop}
               </td>
-              <td>
+							<td>
                 <table>
                   <tr>
                     <td width='120px'>No.Rawat</td><td>: {$value.no_rawat}</td>
@@ -131,19 +134,19 @@
                   {/if}
                   {loop: $value.berkas_digital as $data}
                   <tr>
-                    <td>- <a href="{?=url(WEBAPPS_URL)?}/berkasrawat/{$data.lokasi_file}" class="gallery">{$data.nama}</a></td>
+                    <td>- <a href="{?=url(WEBAPPS_URL)?}/berkasrawat/{$data.lokasi_file}" target="_blank" class="gallery">{$data.nama}</a></td>
                   </tr>
                   {/loop}
                 </table>
               </td>
-            </tr>
-            {/loop}
-            {else}
-            <tr><td colspan="4" class="text-center">Data pasien tidak ditemukan</td></tr>
-          {/if}
-          </tbody>
-        </table>
-      </div>
+						</tr>
+						{/loop}
+						{else}
+						<tr><td colspan="4" class="text-center">Data pasien tidak ditemukan</td></tr>
+					{/if}
+					</tbody>
+				</table>
+		  </div>
       {$veronisa.pagination}
     </div>
   </div>

@@ -38,7 +38,7 @@
         <div class="row">
           <div id="notif"></div>
         </div>
-        {if: $this->core->getUserInfo('role') == 'admin' || $this->core->getUserInfo('role') == 'rekammedis'}
+        {if: $this->core->getUserInfo('role') == 'admin'}
         <div class="row">
           <div id="form">
             {include: ../plugins/rawat_inap/view/admin/form.html}

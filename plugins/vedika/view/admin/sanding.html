@@ -1,4 +1,4 @@
-<div class="row">
+<article class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -20,14 +20,22 @@
                                     <option value="2022">2022</option>
                                     <option value="2023" selected>2023</option>
                                     <option value="2024">2024</option>
+                                    <option value="2025">2025</option>
                                 </select>
                             </div>
                             <div class="input-group">
                                 <select name="bln" id="bln" data-use-search="true" data-options-height="10px"
                                     class="form-control" placeholder="Bulan">
                                     {loop: $sanding.bulan}
-                                        <option value="{$value}">{$value}</option>
+                                    <option value="{$value}">{$value}</option>
                                     {/loop}
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <select name="jenis" id="jenis" data-use-search="true" data-options-height="10px"
+                                    class="form-control" placeholder="Jenis">
+                                    <option value="RI">Rawat Inap</option>
+                                    <option value="RJ">Rawat Jalan</option>
                                 </select>
                             </div>
                             <div class="input-group">
@@ -40,51 +48,43 @@
                         </form>
                     </div>
                 </div>
-                <div class="display">
-                    <table class="table table-responsive table-striped no-padding dataTables" width="100%">
+                <div class="table-responsive no-margin">
+                    <table class="table table-striped no-margin">
                         <thead>
                             <tr>
-                                <th style="white-space: nowrap;">No</th>
                                 <th style="white-space: nowrap;">No SEP Eklaim</th>
                                 <th style="white-space: nowrap;">No Rekam Medis</th>
                                 <th style="white-space: nowrap;">Nama</th>
                                 <th style="white-space: nowrap;">No SEP Vedika</th>
+                                <th style="white-space: nowrap;">No SEP SIMRS</th>
+                                <th style="white-space: nowrap;">No SEP VCLAIM</th>
                                 <th style="white-space: nowrap;">Status Vedika</th>
                             </tr>
                         </thead>
                         <tbody>
+                            {if: !empty($sanding.list)}
                             {loop: $sanding.list}
-                            <tr {if: $value.vedika.nosep == ''} style="background-color: #ff6666;color: whitesmoke;" {/if}>
-                                <td>{$value.no}</td>
+                            <tr {if: $value.vedika.nosep=='' } style="background-color: #ff6666;color: whitesmoke;"
+                                {/if}>
                                 <td>{$value.no_sep}</td>
                                 <td>{$value.no_rkm_medis}</td>
                                 <td>{$value.nama}</td>
                                 <td>{$value.vedika.nosep}</td>
+                                <td>{$value.sep_simrs.no_sep}</td>
+                                <td>{$value.sep_vclaim.no_sep}</td>
                                 <td>{$value.vedika.status}</td>
                             </tr>
                             {/loop}
+                            {else}
+                            <tr>
+                                <td colspan="12" class="text-center">Data tidak ditemukan</td>
+                            </tr>
+                            {/if}
                         </tbody>
                     </table>
                 </div>
+                <!-- {$sanding.pagination} -->
             </div>
         </div>
     </div>
-</div>
-<script>
-    $('.dataTables').DataTable({
-        "order": [[3, "desc"]],
-        "pagingType": "full",
-        "language": {
-            "paginate": {
-                "first": "&laquo;",
-                "last": "&raquo;",
-                "previous": "‹",
-                "next": "›"
-            },
-            "search": false
-        },
-        "lengthChange": false,
-        "scrollX": true,
-        dom: "<<'data-table-title'>><'row'<'col-sm-12'tr>><<'pmd-datatable-pagination' l i p>>"
-    });
-</script>
+</article>

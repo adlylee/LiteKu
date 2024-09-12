@@ -41,7 +41,7 @@
                   data-nm_pasien="{$value.nm_pasien}">Layanan & Obat</a></li>
               <li><a href="#berkas_digital" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}"
                   data-nm_pasien="{$value.nm_pasien}">Berkas Digital</a></li>
-              <!-- <li><a href="#set_dpjp" data-no_rawat="{$value.no_rawat}">Set DPJP</a></li> -->
+              <li><a href="#set_dpjp" data-no_rawat="{$value.no_rawat}">Set DPJP</a></li>
               <li><a href="#hais" data-no_rawat="{$value.no_rawat}" data-kd_kamar="{$value.kd_kamar}"
                   data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}"
                   data-nm_kamar="{$value.nm_bangsal}">HaiS</a></li>
@@ -61,6 +61,7 @@
                 </li>
               <li><a href="#orthanc" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}"
                   data-nm_pasien="{$value.nm_pasien}">Lihat Gambar Radiologi</a></li>
+              <li><a href="#shk_bayi" data-no_rawat="{$value.no_rawat}">Input SHK</a></li>
               {/if}
               {if: $this->core->getUserInfo('role') == 'apoteker'}
               <li><a href="#soap" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}"
@@ -157,25 +158,34 @@
     </div>
   </div>
 </div>
-<script type="text/javascript">
-  // ketika tombol hapus ditekan
-  //$("#display").on("click",".set_dpjp", function(event){
-  $('a[href="#set_dpjp"]').click(function (event) {
+<script type="text/javascript">  $('a[href="#set_dpjp"]').click(function(event){
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
     var url = baseURL + '/rawat_inap/setdpjp?t=' + mlite.token;
     var no_rawat = $(this).attr("data-no_rawat");
 
     var set_dpjp = ''
-      + '<div class="form-group">'
-      + '<label for="status_keluar">Pilih Dokter</label>'
-      + '<select name="kd_dokter" id="kd_dokter" class="form-control" data-use-dimmer="false">'
-      + '{loop: $rawat_gabung.dokter}'
-      + '<option value="{$value.kd_dokter}">{$value.nm_dokter}</option>'
-      + '{/loop}'
-      + '</select>'
-      + '</div>'
-      + '';
+        + '<div class="form-group">'
+        + '<label for="status_keluar">Pilih Dokter</label>'
+        + '<select name="kd_dokter" id="kd_dokter" class="form-control" data-use-dimmer="false">'
+        + '{loop: $rawat_gabung.dokter}'
+        + '<option value="{$value.kd_dokter}">{$value.nm_dokter}</option>'
+        + '{/loop}'
+        + '</select>'
+        + '</div>'
+        + '<div class="form-group">'
+        + '<label for="status_keluar">Jenis DPJP</label>'
+        + '<select name="jenis_dpjp" id="jenis_dpjp" class="form-control" data-use-dimmer="false">'
+        + '<option></option>'
+        + '<option value="Utama">Utama</option>'
+        + '<option value="Raber">Raber</option>'
+        + '<option value="PPDS">PPDS</option>'
+        + '<option value="Internship">Internship</option>'
+        + '<option value="Konsul">Konsul</option>'
+        + '<option value="Dokter Jaga">Dokter Jaga</option>'
+        + '</select>'
+        + '</div>'
+        + '';
 
     // tampilkan dialog konfirmasi
     bootbox.dialog({
@@ -187,17 +197,30 @@
           className: 'btn-primary',
           callback() {
             var kd_dokter = $('#kd_dokter').val();
+            var jenis_dpjp = $('#jenis_dpjp').val();
+            if (!jenis_dpjp) {
+              $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"
+                + "Silakan pilih jenis DPJP!" +
+                "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>" +
+                "</div>").show();
+              return; 
+            }
             //console.log(tgl_keluar);
             $.post(url, {
               no_rawat: no_rawat,
-              kd_dokter: kd_dokter
-            }, function (data) {
+              kd_dokter: kd_dokter,
+              jenis_dpjp: jenis_dpjp
+            } ,function(data) {
+               if (data === 'Maaf, DPJP Utama sudah tersedia..!!') {
+                alert(data);
+              } else {
               // sembunyikan form, tampilkan data yang sudah di perbaharui, tampilkan notif
-              $("#display").load(baseURL + '/rawat_inap/display?t=' + mlite.token);
-              $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">" +
-                "Set DPJP telah disimpan!" +
-                "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>" +
-                "</div>").show();
+              $("#display_rawatgabung").load(baseURL + '/rawat_inap/displayrawatgabung?t=' + mlite.token);
+              $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+              "Set DPJP telah disimpan!"+
+              "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+              "</div>").show();
+               }
             });
           }
         }
@@ -210,7 +233,7 @@
 </script>
 <script type="text/javascript">
   // ketika tombol hapus ditekan
-  $("#display").on("click", ".hapus_dpjp", function (event) {
+  $("#display_rawatgabung").on("click", ".hapus_dpjp", function (event) {
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
     var url = baseURL + '/rawat_inap/hapusdpjp?t=' + mlite.token;
@@ -225,7 +248,7 @@
           no_rawat: no_rawat,
           kd_dokter: kd_dokter
         }, function (data) {
-          $("#display").load(baseURL + '/rawat_inap/display?t=' + mlite.token);
+          $("#display_rawatgabung").load(baseURL + '/rawat_inap/displayrawatgabung?t=' + mlite.token);
           $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">" +
             "Data DPJP telah dihapus!" +
             "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>" +
@@ -236,6 +259,96 @@
     event.stopPropagation();
     return false;
   });
+</script>
+<script type="text/javascript">
+$('a[href="#shk_bayi"]').click(function (event) {
+  var baseURL = mlite.url + '/' + mlite.admin;
+  event.preventDefault();
+  var no_rawat = $(this).attr("data-no_rawat");
+  var url = baseURL + '/rawat_inap/shkbayi?t=' + mlite.token;
+  
+  // Ambil keterangan SHK
+  var cariUrl = baseURL + '/rawat_inap/carishk?t=' + mlite.token;
+  $.post(cariUrl, { no_rawat: no_rawat }, function (shk) {
+    var keterangan = "";
+    if (shk) {
+      var ketshk = JSON.parse(shk);
+      keterangan = ketshk.keterangan;
+    }
+
+    // Buat form dialog
+    var shk_bayi = ''
+      + '<div class="form-group">'
+      + '<label for="status_keluar">SHK</label>'
+      + '<textarea name="keterangan" id="keterangan" class="form-control" rows="3">'
+      + keterangan // Isi textarea dengan keterangan SHK
+      + '</textarea>'
+      + '</div>'
+      + '<button type="button" class="btn btn-danger" id="hapus-btn">Hapus</button>' // Tombol "Hapus" disamping
+      + '<button type="button" class="btn btn-primary" id="simpan-btn">Simpan</button>'; // Tombol "Simpan"
+
+    bootbox.dialog({
+      message: shk_bayi,
+      title: 'Input SHK',
+      buttons: {
+        hapus: {
+          label: 'Batal', // Ubah label menjadi "Batal"
+          className: 'btn-default',
+          callback() {
+            // Tidak melakukan apa-apa, hanya menutup dialog
+          }
+        }
+      }
+    });
+
+    // Mengatur aksi tombol "Hapus"
+    $('#hapus-btn').click(function () {
+      bootbox.confirm("Apakah Anda yakin ingin menghapus SHK bayi ini?", function (result) {
+        if (result) {
+          // Jika pengguna mengonfirmasi penghapusan
+          var hapusUrl = baseURL + '/rawat_inap/hapusshk?t=' + mlite.token;
+          $.post(hapusUrl, {
+            no_rawat: no_rawat,
+            keterangan: keterangan
+          }, function (data) {
+            if (data.success) {
+              // Penghapusan berhasil
+              $("#display_rawatgabung").load(baseURL + '/rawat_inap/displayrawatgabung?t=' + mlite.token);
+              $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"
+                + "Data SHK Bayi telah dihapus!" +
+                "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>" +
+                "</div>").show();
+            }
+          });
+        }
+      });
+    });
+
+    // Mengatur aksi tombol "Simpan"
+    $('#simpan-btn').click(function () {
+      var keterangan = $('textarea[name=keterangan]').val();
+
+      $.post(url, {
+        no_rawat: no_rawat,
+        keterangan: keterangan
+      }, function (data) {
+        if (no_rawat != '') {
+          // Semua operasi Simpan
+          $("#display_rawatgabung").load(baseURL + '/rawat_inap/displayrawatgabung?t=' + mlite.token);
+          $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"
+            + "SHK Bayi telah disimpan!" +
+            "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>" +
+            "</div>").show();
+        }
+      });
+    });
+
+    $('select').selectator();
+  });
+  
+  event.stopPropagation();
+  return false;
+});
 </script>
 <script type="text/javascript">
   $('a[href="#soap"]').click(function (event) {

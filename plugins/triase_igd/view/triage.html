@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{$title} - {$settings.nama_instansi}</title>
+    <link rel="icon" href="{?=url()?}/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="{?=url(MODULES)?}/anjungan/css/bootstrap.min.css">
+    <link href="{?=url()?}/assets/css/font-awesome.css" rel="stylesheet">
+    <link href="{?=url(MODULES)?}/anjungan/css/jquery-ui.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style media="screen">
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background: #dee2e6;
+            color: #495057;
+        }
+
+        .red,
+        .green,
+        .yellow,
+        .traumac,
+        .doa-check,
+        .black,
+        .label-input,
+        .rujukan,
+        .alergi,
+        .vaksin {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mx-auto text-center text-white">
+        <img src="{?=url()?}/{$logo}" width="150"><br>
+        <h3 class="display-6">Triage</h3>
+        <h2 class="display-5">{$settings.nama_instansi}</h2>
+    </div>
+    <div class="container">
+        <div class="starter-template">
+            <div class="panel panel-default">
+                <div class="panel-body input-data">
+                    <form role="form" method="post">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="">No Bed</label>
+                                            <select name="bed" id="" class="form-control">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="">Cara Bayar</label>
+                                            <select name="cara_bayar" id="" class="form-control">
+                                                <option value="BPJ">BPJS</option>
+                                                <option value="A01">UMUM</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">No RM / NIK / No Peserta</label>
+                                    <input type="number" name="no_kartu" id="no_kartu" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="">Triage</label>
+                                <div class="form-group">
+                                    <input type="radio" id="red" class="triage" name="triage" value="Merah">
+                                    <label for="red" style="background-color: red;color: #dee2e6;"> Merah</label><br>
+                                    <input type="radio" id="yellow" class="triage" name="triage" value="Kuning">
+                                    <label for="yellow" style="background-color: yellow; color: #0264d6;">
+                                        Kuning</label><br>
+                                    <input type="radio" id="green" class="triage" name="triage" value="Hijau">
+                                    <label for="green" style="background-color: green;color: #dee2e6;">
+                                        Hijau</label><br>
+                                    <input type="radio" id="black" class="triage" name="triage" value="Hitam">
+                                    <label for="black" style="background-color: rgb(27, 27, 27);color: antiquewhite;">
+                                        Hitam</label><br>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="">Diantar Oleh</label>
+                                <div class="form-group">
+                                    <input type="checkbox" id="keluarga" name="antar" value="Keluarga">
+                                    <label for="keluarga"> Keluarga</label><br>
+                                    <input type="checkbox" id="polisi" name="antar" value="Polisi">
+                                    <label for="polisi"> Polisi</label><br>
+                                    <input type="checkbox" id="sendiri" name="antar" value="Datang Sendiri">
+                                    <label for="sendiri"> Datang Sendiri</label><br>
+                                    <input type="checkbox" id="petugas-kes" name="antar" value="Petugas Kesehatan">
+                                    <input type="text" class="label-input" name="petkes" id="pet-kes1">
+                                    <label for="petugas-kes" id="pet-kes"> Petugas Kesehatan</label><br>
+                                    <input type="checkbox" id="lainnya-antar" name="antar" value="Lainnya">
+                                    <label for="lainnya-antar" id="lain-antar"> Lainnya ...</label>
+                                    <input type="text" class="label-input" name="antarlain" id="lain-antar1">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="">Alat Transportasi</label>
+                                <div class="form-group">
+                                    <input type="checkbox" id="ambulan" name="transport" value="Ambulan">
+                                    <label for="ambulan"> Ambulan</label><br>
+                                    <input type="checkbox" id="mobil-polisi" name="transport" value="Mobil Polisi">
+                                    <label for="mobil-polisi"> Mobil Polisi</label><br>
+                                    <input type="checkbox" id="umum" name="transport" value="Kendaraan Umum">
+                                    <label for="umum"> Kendaraan Umum</label><br>
+                                    <input type="checkbox" id="pribadi" name="transport" value="Kendaraan Pribadi">
+                                    <label for="pribadi"> Kendaraan Pribadi</label><br>
+                                    <input type="checkbox" id="jalan" name="transport" value="Jalan Kaki">
+                                    <label for="jalan"> Jalan Kaki</label><br>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="">Keluhan Utama</label>
+                                    <textarea name="keluhan" id="" class="form-control" cols="30" rows="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="">Riwayat Penyakit</label>
+                                    <textarea name="riwayat" id="" class="form-control" cols="30" rows="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="">Trauma</label>
+                                <div class="form-group">
+                                    <input type="checkbox" class="trauma" id="nont" name="trauma" value="Non Trauma">
+                                    <label for="nont"> Non Trauma</label><br>
+                                    <input type="checkbox" class="trauma" id="tra" name="trauma" value="Trauma">
+                                    <label for="tra"> Trauma</label><br>
+                                </div>
+                            </div>
+                            <div class="col-md-3 traumac" id="trauma-id">
+                                <label for="">Mekanisme Jenis Trauma</label>
+                                <div class="form-group">
+                                    <input type="checkbox" id="tunggal" name="jns_trauma"
+                                        value="Kecelakaan Tunggal / Ganda">
+                                    <label for="tunggal"> Kecelakaan Tunggal / Ganda</label><br>
+                                    <input type="checkbox" id="trauma-lain" name="jns_trauma" value="Lainnya">
+                                    <input type="text" class="label-input" name="jns_trauma" id="jns-trauma1">
+                                    <label for="trauma-lain" id="jns-trauma"> Lainnya ......</label><br>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 rujukan" id="rujukan">
+                                <div class="form-group">
+                                    <label for="vehicle1"> Rujukan Dari</label>
+                                    <input type="text" id="vehicle1" name="rujukan" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="vehicle2"> Diagnosa</label>
+                                    <input type="text" id="vehicle2" name="diagnosa" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="penganta"> Pengantar</label>
+                                    <input type="text" id="penganta" name="pengantar" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="">TD</label>
+                                    <input type="text" name="tensi" class="form-control" placeholder="MMHG">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">RR</label>
+                                    <input type="text" name="respirasi" class="form-control" placeholder="X/MNT">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">N</label>
+                                    <input type="text" name="nadi" class="form-control" placeholder="X/MNT">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="">T</label>
+                                    <input type="text" name="suhu" class="form-control" placeholder="C&deg;">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Sp.O2</label>
+                                    <input type="text" name="spo2" class="form-control" placeholder="%">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">BB</label>
+                                    <input type="text" name="berat" class="form-control" placeholder="KG">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="">TB</label>
+                                    <input type="text" name="tinggi" class="form-control" placeholder="CM">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">LK</label>
+                                    <input type="text" name="lk" class="form-control" placeholder="CM">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">LILA</label>
+                                    <input type="text" name="lila" class="form-control" placeholder="CM">
+                                </div>
+                            </div>
+                        </div>
+                        <h3>Triage</h3>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="">=== Airway ===</label>
+                                <div class="form-group red red1" id="red1">
+                                    <h5>Level 1</h5>
+                                    <input type="checkbox" id="intubasi" name="airway"
+                                        value="AIRWAY;Level 1;Terintubasi">
+                                    <label for="intubasi"> Terintubasi</label><br>
+                                    <input type="checkbox" id="sumbatan" name="airway" value="AIRWAY;Level 1;Sumbatan">
+                                    <label for="sumbatan"> Sumbatan</label><br>
+                                </div>
+                                <div class="form-group yellow yellow1" id="yellow1">
+                                    <h5>Level 2</h5>
+                                    <input type="checkbox" id="ancaman" name="airway" value="AIRWAY;Level 2;Ancaman">
+                                    <label for="ancaman"> Ancaman</label><br>
+                                    <input type="checkbox" id="bebas2" name="airway" value="AIRWAY;Level 2;Bebas">
+                                    <label for="bebas2"> Bebas</label><br>
+                                </div>
+                                <div class="form-group yellow yellow1" id="yellow1">
+                                    <h5>Level 3</h5>
+                                    <input type="checkbox" id="bebas3" name="airway" value="AIRWAY;Level 3;Bebas">
+                                    <label for="bebas3"> Bebas</label><br>
+                                </div>
+                                <div class="form-group yellow yellow1" id="yellow1">
+                                    <h5>Level 4</h5>
+                                    <input type="checkbox" id="bebas4" name="airway" value="AIRWAY;Level 4;Bebas">
+                                    <label for="bebas4"> Bebas</label><br>
+                                </div>
+                                <div class="form-group green green1">
+                                    <h5>Level 5</h5>
+                                    <input type="checkbox" id="bebas5" name="airway" value="AIRWAY;Level 5;Bebas">
+                                    <label for="bebas5"> Bebas</label><br>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="">=== Breathing ===</label>
+                                <div class="form-group red red2" id="red2">
+                                    <h5>Level 1</h5>
+                                    <input type="checkbox" id="apnoe" name="breathing" value="BREATHING;Level 1;Apnoe">
+                                    <label for="apnoe"> Apnoe</label><br>
+                                    <input type="checkbox" id="venti" name="breathing"
+                                        value="BREATHING;Level 1;Ventilator">
+                                    <label for="venti"> Ventilator</label><br>
+                                </div>
+                                <div class="form-group yellow yellow2">
+                                    <h5>Level 2</h5>
+                                    <input type="checkbox" id="intubasi2" name="breathing"
+                                        value="BREATHING;Level 2;Terintubasi">
+                                    <label for="intubasi2"> Terintubasi</label><br>
+                                    <input type="checkbox" id="sumbatan2" name="breathing"
+                                        value="BREATHING;Level 2;Sumbatan">
+                                    <label for="sumbatan2"> Sumbatan</label><br>
+                                    <input type="checkbox" id="wheezing" name="breathing"
+                                        value="BREATHING;Level 2;Wheezing">
+                                    <label for="wheezing"> Wheezing</label><br>
+                                </div>
+                                <div class="form-group yellow yellow2">
+                                    <h5>Level 3</h5>
+                                    <input type="checkbox" id="spontan" name="breathing"
+                                        value="BREATHING;Level 3;Spontan">
+                                    <label for="spontan"> Spontan</label><br>
+                                    <input type="checkbox" id="normal" name="breathing"
+                                        value="BREATHING;Level 3;Normal">
+                                    <label for="normal"> Normal</label><br>
+                                    <input type="checkbox" id="ronchi" name="breathing"
+                                        value="BREATHING;Level 3;Ronchi">
+                                    <label for="ronchi"> Ronchi</label><br>
+                                </div>
+                                <div class="form-group yellow yellow2">
+                                    <h5>Level 4</h5>
+                                    <input type="checkbox" id="spontan4" name="breathing"
+                                        value="BREATHING;Level 4;Spontan">
+                                    <label for="spontan4"> Spontan</label><br>
+                                    <input type="checkbox" id="normal4" name="breathing"
+                                        value="BREATHING;Level 4;Normal">
+                                    <label for="normal4"> Normal</label><br>
+                                    <input type="checkbox" id="ronchi4" name="breathing"
+                                        value="BREATHING;Level 4;Ronchi">
+                                    <label for="ronchi4"> Ronchi</label><br>
+                                </div>
+                                <div class="form-group green green2">
+                                    <h5>Level 5</h5>
+                                    <input type="checkbox" id="spontan5" name="breathing"
+                                        value="BREATHING;Level 5;Spontan">
+                                    <label for="spontan5"> Spontan</label><br>
+                                    <input type="checkbox" id="normal5" name="breathing"
+                                        value="BREATHING;Level 5;Normal">
+                                    <label for="normal5"> Normal</label><br>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="">=== Circulation ===</label>
+                                <div class="form-group red red3" id="red3">
+                                    <h5>Level 1</h5>
+                                    <input type="checkbox" id="hentijantung" name="circulation"
+                                        value="CIRCULATION;Level 1;Henti jantung">
+                                    <label for="hentijantung"> Henti jantung</label><br>
+                                    <input type="checkbox" id="naditidakteraba" name="circulation"
+                                        value="CIRCULATION;Level 1;Nadi tidak teraba">
+                                    <label for="naditidakteraba"> Nadi tidak teraba</label><br>
+                                    <input type="checkbox" id="akraldingin" name="circulation"
+                                        value="CIRCULATION;Level 1;Akral dingin">
+                                    <label for="akraldingin"> Akral dingin</label><br>
+                                </div>
+                                <div class="form-group yellow yellow3">
+                                    <h5>Level 2</h5>
+                                    <input type="checkbox" id="nadilemah" name="circulation"
+                                        value="CIRCULATION;Level 2;Nadi teraba lemah">
+                                    <label for="nadilemah"> Nadi teraba lemah</label><br>
+                                    <input type="checkbox" id="akraldingin2" name="circulation"
+                                        value="CIRCULATION;Level 2;Akral dingin">
+                                    <label for="akraldingin2"> Akral dingin</label><br>
+                                    <input type="checkbox" id="bradikardi" name="circulation"
+                                        value="CIRCULATION;Level 2;Bradikardi">
+                                    <label for="bradikardi"> Bradikardi</label><br>
+                                    <input type="checkbox" id="takikardi" name="circulation"
+                                        value="CIRCULATION;Level 2;Takikardi">
+                                    <label for="takikardi"> Takikardi</label><br>
+                                    <input type="checkbox" id="crtmore" name="circulation"
+                                        value="CIRCULATION;Level 2;CRT &#62; 2 detik">
+                                    <label for="crtmore"> CRT &#62; 2 detik</label><br>
+                                    <input type="checkbox" id="turgorjelek2" name="circulation"
+                                        value="CIRCULATION;Level 2;Turgor kulit jelek">
+                                    <label for="turgorjelek2"> Turgor kulit jelek</label><br>
+                                </div>
+                                <div class="form-group yellow yellow3">
+                                    <h5>Level 3</h5>
+                                    <input type="checkbox" id="nadikuat3" name="circulation"
+                                        value="CIRCULATION;Level 3;Nadi teraba kuat">
+                                    <label for="nadikuat3"> Nadi teraba kuat</label><br>
+                                    <input type="checkbox" id="akralhangat3" name="circulation"
+                                        value="CIRCULATION;Level 3;Akral hangat">
+                                    <label for="akralhangat3"> Akral hangat</label><br>
+                                    <input type="checkbox" id="turgorsedang" name="circulation"
+                                        value="CIRCULATION;Level 3;Turgor sedang">
+                                    <label for="turgorsedang"> Turgor sedang</label><br>
+                                </div>
+                                <div class="form-group yellow yellow3">
+                                    <h5>Level 4</h5>
+                                    <input type="checkbox" id="nadikuat4" name="circulation"
+                                        value="CIRCULATION;Level 4;Nadi teraba kuat">
+                                    <label for="nadikuat4"> Nadi teraba kuat</label><br>
+                                    <input type="checkbox" id="akralhangat4" name="circulation"
+                                        value="CIRCULATION;Level 4;Akral hangat">
+                                    <label for="akralhangat4"> Akral hangat</label><br>
+                                    <input type="checkbox" id="turgorbaik" name="circulation"
+                                        value="CIRCULATION;Level 4;Turgor baik">
+                                    <label for="turgorbaik"> Turgor baik</label><br>
+                                </div>
+                                <div class="form-group green green3">
+                                    <h5>Level 5</h5>
+                                    <input type="checkbox" id="nadikuat5" name="circulation"
+                                        value="CIRCULATION;Level 5;Nadi teraba kuat">
+                                    <label for="nadikuat5"> Nadi teraba kuat</label><br>
+                                    <input type="checkbox" id="akralhangat5" name="circulation"
+                                        value="CIRCULATION;Level 5;Akral hangat">
+                                    <label for="akralhangat5"> Akral hangat</label><br>
+                                    <input type="checkbox" id="turgorbaik5" name="circulation"
+                                        value="CIRCULATION;Level 5;Turgor baik">
+                                    <label for="turgorbaik5"> Turgor baik</label><br>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <div class="panel-title">
+                                            === Disability ===
+                                        </div>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group red red4" id="red4">
+                                            <h5>Level 1</h5>
+                                            <input type="checkbox" id="norespon" name="disability"
+                                                value="DISABILITY;Level 1;Tidak respon">
+                                            <label for="norespon"> Tidak respon</label><br>
+                                            <input type="checkbox" id="kejang" name="disability"
+                                                value="DISABILITY;Level 1;Kejang">
+                                            <label for="kejang"> Kejang</label><br>
+                                            <input type="checkbox" id="gcsless" name="disability"
+                                                value="DISABILITY;Level 1;GCS &#60; 9">
+                                            <label for="gcsless"> GCS &#60; 9 </label><br>
+                                        </div>
+                                        <div class="form-group yellow yellow4">
+                                            <h5>Level 2</h5>
+                                            <input type="checkbox" id="responnyeri" name="disability"
+                                                value="DISABILITY;Level 2;Respon dengan rangsang nyeri">
+                                            <label for="responnyeri"> Respon dengan rangsang nyeri</label><br>
+                                            <input type="checkbox" id="gelisah" name="disability"
+                                                value="DISABILITY;Level 2;Gelisah">
+                                            <label for="gelisah"> Gelisah</label><br>
+                                            <input type="checkbox" id="gcsnine" name="disability"
+                                                value="DISABILITY;Level 2;GCS 9 - 12">
+                                            <label for="gcsnine"> GCS 9 - 12</label><br>
+                                        </div>
+                                        <div class="form-group yellow yellow4">
+                                            <h5>Level 3</h5>
+                                            <input type="checkbox" id="responverbal" name="disability"
+                                                value="DISABILITY;Level 3;Respon verbal">
+                                            <label for="responverbal"> Respon verbal</label><br>
+                                            <input type="checkbox" id="apatis" name="disability"
+                                                value="DISABILITY;Level 3;Apatis">
+                                            <label for="apatis"> Apatis</label><br>
+                                            <input type="checkbox" id="somnolen" name="disability"
+                                                value="DISABILITY;Level 3;Somnolen">
+                                            <label for="somnolen"> Somnolen</label><br>
+                                            <input type="checkbox" id="gcs13" name="disability"
+                                                value="DISABILITY;Level 3;GCS 13 - 14">
+                                            <label for="gcs13"> GCS 13 - 14</label><br>
+                                        </div>
+                                        <div class="form-group yellow yellow4">
+                                            <h5>Level 4</h5>
+                                            <input type="checkbox" id="sadar4" name="disability"
+                                                value="DISABILITY;Level 4;Sadar">
+                                            <label for="sadar4"> Sadar</label><br>
+                                            <input type="checkbox" id="gcs154" name="disability"
+                                                value="DISABILITY;Level 4;GCS 15">
+                                            <label for="gcs154"> GCS 15</label><br>
+                                        </div>
+                                        <div class="form-group green green4">
+                                            <h5>Level 5</h5>
+                                            <input type="checkbox" id="sadar5" name="disability"
+                                                value="DISABILITY;Level 5;Sadar">
+                                            <label for="sadar5"> Sadar</label><br>
+                                            <input type="checkbox" id="gcs155" name="disability"
+                                                value="DISABILITY;Level 5;GCS 15">
+                                            <label for="gcs155"> GCS 15</label><br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="">Prediksi Pemeriksaan Penunjang</label>
+                                <div class="form-group yellow yellow5" id="yellow1">
+                                    <h5>Level 3</h5>
+                                    <input type="checkbox" id="komplek" name="penunjang"
+                                        value="Prediksi pemeriksaan penunjang;Level 3;Komplek">
+                                    <label for="komplek"> Komplek</label><br>
+                                </div>
+                                <div class="form-group yellow yellow5" id="yellow1">
+                                    <h5>Level 4</h5>
+                                    <input type="checkbox" id="simple" name="penunjang"
+                                        value="Prediksi pemeriksaan penunjang;Level 4;Simple">
+                                    <label for="simple"> Simple</label><br>
+                                </div>
+                                <div class="form-group green green5">
+                                    <h5>Level 5</h5>
+                                    <input type="checkbox" id="tidakperlu" name="penunjang"
+                                        value="Prediksi pemeriksaan penunjang;Level 5;Simple / tidak perlu">
+                                    <label for="tidakperlu"> Simple / tidak perlu</label><br>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="">Prediksi SDM yang akan terlibat</label>
+                                <div class="form-group red red6" id="red1">
+                                    <h5>Level 1</h5>
+                                    <input type="checkbox" id="codeblue" name="sdm"
+                                        value="Prediksi SDM yang akan terlibat;Level 1;Aktifkan code blue">
+                                    <label for="codeblue"> Aktifkan code blue</label><br>
+                                </div>
+                                <div class="form-group yellow yellow6" id="yellow1">
+                                    <h5>Level 3</h5>
+                                    <input type="checkbox" id="2dpjp" name="sdm"
+                                        value="Prediksi SDM yang akan terlibat;Level 3;&#8805; 2 DPJP">
+                                    <label for="2dpjp"> &#8805; 2 DPJP</label><br>
+                                </div>
+                                <div class="form-group yellow yellow6" id="yellow1">
+                                    <h5>Level 4</h5>
+                                    <input type="checkbox" id="1dpjp" name="sdm"
+                                        value="Prediksi SDM yang akan terlibat;Level 4;1 DPJP / dr. Umum">
+                                    <label for="1dpjp"> 1 DPJP / dr. Umum</label><br>
+                                </div>
+                                <div class="form-group green green6">
+                                    <h5>Level 5</h5>
+                                    <input type="checkbox" id="drumum" name="sdm"
+                                        value="Prediksi SDM yang akan terlibat;Level 5;dr.Umum">
+                                    <label for="drumum"> dr.Umum</label><br>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group black black1">
+                                    <input type="checkbox" id="doa" name="doa" value="doa">
+                                    <label for="doa"> DOA : </label><br>
+                                </div>
+                            </div>
+                            <div class="col-md-9 doa-check" id="doa-check">
+                                <label for="">Tidak ada tanda kehidupan, Tidak ada denyut nadi, Tidak ada reflek cahaya,
+                                    EKG
+                                    Flat</label>
+                                <div class="form-group">
+                                    <label for="">Jam DOA</label>
+                                    <input type="time" name="jamdoa" class="col-md-3 form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="">Status Alergi</label>
+                                <input type="checkbox" id="alergi" name="alergi" value="alergi">
+                                <div class="row alergi" id="alergi1">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="">Obat</label>
+                                            <input type="text" name="alergiobat" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="">Makanan</label>
+                                            <input type="text" name="alergimakanan" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="">Lainnya</label>
+                                            <input type="text" name="alergilain" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="">Status Vaksin</label>
+                                <input type="checkbox" id="vaksin" name="vaksin" value="vaksin">
+                                <div class="row vaksin" id="vaksin1">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="">Imunisasi Dasar</label>
+                                            <input type="text" name="imundasar" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="">Vaksinasi Covid19</label>
+                                            <input type="text" name="vaksincovid" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="">Lainnya</label>
+                                            <input type="text" name="imunlain" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="petugas">Petugas</label>
+                                    <select name="petugas" id="petugas" class="form-control js-example-basic-single">
+                                        <option value=""></option>
+                                        {loop: $petugas}
+                                        <option value="{$value.nip}">{$value.nama}</option>
+                                        {/loop}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="">Dokter</label>
+                                    <select name="dokter" id="dokter" class="form-control js-example-basic-single">
+                                        <option value=""></option>
+                                        {loop: $dokter}
+                                        <option value="{$value.kd_dokter}">{$value.nm_dokter}</option>
+                                        {/loop}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="button" onclick="demo()" value="Simpan" class="btn btn-success">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<footer>
+    <div class="canvas">
+        <p class="pull-right">
+            Made with <i class="fa fa-heart text-danger"></i> by <a href="https://basoro.id/" target="_blank"><b>drg. F.
+                    Basoro</b>.</a>
+            {$powered}.
+        </p>
+    </div>
+</footer>
+
+<!-- Optional JavaScript -->
+<script src="{?=url(MODULES)?}/anjungan/js/jquery.min.js"></script>
+<script src="{?=url(MODULES)?}/anjungan/js/popper.min.js"></script>
+<script src="{?=url(MODULES)?}/anjungan/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    // In your Javascript (external .js resource or <script> tag)
+    $(document).ready(function () {
+        $(".js-example-basic-single").select2({
+            placeholder: 'Select an option'
+        });
+    });
+    $(document).ready(function () {
+        $('input[type=radio][name=triage]').on('change', function () {
+            var chklab = $(this).attr('id');
+            switch (chklab) {
+                case 'red':
+                    hideList(chklab);
+                    break;
+                case 'green':
+                    hideList(chklab);
+                    break;
+                case 'yellow':
+                    hideList(chklab);
+                    break;
+                default:
+                    hideList('black');
+                    break;
+            }
+        });
+
+        function hideList(params) {
+            let triage = ['green', 'yellow', 'red', 'black'];
+            $("." + params + "1").removeClass(params);
+            $("." + params + "2").removeClass(params);
+            $("." + params + "3").removeClass(params);
+            $("." + params + "4").removeClass(params);
+            $("." + params + "5").removeClass(params);
+            $("." + params + "6").removeClass(params);
+
+            let index = triage.indexOf(params)
+            let triageRemoved = triage.splice(index, 1);
+            for (let index = 0; index < triage.length; index++) {
+                const element = triage[index];
+                $("." + element + "1").addClass(element);
+                $("." + element + "2").addClass(element);
+                $("." + element + "3").addClass(element);
+                $("." + element + "4").addClass(element);
+                $("." + element + "5").addClass(element);
+                $("." + element + "6").addClass(element);
+            }
+        };
+
+        $('#tra').on('change', function () {
+            if (this.checked) {
+                $("#trauma-id").removeClass("traumac");
+            } else {
+                $("#trauma-id").addClass("traumac");
+            }
+        });
+        $('#doa').on('change', function () {
+            if (this.checked) {
+                $("#doa-check").removeClass("doa-check");
+            } else {
+                $("#doa-check").addClass("doa-check");
+            }
+        });
+        $('#lainnya-antar').on('change', function () {
+            if (this.checked) {
+                $("#lain-antar1").removeClass("label-input");
+                $("#lain-antar").addClass("label-input");
+            } else {
+                $("#lain-antar").removeClass("label-input");
+                $("#lain-antar1").addClass("label-input");
+            }
+        });
+        $('#petugas-kes').on('change', function () {
+            if (this.checked) {
+                $("#pet-kes1").removeClass("label-input");
+                $("#pet-kes").addClass("label-input");
+            } else {
+                $("#pet-kes").removeClass("label-input");
+                $("#pet-kes1").addClass("label-input");
+            }
+        });
+        $('#ambulan').on('change', function () {
+            if (this.checked) {
+                $("#rujukan").removeClass("rujukan");
+            } else {
+                $("#rujukan").addClass("rujukan");
+            }
+        })
+        $('#alergi').on('change', function () {
+            if (this.checked) {
+                $("#alergi1").removeClass("alergi");
+            } else {
+                $("#alergi1").addClass("alergi");
+            }
+        })
+        $('#vaksin').on('change', function () {
+            if (this.checked) {
+                $("#vaksin1").removeClass("vaksin");
+            } else {
+                $("#vaksin1").addClass("vaksin");
+            }
+        })
+        $('#trauma-lain').on('change', function () {
+            if (this.checked) {
+                $("#jns-trauma1").removeClass("label-input");
+                $("#jns-trauma").addClass("label-input");
+            } else {
+                $("#jns-trauma").removeClass("label-input");
+                $("#jns-trauma1").addClass("label-input");
+            }
+        });
+    });
+    function demo() {
+        var petugas = false;
+        var dokter = false;
+        var no_kartu = false;
+        if (validateForm("no_kartu", 'input') == true) {
+            no_kartu = true
+        }
+        if (validateForm("petugas") == true) {
+            petugas = true
+        }
+        if (validateForm("dokter") == true)
+            dokter = true
+
+        if ((no_kartu == true) && (petugas == true) && (dokter == true)) {
+            var ser = $('form').serialize();
+            console.log(ser);
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("POST", "{?=url('/triase_igd/savetriage')?}", true);
+            // xmlhttp.setRequestHeader("Content-type", "application/json");
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.onreadystatechange = function () {
+                if (this.readyState === 4 || this.status === 200) {
+                    console.log(this.responseText); // echo from php
+                    alert(this.responseText);
+                }
+            };
+            xmlhttp.send(ser);
+        }
+
+    }
+
+    function validateForm(params, form = 'select') {
+        // dropdown validation
+        var mySelect = document.getElementById(params);
+        if (mySelect.value === "") {
+            alert('silahkan pilih ' + params + ' terlebih dahulu');
+            return false;
+        }
+        if (form == 'input') {
+            var value = document.getElementById(params).value;
+            if (value.length < 6) {
+                alert('jumlah nomor rekam medis kurang');
+                return false; // keep form from submitting
+            }
+            if ((value.length > 6) && (value.length < 13)) {
+                alert('jumlah nomor bpjs kurang');
+                return false; // keep form from submitting
+            }
+            if ((value.length > 13) && (value.length < 16)) {
+                alert('jumlah nomor ktp kurang');
+                return false; // keep form from submitting
+            }
+        }
+        // console.log("there is a value");
+        return true;
+
+    }
+</script>
+
+</html>

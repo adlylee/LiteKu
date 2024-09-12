@@ -57,14 +57,11 @@
                       aria-expanded="true"><button type="button" name="button"
                         class="btn btn-sm btn-default">{$value.no_rkm_medis} <span class="caret"></span></button></span>
                     <ul class="dropdown-menu" role="menu">
-                      <li><a href="{?=url([ADMIN, 'pasien', 'riwayatperawatan', $value.no_rkm_medis])?}"
-                          data-toggle="modal" data-target="#riwayatModal">Riwayat Perawatan</a></li>
+                    <li><a href="{?=url([ADMIN, 'pasien', 'resumeperawatan', $value.no_rkm_medis])?}" data-toggle="modal" data-target="#riwayatModal">Resume Perawatan</a></li>
                     <li><a href="#berkas_digital" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}">Berkas Digital</a></li>
                     </ul>
                   </td>
-                  <td style="white-space: nowrap;"><a
-                      href="{?=url([ADMIN, 'pasien', 'riwayatperawatan', $value.no_rkm_medis])?}" data-toggle="modal"
-                      data-target="#riwayatModal">{$value.nm_pasien}</a></td>
+                  <td style="white-space: nowrap;"><a href="{?=url([ADMIN, 'pasien', 'resumeperawatan', $value.no_rkm_medis])?}" data-toggle="modal" data-target="#riwayatModal">{$value.nm_pasien}</a></td>
                   <td style="white-space: nowrap;">{$value.no_rawat}</td>
                   <td style="white-space: nowrap;">{$value.poli_rujukan}</td>
                   <td style="white-space: nowrap;">{$value.dokter_rujukan}</td>

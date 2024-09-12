@@ -1,0 +1,115 @@
+<article class="row">
+    <div id="manage" class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Riwayat Prosedur Tindakan</h3>
+          <ul class="nav nav-tabs">
+            <li>
+              <a href="{?=url([ADMIN,'laporan','riwayatdiagnosa'])?}" role="tab">Data Diagnosa</a>
+            </li>
+            <li class="active">
+              <a href="{?=url([ADMIN,'laporan','riwayatprosedur'])?}" role="tab">Data Prosedur</a>
+            </li>
+          </ul>
+        </div>
+        <div class="panel-body">
+          <div class="row clearfix">
+            <div class="col-sm-3">
+              <div class="form-group">
+                <div class="form-line">
+                <h3 style="margin-top:5px;margin-bottom:15px;"> {if: !empty($riwayat_prosedur.list)} Jumlah: {?=count($riwayat_prosedur.totalRecords)?}{/if}</h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <div class="form-group">
+                <div class="form-line">
+                  <input type="text" name="s" minlength="3" class="form-control" placeholder="Kode Prosedur" required>
+                  <input type="hidden" name="t" value="{?=$_SESSION['token']?}">
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <div class="form-group">
+                <div class="form-line">
+                  <select name="status" id="status" style="width:100%" class="form-control">
+                    <option value="Ralan">Rawat Jalan</option>
+                    <option value="Ranap">Rawat Inap</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <div class="form-group">
+                <div class="form-line">
+                  <input type="text" name="tanggal"  id="tanggal" class="form-control tanggal">
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <div class="form-group">
+                <div class="form-line">
+                  <input type="text" name="tanggal_akhir" id="tanggal_akhir" class="form-control tanggal">
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-1">
+              <div class="form-group">
+                <div class="form-line">
+                  <input type="submit" name="submit" class="btn btn-primary" id="submit_prosedur" value="Cari Prosedur">
+                </div>
+              </div>
+            </div>
+          <!-- </form> -->
+        </div>
+          <div class="table-responsive no-margin" id="display">
+            <table class="table table-striped no-margin" width="100%">
+              <thead>
+                <tr>
+                    <th>Tgl.Rawat</th>
+                    <th>No.Rawat</th>
+                    <th>No.RM</th>
+                    <th>Nama Pasien</th>  
+                    <th>Kode</th>
+                    <th>Nama Prosedur</th>  
+                    <th>Status</th>
+                  </tr>
+              </thead>
+              <tbody>
+                {if: !empty($riwayat_prosedur.list)}
+                {loop: $riwayat_prosedur.list}
+                <tr>
+                  <td>{$value.tgl_registrasi}</td>
+                  <td>{$value.no_rawat}</td>
+                  <td>{$value.no_rkm_medis}</td>
+                  <td>{$value.nm_pasien}</td>
+                  <td>{$value.kode}</td>
+                  <td>{$value.deskripsi_panjang}</td>
+                  <td>{$value.status}</td>
+                </tr>
+                {/loop}
+                {else}
+                <tr>
+                  <td colspan="7" class="text-center">Kosong</td>
+                </tr>
+                {/if}
+              </tbody>
+            </table>
+          </div>
+          {if: !empty($riwayat_prosedur.list)}
+          {$riwayat_prosedur.pagination}
+          {/if}
+        </div>
+      </div>
+    </div>
+  </article>
+  <script type="text/javascript">
+    $(function () {
+      $('.tanggal').datetimepicker({
+        defaultDate: new Date(),
+        format: 'YYYY-MM-DD',
+        locale: 'id'
+      });
+    });
+  </script>
+  

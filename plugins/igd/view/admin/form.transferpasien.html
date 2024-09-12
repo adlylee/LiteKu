@@ -1,0 +1,338 @@
+<style media="screen">
+  .label-input {
+      display: none;
+    }
+</style>
+<div id="form_transferpasien">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-body">
+         
+         <div class="col-sm-6">
+            <label for="id_pendaftaran">No. Rawat</label>
+            <input type="text" name="no_rawat" placeholder="ID Pendaftaran" class="form-control" value="" readonly>
+          </div>
+         <div class="col-sm-6">
+            <label for="id_pasien">No. RM</label>
+            <input type="text" name="no_rkm_medis" class="form-control" placeholder="Nomor Rekam Medik" value="" readonly>
+          </div>
+         <div class="col-sm-6">
+            <label for="nama_pasien">Nama Pasien</label>
+            <input type="text" name="nm_pasien" class="form-control" placeholder="Nama pasien" value="" readonly>
+          </div>
+          <div class="col-sm-2">
+            <label for="jenkel">J.K</label>
+            <input type="text" name="jenkel" class="form-control" placeholder="Jenis Kelamin" value="" readonly>
+          </div>
+         <div class="col-sm-4">
+            <label for="tgllahir">Tgl.Lahir</label>
+            <input type="text" name="tgllahir" class="form-control" value="" readonly>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="form-group">
+          <div class="row">
+              <input type="hidden" name="tanggal" class="form-control" placeholder="" value="{?=date('Y-m-d')?}" >
+              <input type="hidden" name="jam" class="form-control" placeholder="" value="{?=date('H:i:s')?}" >
+              <input type="hidden" name="kode_dok" id="kode_dok" class="form-control" value="">
+              <input type="hidden" name="kd_ruang" id="kd_ruang" class="form-control" value="B0054">
+              <label for="tglmasuk" class="col-sm-2 control-label">Tgl/Jam Masuk :</label>
+              <div class="col-sm-4">
+                <input type="text" name="tglmasuk" class="form-control" placeholder="" value="" readonly>
+              </div>
+            <label for="" class="col-sm-2 control-label">Petugas Awal :</label>
+            <input type="hidden" name="kode_petugas" id="kode_petugas" class="form-control" value="">
+                  <div class="col-sm-4">
+              <input type="text" name="nama_petugas" id="nama_petugas" class="form-control" value="">
+              <ul class="list-group" id="kode_petugasList" style="z-index:1000;position:absolute;width:100%;"></ul>
+            </div>
+          </div>
+        </div>
+        <h4>SITUATIONS</h4>
+        <div class="form-group">
+          <div class="row">
+            <label for="tglpindah" class="col-sm-2 control-label">Tgl/Jam Pindah:</label>
+            <div class="col-sm-4">
+              <input type="text" name="tglpindah" class="form-control" placeholder="" value="" readonly>
+            </div>
+            <label for="" class="col-sm-2 control-label">Dokter Selanjutnya :</label>
+              <input type="hidden" name="kd_dpjp" id="kd_dpjp" class="form-control" value="" >
+            <div class="col-sm-4">
+              <input type="text" name="dpjp" id="dpjp" class="form-control" value="" readonly>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <label for="" class="col-sm-2 control-label">Di Pindah Ke :</label>
+              <input type="hidden" name="kdruang" id="kdruang" class="form-control" value="">
+            <div class="col-sm-4">
+              <input type="text" name="ruang" id="ruang" class="form-control" value="" readonly>
+            </div>
+            <label for="" class="col-sm-2 control-label">Petugas Selanjutnya :</label>
+              <input type="hidden" name="kode_petugas2" id="kode_petugas2" class="form-control" value="">
+            <div class="col-sm-4">
+              <input type="text" name="nama_petugas2" id="nama_petugas2" class="form-control" value="">
+              <ul class="list-group" id="kode_petugasList2" style="z-index:1000;position:absolute;width:100%;"></ul>
+            </div>
+          </div>
+        </div>
+        <h4>BACKGROUND</h4>
+        <div class="form-group">
+          <div class="row">
+            <label for="" class="col-sm-2 control-label">Alasan Pindah :</label>
+            <div class="col-sm-4">
+              <select name="alasan" id="alasan" data-use-search="true" data-options-height="10px"
+              class="form-control" placeholder="alasan">
+              <option value="Atas order Dokter">Atas order Dokter</option>
+              <option value="Atas Permintaan Sendiri">Atas Permintaan Sendiri</option>
+          </select>
+            </div>
+            <label for="alergi" class="col-sm-2 control-label">Riwayat Alergi :</label>
+            <div class="col-sm-4">
+              <input type="text" name="alergi" id="alergi" class="form-control" value="" readonly>
+            </div>
+          </div>
+        </div>
+        <h4>ASSESSMENT</h4>
+        <div class="form-group">
+          <label for="jenis">Keadaan Pasien Saat Pindah</label>
+          <div class="row">
+            <div class="col-sm-2">
+              <label for="suhu">Suhu(C)</label>
+              <input type="text" name="suhu" class="form-control" placeholder="" value="" readonly>
+            </div>
+            <div class="col-sm-2">
+              <label for="tensi">TD(mmHg)</label>
+              <input type="text" name="tensi" class="form-control" placeholder="" value="" readonly>
+            </div>
+            <div class="col-sm-2">
+              <label for="nadi">Nadi(x/mnt)</label>
+              <input type="text" name="nadi" class="form-control" placeholder="" value="" readonly>
+            </div>
+            <div class="col-sm-6">
+              <label for="dx_medis">Dx Medis</label>
+              <input type="text" name="dx_medis" class="form-control" placeholder="" value="" readonly>
+            </div>
+           
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-2">
+              <label for="respirasi">RR(x/mnt)</label>
+              <input type="text" name="respirasi" class="form-control" placeholder="" value="" readonly>
+            </div>
+            <div class="col-sm-2">
+              <label for="kesadaran">Kesadaran</label>
+              <input type="text" name="kesadaran" class="form-control" placeholder="" value="" readonly>
+            </div>
+            <div class="col-sm-2">
+              <label for="nyeri">Nyeri</label>
+              <input type="text" name="nyeri" class="form-control" placeholder="" value="" readonly>
+            </div>
+            <div class="col-sm-6">
+              <label for="dx_kep">Dx Keperawatan</label>
+              <input type="text" name="dx_kep" class="form-control" placeholder="" value="" readonly>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="penunjang">Hasil Pemeriksaan Penunjang yang disertakan pindah :</label>
+          <div class="row">
+            <div class="col-sm-2">
+              <input type="checkbox" id="rontgen" name="penunjang[]" value="Rontgen"> 
+              <label for="rontgen"> Foto Rontgen</label>
+            </div>
+            <div class="col-sm-2">
+              <input type="checkbox" id="laboratorium" name="penunjang[]" value="Laboratorium"> 
+              <label for="laboratorium"> Laboratorium</label>
+            </div>
+            <div class="col-sm-2">
+              <input type="checkbox" id="ekg" name="penunjang[]" value="EKG"> 
+              <label for="ekg"> EKG</label>
+            </div>
+            <div class="col-sm-2">
+              <input type="checkbox" id="usg" name="upenunjang[]sg" value="USG"> 
+              <label for="usg"> USG</label>
+            </div>
+            <div class="col-sm-2">
+              <input type="checkbox" id="eeg" name="penunjang[]" value="EEG"> 
+              <label for="eeg"> EEG</label>
+            </div>
+            <div class="col-sm-2">
+              <input type="checkbox" id="lainnya-antar" name="penunjang[]" value="Lain-lain">
+              <label for="lainnya-antar" id="lain-antar"> Lain-lain</label>
+              <input type="text" class="label-input" name="antarlain" id="lain-antar1"></div>
+          </div>
+        </div>
+        <h4>RECOMENDATION</h4>
+        <div class="form-group">
+          <textarea name="keterangan" id="keterangan" rows="2" class="form-control"></textarea>
+        </div>
+
+        <div class="m-t-xl">
+          <button type="button" name="button" class="btn btn-primary" id="simpan_transfer"><i class="fa fa-save"></i><span class="hidden-xs"> Simpan</span></button>
+          <!-- <button type="button" name="button" class="btn btn-danger form-control" id="pemberian_obat">Riwayat</button> -->
+          <button type="button" name="button" class="btn btn-danger" id="pemberian_obat"><i class="fa fa-download"></i><span class="hidden-xs"> Riwayat Pemberian Obat</span></button>
+          <button type="button" name="button" class="btn btn-success" id="selesai_transfer"><i class="fa fa-check"></i><span class="hidden-xs"> Selesai</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="obatModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-full" role="document">
+        <div class="modal-content">
+            ...
+        </div>
+    </div>
+</div>
+
+<script>
+  $('input:text[name=nama_dokter]').on('input',function(e){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    var url    = baseURL + '/igd/doklist?t=' + mlite.token;
+    var query = $('input:text[name=nama_dokter]').val();
+    if(query!="") {
+        $.ajax({
+             url: url,
+             method:"POST",
+             data:{query:query},
+             success:function(data)
+             {
+                  $('#kode_dokterList').fadeIn();
+                  $('#kode_dokterList').html(data);
+             }
+        });
+    }
+    $('#kode_dokterList').fadeIn();
+  });
+
+  $('#kode_dokterList').on('click', 'li', function(){
+       $('#nama_dokter').val($(this).text().split(': ')[1]);
+       $('#kode_dokter').val($(this).text().split(': ')[0]);
+       var kode_dokter = $('#kode_dokter').val();
+       $('#kode_dokterList').fadeOut();
+  });
+</script>
+<script>
+  $('input:text[name=nm_bangsal]').on('input',function(e){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    var url    = baseURL + '/igd/ruanglist?t=' + mlite.token;
+    var query = $('input:text[name=nm_bangsal]').val();
+    if(query!="") {
+        $.ajax({
+             url: url,
+             method:"POST",
+             data:{query:query},
+             success:function(data)
+             {
+                  $('#kd_bangsalList').fadeIn();
+                  $('#kd_bangsalList').html(data);
+             }
+        });
+    }
+    $('#kd_bangsalList').fadeIn();
+  });
+
+  $('#kd_bangsalList').on('click', 'li', function(){
+       $('#nm_bangsal').val($(this).text().split(': ')[1]);
+       $('#kd_bangsal').val($(this).text().split(': ')[0]);
+       var kd_bangsal = $('#kd_bangsal').val();
+       $('#kd_bangsalList').fadeOut();
+  });
+</script>
+<script>
+  $('input:text[name=nama_petugas]').on('input',function(e){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    var url    = baseURL + '/igd/petugaslist?t=' + mlite.token;
+    var query = $('input:text[name=nama_petugas]').val();
+    if(query!="") {
+        $.ajax({
+             url: url,
+             method:"POST",
+             data:{query:query},
+             success:function(data)
+             {
+                  $('#kode_petugasList').fadeIn();
+                  $('#kode_petugasList').html(data);
+             }
+        });
+    }
+    $('#kode_petugasList').fadeIn();
+  });
+
+  $('#kode_petugasList').on('click', 'li', function(){
+       $('#nama_petugas').val($(this).text().split(': ')[1]);
+       $('#kode_petugas').val($(this).text().split(': ')[0]);
+       var kode_petugas = $('#kode_petugas').val();
+       $('#kode_petugasList').fadeOut();
+  });
+</script>
+<script>
+  $('input:text[name=nama_petugas2]').on('input',function(e){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    var url    = baseURL + '/igd/petugaslist2?t=' + mlite.token;
+    var query = $('input:text[name=nama_petugas2]').val();
+    if(query!="") {
+        $.ajax({
+             url: url,
+             method:"POST",
+             data:{query:query},
+             success:function(data)
+             {
+                  $('#kode_petugasList2').fadeIn();
+                  $('#kode_petugasList2').html(data);
+             }
+        });
+    }
+    $('#kode_petugasList2').fadeIn();
+  });
+
+  $('#kode_petugasList2').on('click', 'li', function(){
+       $('#nama_petugas2').val($(this).text().split(': ')[1]);
+       $('#kode_petugas2').val($(this).text().split(': ')[0]);
+       var kode_petugas2 = $('#kode_petugas2').val();
+       $('#kode_petugasList2').fadeOut();
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    $('#lainnya-antar').on('change', function () {
+        if (this.checked) {
+            // $("#lain-antar1").show(); 
+            // $("#lain-antar").hide();  
+            $("#lain-antar1").removeClass("label-input"); 
+            $("#lain-antar").addClass("label-input");  
+        } else {
+            // $("#lain-antar1").hide(); 
+            // $("#lain-antar").show();   
+            $("#lain-antar1").addClass("label-input");  
+            $("#lain-antar").removeClass("label-input");  
+        }
+    });
+});
+</script>
+<script type="text/javascript">
+  $("#form_transferpasien").on("click","#pemberian_obat", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_rawat = $('input:text[name=no_rawat]').val();
+    var no_rkm_medis = $('input:text[name=no_rkm_medis]').val();
+    var loadURL =  baseURL + '/igd/pemberianobat/' + no_rawat + '?t=' + mlite.token;
+
+    var modal = $('#obatModal');
+    var modalContent = $('#obatModal .modal-content');
+
+    modal.off('show.bs.modal');
+    modal.on('show.bs.modal', function () {
+        modalContent.load(loadURL);
+    }).modal();
+    return false;
+  });
+</script>

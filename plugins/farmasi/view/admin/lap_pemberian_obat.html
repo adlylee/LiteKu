@@ -1,0 +1,137 @@
+<article class="row">
+  <div class="col-md-12" id='manage'>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="btn-group pull-right" style="margin-top:-8px;">
+        </div>
+        <h3 class="panel-title">Laporan Pemberian Obat</h3>
+      </div>
+      <div class="panel-body">
+        <div class="row clearfix">
+        <form method="post" action="">
+          <div></div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <div class="form-line">
+                <input type="text" name="tanggal"  id="tanggal" class="form-control tanggal">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <div class="form-line">
+                <input type="text" name="tanggal_akhir" id="tanggal_akhir" class="form-control tanggal">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <div class="form-line">
+                <select name="bangsal" id="bangsal" style="width:100%" class="form-control">
+                  <option value="-">Pilih Bangsal</option>
+                  <option value="B0014" >Rawat Jalan</option>
+                  <option value="B0001">Rawat Inap</option>
+                  <option value="B0018">IGD</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <div class="form-line">
+                <select name="penjab" id="penjab" style="width:100%" class="form-control">
+                  <option value="-" >Pilih Cara Bayar</option>
+                  <option value="'A01'">UMUM</option>
+                  <option value="'A02','BPJ'">BPJS</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <div class="form-line">
+                <input type="submit" name="submit" class="btn btn-primary" id="submit" value="Cari">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+        <div class="table-responsive no-margin">
+          <table class="table table-striped no-margin dataTables" width="100%">
+            <thead>
+              <tr>
+                <th>Depo</th>
+                <th>Tipe Obat</th>
+                <th>Total</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {if: $lap_obat.list}
+              {loop: $lap_obat.list}
+              <tr>
+                <td style="vertical-align:top">{$value.depo}</td>
+                <td style="vertical-align:top">({$value.kode}) {$value.tipe}</td>
+                <td style="vertical-align:top">{$value.jml}</td>
+                <td style="vertical-align:top"> <a href="#" class="btn btn-primary btn-sm" id="lihat_obat" data-kode="{$value.kode}" data-penjab="{$value.penjab}"  data-kd_bangsal="{$value.kd_bangsal}" data-tanggal="{$value.min_date}" data-tanggal_akhir="{$value.max_date}" ><i class="fa fa-eye"></i> Lihat Obat</a></td>
+              </tr>
+              {/loop}
+              {/if}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('.dataTables').DataTable({
+      "order": [[1, "asc"]],
+      "pageLength": 20,
+      "pagingType": "full",
+      "language": {
+        "paginate": {
+          "first": "&laquo;",
+          "last": "&raquo;",
+          "previous": "‹",
+          "next": "›"
+        },
+        "search": "",
+        "searchPlaceholder": "Search..."
+      },
+      "lengthChange": false,
+      "scrollX": true,
+      dom: "<<'data-table-title'><'datatable-search'f>><'row'<'col-sm-12'tr>><<'pmd-datatable-pagination' l i p>>"
+    });
+    var t = $(".dataTables").DataTable().rows().count();
+    $(".data-table-title").html('<h3 style="display:inline;float:left;margin-top:0;" class="hidden-xs">Total: ' + t + '</h3>');
+  });
+</script>
+<script type="text/javascript">
+  $(function () {
+    $('.tanggal').datetimepicker({
+      defaultDate: new Date(),
+      format: 'YYYY-MM-DD',
+      locale: 'id'
+    });
+  });
+
+    $("#manage").on("click","#lihat_obat", (event) => {
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    // var kode = .val()
+    var kode = $(event.currentTarget).data("kode");
+    var bangsal = $(event.currentTarget).data("kd_bangsal");
+    var penjab = $(event.currentTarget).data("penjab");
+    var date1 = $(event.currentTarget).data("tanggal");
+    var date2 = $(event.currentTarget).data("tanggal_akhir");
+    var url = baseURL + '/farmasi/lihatobat?kode='+kode+
+          '&date1='+date1+
+          '&date2='+date2+
+          '&bangsal='+bangsal+
+          '&penjab='+penjab+
+          '&t=' + mlite.token;
+    window.open(url)
+  })
+</script>

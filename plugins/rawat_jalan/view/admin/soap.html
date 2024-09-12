@@ -27,7 +27,8 @@
         <th>Berat(Kg)</th>
         <th>GCS(E,V,M)</th>
         <th>Alergi</th>
-        <th>Instruksi</th>
+        <!-- <th>Instruksi</th> -->
+        <th>Petugas</th>
         {else}
         <th colspan="3">SOAP</th>
         {/if}
@@ -52,15 +53,15 @@
         <td>{$value.gcs}</td>
         <td>{$value.alergi}</td>
         <td rowspan="6" style="vertical-align:top;">
-          {?=nl2br($value.instruksi)?}<br><br>
+          <!-- {?=nl2br($value.instruksi)?}<br><br> -->
           <div class="qrcodePetugas{$value.nomor}" style="margin-top:10px;width:40px;margin-right: 120px;"></div>
           {$value.nama_petugas}
           <script>
-          	jQuery('.qrcodePetugas{$value.nomor}').qrcode({
+            jQuery('.qrcodePetugas{$value.nomor}').qrcode({
               width: 64,
               height: 64,
-          		text	: "Petugas: {$value.nama_petugas}"
-          	});
+              text  : "Petugas: {$value.nama_petugas}"
+            });
           </script>
         </td>
         {else}
@@ -78,7 +79,7 @@
         <th colspan="2">Kesadaran</th>
         <td colspan="6">{$value.kesadaran}</td>
       </tr>
-	  -->
+    -->
       <tr>
         <th colspan="2">Imunisasi</th>
         <td colspan="6">{$value.imun_ke}</td>
@@ -97,7 +98,7 @@
         <th colspan="2">Assesment</th>
         <td colspan="6" style="vertical-align:top">{?=nl2br($value.penilaian)?}</td>
       </tr>
-	  
+    
       <tr>
         <td>
           <div class="">
@@ -118,7 +119,6 @@
               data-pemeriksaan="{$value.pemeriksaan}"
               data-penilaian="{$value.penilaian}"
               data-rtl="{$value.rtl}"
-              data-instruksi="{$value.instruksi}"
               ><span class="fa fa-edit"></span><span class="hidden-xs"> Edit</span></button>
             <button type="button" name="button" class="btn btn-danger btn-xs hapus_soap"
               data-no_rawat="{$value.no_rawat}"
@@ -134,8 +134,8 @@
       {if: $admin_mode == 'complex'}
       {loop: $pemeriksaan_ranap as $data}
       <tr>
-        <td rowspan="6" style="vertical-align:top;">{$data.nomor}</td>
-        <td rowspan="5" style="vertical-align:top;white-space: nowrap;">
+        <td rowspan="5" style="vertical-align:top;">{$data.nomor}</td>
+        <td rowspan="4" style="vertical-align:top;white-space: nowrap;">
           <b>Rawat Inap</b><br>
           {$data.tgl_perawatan} {$data.jam_rawat}<br>
           {$data.departemen_petugas}
@@ -148,37 +148,31 @@
         <td>{$data.berat}</td>
         <td>{$data.gcs}</td>
         <td>{$data.alergi}</td>
-        <td rowspan="6" style="vertical-align:top;">
+        <td rowspan="5" style="vertical-align:top;">
           {?=nl2br($data.instruksi)?}<br><br>
           <div class="qrcodePetugas{$data.nomor}" style="margin-top:10px;width:40px;margin-right: 120px;"></div>
           {$data.nama_petugas}
           <script>
-          	jQuery('.qrcodePetugas{$data.nomor}').qrcode({
+            jQuery('.qrcodePetugas{$data.nomor}').qrcode({
               width: 64,
               height: 64,
-          		text	: "Petugas: {$data.nama_petugas}"
-          	});
+              text  : "Petugas: {$data.nama_petugas}"
+            });
           </script>
         </td>
-      </tr>
-      <tr>
-        <th colspan="2">Kesadaran</th>
-        <td colspan="6">{$data.kesadaran}</td>
       </tr>
       <tr>
         <th colspan="2">Subyektif</th>
         <td colspan="6" style="vertical-align:top">{?=nl2br($data.keluhan)?}</td>
       </tr>
-      <!--
-      <tr>
-        <th colspan="2">Obyektif</th>
-        <td colspan="6">{$data.pemeriksaan}</td>
-      </tr>
+       <th colspan="2">Obyektif</th>
+        <td colspan="6" style="vertical-align:top">{?=nl2br($data.pemeriksaan)?}</td>
+      
       <tr>
         <th colspan="2">Assesment</th>
         <td colspan="6">{$data.penilaian}</td>
       </tr>
-	  -->
+    
       <tr>
         <td>
           <div class="">
@@ -209,12 +203,8 @@
               ><span class="fa fa-trash"></span><span class="hidden-xs"> Hapus</span></button>
           </div>
         </td>
-        <th colspan="2">Obyektif</th>
-        <td colspan="6" style="vertical-align:top">{?=nl2br($data.pemeriksaan)?}</td>
-        <!--
         <th colspan="2">Plan</th>
         <td colspan="6">{$data.rtl}</td>
-		-->
       </tr>
       {/loop}
       {/if}

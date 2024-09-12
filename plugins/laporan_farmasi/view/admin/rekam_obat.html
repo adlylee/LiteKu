@@ -1,0 +1,34 @@
+<article class="row">
+    <div id="manage" class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Rekam Obat</h3>
+        </div>
+        <div class="panel-body">
+            <form action="{?=url(ADMIN.'/laporan_farmasi/saverekam')?}" method="POST" id="form_rekam">
+           
+                  <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="row">
+                                      <label class="control-label">Obat</label>
+                                      <input type="hidden" name="kode_brng" id="kode_brng" value="">
+                                      <input type="text" class="form-control" name="nama_brng" id="nama_brng" value="" placeholder="Pilih Nama Obat">
+                                      <ul class="list-group" id="nama_brngList" style="z-index:1000;position:absolute;width:100%;"></ul>
+                                    
+                                      <label class="control-label">Periode</label>
+                                      <input type="text" class="form-control" name="nm_bangsal" id="nm_bangsal" value="" placeholder="Pilih Tanggal Awal">
+                                      <label class="control-label">s/d</label>
+                                    <input type="text" name="jumlah" class="form-control" value="" placeholder="Pilih Tanggal Akhir">
+                                </div>
+                            </div>
+                            <div class="text-center">
+                              <input type="submit" name="simpan" class="btn btn-primary" value="Proses" />
+                              <input type="button" name="baru" class="btn btn-danger" value="Batal" onclick="location.reload();" />
+
+                          </div>
+                  </div>
+              </form>
+        </div>
+      </div>
+    </div>
+  </article>

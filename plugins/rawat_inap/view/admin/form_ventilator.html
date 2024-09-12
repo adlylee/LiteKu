@@ -1,0 +1,53 @@
+<form action="{?=url(ADMIN.'/rawat_inap/ventisave')?}" method="post">
+  <div class="row clearfix">
+    <div class="col-md-3">
+      <div class="form-group">
+        <label for="">Jenis Tindakan</label>
+        <input type="hidden" name="no_rawat" value="{$no_rawat}">
+        <input type="text" class="form-control" name="jns_tindakan" value="">
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        <label for="">Intubasi</label>
+        <input type="text" class="form-control tanggal" name="intubasi" value="" placeholder="Disini isi tanggal dan jam">
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        <label for="">Ekstubasi</label>
+        <input type="text" class="form-control tanggal" name="ekstubasi" value="" placeholder="Disini isi tanggal dan jam">
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        <label for="">Dokter</label>
+        <select name="dokter" id="" class="form-control">
+          {loop: $dokter}
+          <option value="{$value.kd_dokter}">{$value.nm_dokter}</option>
+          {/loop}
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="row clearfix">
+    <div class="col-md-4">
+      <input type="submit" value="Simpan" class="btn btn-primary form-control">
+    </div>
+  </div>
+</form>
+<script>
+  $(function () {
+    $('.tanggal').datetimepicker({
+      format: 'YYYY-MM-DD HH:mm:ss',
+      locale: 'id',
+    });
+    $('select').selectator('destroy');
+    $('select').selectator({
+      useSearch: true, 
+      labels: {
+        search: 'Search...'            // Placeholder text in search box in single select box
+      }
+    });
+  });
+</script>

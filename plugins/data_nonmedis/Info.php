@@ -4,7 +4,7 @@ return [
   'description'   =>  'Modul Stock Opname Non Medis',
   'author'        =>  'Basoro.ID',
   'version'       =>  '1.5',
-  'compatibility' =>  '2021',
+  'compatibility' =>  '2022',
   'icon'          =>  'book',
   'install'       =>  function () use ($core) {
 

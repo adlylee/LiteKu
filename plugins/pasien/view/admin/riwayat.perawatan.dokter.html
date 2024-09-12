@@ -529,7 +529,8 @@
               <tbody>
                 {loop: $value.periksa_lab as $data1}
                 <tr>
-                  <th colspan="5">{$data1.nm_perawatan}</th>
+                  <th>{$data1.tgl_periksa} {$data1.jam}</th>
+                  <th colspan="4">{$data1.nm_perawatan}</th>
                 </tr>
                 {loop: $data1.detail_periksa_lab as $data2}
                 <tr>

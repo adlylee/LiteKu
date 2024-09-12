@@ -1,0 +1,271 @@
+<div class="col-md-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <form action="" method="get">
+        <div class="btn-group pull-right" style="margin-top:-8px;">
+          <span class="btn btn-sm dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-calendar"></i><span class="hidden-xs"> Periode</span>
+          </span>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li style="padding-left:5px;padding-right:5px;">
+              <input type="text" id="tgl_awal" class="form-control tanggal" name="tgl_awal" value="{?=date('Y-m-d')?}" required>
+            </li>
+            <li style="padding-left:5px;padding-right:5px;margin-top:5px;">
+              <input type="submit" class="btn btn-primary btn-block" value="Submit">
+              <!-- <input type="hidden" name="t" value="{?=$_SESSION['token']?}"> -->
+            </li>
+          </ul>
+        </div>
+      <!-- </form> -->
+      <h3 class="panel-title">Unit Perawatan {$viewnya}</h3>
+    </div>
+    <div class="panel-body">
+      <div class="col-md-8">
+        <!-- <form action="" method="get"> -->
+          {loop: $bangsal.list}
+            <button name="bgsl" value="{$value.kd_bangsal}" class="btn btn-success col-md-4" style="border-radius: 0.7em;margin-bottom: 1px;">{$value.nm_bangsal}</button>
+          {/loop}
+          <input type="hidden" name="t" value="{?=$_SESSION['token']?}">
+        </form>
+      </div>
+      <!-- <div class="col-md-12">
+
+      </div> -->
+        <div class="col-md-4">
+          <div class="alert alert-success" role="alert">
+            Tanggal : <strong>{$jml.list.tgl}</strong>
+            <br>
+            Pasien Sisa Kemaren : <strong>{$jml.list.stay}</strong> orang
+            <br>
+            Pasien Masuk : <strong>{$jml.list.in}</strong> orang
+            <br>
+            Pasien Keluar : <strong>{$jml.list.out}</strong> orang
+            <br>
+            Pasien Sisa : <strong>{$jml.list.left}</strong> orang
+          </div>
+        </div>
+      <!-- </div> -->
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Data Sensus Harian Ranap Pasien Masuk</h3>
+    </div>
+    <div class="panel-body">
+      <div class="table-responsive no-margin">
+        <table class="table table-striped no-padding dataTables" width="100%">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>No. RM</th>
+              <th>Nama Pasien</th>
+              <th>Alamat</th>
+              <th>Umur</th>
+              <th>L/P</th>
+              <th>Kelas</th>
+              <th>Rujukan Dari</th>
+              <th>Cara Bayar</th>
+              <th>Nama DPJP</th>
+            </tr>
+          </thead>
+          <tbody>
+            {if: $masuk.list}
+            {loop: $masuk.list}
+            <tr>
+              <td>{$value.nomor}</td>
+              <td>{$value.no_rkm_medis}</td>
+              <td>{$value.nama}</td>
+              <td>{$value.alamat}</td>
+              <td>{$value.umur}</td>
+              <td>{$value.jk}</td>
+              <td>{$value.kelas}</td>
+              <td>{$value.rujuk}</td>
+              <td>{$value.kd_pj}</td>
+              <td>{$value.dpjp}</td>
+            </tr>
+            {/loop}
+            {else}
+            <tr>
+              <td colspan="37" class="text-center">Tidak ada data pasien masuk.</td>
+            </tr>
+            {/if}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Data Sensus Harian Ranap Pasien Keluar</h3>
+    </div>
+    <div class="panel-body">
+      <div class="table-responsive no-margin">
+        <table class="table table-striped no-padding dataTables" width="100%">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>No. RM</th>
+              <th>Nama Pasien</th>
+              <th>Umur</th>
+              <th>L/P</th>
+              <th>Tgl Masuk</th>
+              <th>Lama</th>
+              <th>APS/RJ/Sembuh</th>
+              <th>Cara Bayar</th>
+              <th>Rujuk Ke</th>
+              <th>Nama DPJP</th>
+            </tr>
+          </thead>
+          <tbody>
+            {if: $keluar.list}
+            {loop: $keluar.list}
+            <tr>
+              <td>{$value.nomor}</td>
+              <td>{$value.no_rkm_medis}</td>
+              <td>{$value.nama}</td>
+              <td>{$value.umur}</td>
+              <td>{$value.jk}</td>
+              <td>{$value.tgl_masuk}</td>
+              <td>{$value.lama} hari</td>
+              <td>{$value.stts_pulang}</td>
+              <td>{$value.kd_pj}</td>
+              <td>-</td>
+              <td>{$value.dpjp}</td>
+            </tr>
+            {/loop}
+            {else}
+            <tr>
+              <td colspan="37" class="text-center">Tidak ada data pasien keluar.</td>
+            </tr>
+            {/if}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Data Sensus Harian Ranap Pasien Pindah Ke</h3>
+    </div>
+    <div class="panel-body">
+      <div class="table-responsive no-margin">
+        <table class="table table-striped no-padding dataTables" width="100%">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>No. RM</th>
+              <th>Nama Pasien</th>
+              <th>Umur</th>
+              <th>L/P</th>
+              <th>Cara Bayar</th>
+              <th>Nama DPJP</th>
+              <th>Pindah Ke</th>
+            </tr>
+          </thead>
+          <tbody>
+            {if: $pindahdari.list}
+            {loop: $pindahdari.list}
+            <tr>
+              <td>{$value.nomor}</td>
+              <td>{$value.no_rkm_medis}</td>
+              <td>{$value.nama}</td>
+              <td>{$value.umur}</td>
+              <td>{$value.jk}</td>
+              <td>{$value.kd_pj}</td>
+              <td>{$value.dpjp}</td>
+              <td>{$value.nm_bangsal}</td>
+            </tr>
+            {/loop}
+            {else}
+            <tr>
+              <td colspan="37" class="text-center">Tidak ada data pasien pindah ke.</td>
+            </tr>
+            {/if}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Data Sensus Harian Ranap Pasien Pindah Dari</h3>
+    </div>
+    <div class="panel-body">
+      <div class="table-responsive no-margin">
+        <table class="table table-striped no-padding dataTables" width="100%">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>No. RM</th>
+              <th>Nama Pasien</th>
+              <th>Umur</th>
+              <th>L/P</th>
+              <th>Cara Bayar</th>
+              <th>Nama DPJP</th>
+              <th>Pindah Dari</th>
+            </tr>
+          </thead>
+          <tbody>
+            {if: $pindahke.list}
+            {loop: $pindahke.list}
+            <tr>
+              <td>{$value.nomor}</td>
+              <td>{$value.no_rkm_medis}</td>
+              <td>{$value.nama}</td>
+              <td>{$value.umur}</td>
+              <td>{$value.jk}</td>
+              <td>{$value.kd_pj}</td>
+              <td>{$value.dpjp}</td>
+              <td>{$value.nm_bangsal}</td>
+            </tr>
+            {/loop}
+            {else}
+            <tr>
+              <td colspan="37" class="text-center">Tidak ada data pasien pindah dari.</td>
+            </tr>
+            {/if}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(".alert-dismissible").fadeTo(3000, 500).slideUp(500);
+</script>
+<script type="text/javascript">
+   $(function () {
+       $('.tanggal').datetimepicker({
+         format: 'YYYY-MM-DD',
+         locale: 'id'
+       });
+   });
+   $('.dataTables').DataTable({
+     "order": [[ 3, "desc" ]],
+     "pagingType": "full",
+     "language": {
+       "paginate": {
+         "first": "&laquo;",
+         "last": "&raquo;",
+         "previous": "‹",
+         "next":     "›"
+       },
+       "search": "",
+       "searchPlaceholder": "Search..."
+     },
+     "lengthChange": false,
+     "scrollX": true,
+     dom: "<<'data-table-title'><'datatable-search'f>><'row'<'col-sm-12'tr>><<'pmd-datatable-pagination' l i p>>"
+   });
+  //  var t = $(".dataTables").DataTable().rows().count();
+  //  $(".data-table-title").html('<h3 style="display:inline;float:left;margin-top:0;" class="hidden-xs">Total: ' + t + '</h3>');
+
+</script>

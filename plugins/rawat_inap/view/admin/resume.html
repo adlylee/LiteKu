@@ -159,7 +159,7 @@
       <tr class="isi">
         <td valign="top" width="20%">Pemeriksaan penunjang yang penting</td>
         <td valign="top" width="1%" align="center">:</td>
-        <td valign="top" colspan="7">{?=nl2br($value.pemeriksaan_penunjang)?}</td>
+        <td valign="top" colspan="7">{if: $value.shk_bayi !=''} {?=nl2br($value.shk_bayi)?}<br>{else}{/if} {?=nl2br($value.pemeriksaan_penunjang)?}</td>
       </tr>
       <tr class="isi">
         <td valign="top" width="20%">Pemeriksaan Laboratorium</td>
@@ -169,40 +169,52 @@
       <tr class="isi">
         <td valign="top">Diagnosa Utama</td>
         <td valign="top" align="center">:</td>
-        <td valign="top" colspan="4">{?=nl2br($value.diagnosa_utama)?}</td>
-        <td valign="top">ICD X</td>
-        <td valign="top" align="center">:</td>
-        <td valign="top">{?=nl2br($value.kd_diagnosa_utama)?}</td>
+        <td valign="top" colspan="7">{?=nl2br($value.diagnosa_utama)?}</td>
       </tr>
       <tr class="isi">
         <td valign="top">Diagnosa Sekunder</td>
         <td valign="top" align="center">:</td>
-        <td valign="top" colspan="4">{$value.diagnosa_sekunder}<br>
-          {$value.diagnosa_sekunder2}<br>
-          {$value.diagnosa_sekunder3}<br>
-          {$value.diagnosa_sekunder4}</td>
-        <td valign="top" width="7%">ICD X</td>
-        <td valign="top" align="center">:</td>
-        <td valign="top">{$value.kd_diagnosa_sekunder}<br>{$value.kd_diagnosa_sekunder2}<br>
-          {$value.kd_diagnosa_sekunder3}<br>{$value.kd_diagnosa_sekunder4}</td>
+        <td valign="top" colspan="7">{$value.diagnosa_sekunder}</td>
       </tr>
       <tr class="isi">
-        <td valign="top">Tindakan</td>
+        <td valign="top">Diagnosa Sekunder 2</td>
         <td valign="top" align="center">:</td>
-        <td valign="top" colspan="4">{$value.prosedur_utama}<br>
-          {$value.prosedur_sekunder}<br>
-          {$value.prosedur_sekunder2}<br>
-          {$value.prosedur_sekunder3}</td>
-        <td valign="top" width="7%">ICD IX</td>
+        <td valign="top" colspan="7">{$value.diagnosa_sekunder2}
+      </tr>
+      <tr class="isi">
+        <td valign="top">Diagnosa Sekunder 3</td>
         <td valign="top" align="center">:</td>
-        <td valign="top">{$value.kd_prosedur_utama}<br>{$value.kd_prosedur_sekunder}<br>
-          {$value.kd_prosedur_sekunder2}<br>{$value.kd_prosedur_sekunder3}</td>
+        <td valign="top" colspan="7">{$value.diagnosa_sekunder3}
+      </tr>
+      <tr class="isi">
+        <td valign="top">Diagnosa Sekunder 4</td>
+        <td valign="top" align="center">:</td>
+        <td valign="top" colspan="7">{$value.diagnosa_sekunder4}
+      </tr>
+      <tr class="isi">
+        <td valign="top">Tindakan/Prosedur Utama</td>
+        <td valign="top" align="center">:</td>
+        <td valign="top" colspan="7">{$value.prosedur_utama}<br>
+      </tr>
+       <tr class="isi">
+        <td valign="top">Prosedur Sekunder</td>
+        <td valign="top" align="center">:</td>
+        <td valign="top" colspan="7">{$value.prosedur_sekunder}<br>
+      </tr>
+         <tr class="isi">
+        <td valign="top">Prosedur Sekunder 2</td>
+        <td valign="top" align="center">:</td>
+        <td valign="top" colspan="7">{$value.prosedur_sekunder2}<br>
+      </tr>
+         <tr class="isi">
+        <td valign="top">Prosedur Sekunder 3</td>
+        <td valign="top" align="center">:</td>
+        <td valign="top" colspan="7">{$value.prosedur_sekunder3}<br>
       </tr>
       <tr class="isi">
         <td valign="top">Terapi</td>
         <td valign="top" align="center">:</td>
         <td valign="top" colspan="7">{?=nl2br($value.obat_di_rs)?}</td>
-        </td>
       </tr>
       <tr class="isi">
         <td valign="top">Kondisi Waktu Pulang</td>
@@ -212,19 +224,26 @@
       <tr class="isi">
         <td valign="top">Pengobatan dilanjutkan</td>
         <td valign="top" align="center">:</td>
-        <td valign="top" colspan="7">{if: empty($value.poli)} {else}Ke {$value.poli} Tanggal {$value.skdp} RSUD H.
-          Damanhuri Barabai{/if}</td>
+        <td valign="top" colspan="7">{if: empty($value.poli)} {else}Ke {$value.poli} Tanggal {$value.skdp} di RSUD H. Damanhuri Barabai{/if}</td>
       </tr>
       <tr class="isi">
         <td valign="top">Terapi Pulang</td>
         <td valign="top" align="center">:</td>
         <td valign="top" colspan="7">{?=nl2br($value.obat_pulang)?}</td>
       </tr>
+      {if: $value.ket_dilanjutkan != 'Selesai'}
+      <tr class="no-print">
+        <td valign="top">Telah di Resume oleh</td>
+        <td valign="top" align="center">:</td>
+        <td valign="top" colspan="7"> {if: empty($value.ket_keadaan)} {$value.nm_dokter} ({$value.jenis_dpjp}){else}{$value.dpjp_resume}{/if} </td>
+      </tr>
+      {/if}
       <tr class="isi">
         <td valign="top" colspan="9" align="right">
           <div style="text-align: right; margin-top: 10px;">
             <div style="display: inline-block; text-align: center;">
               <p style="margin: 0;">Dokter Penanggung Jawab Pelayanan</p><br>
+              {if: $value.ket_dilanjutkan == 'Selesai'}
               <div class="qrcodeDPJPResumeRanap"></div><br>
               <p style="margin: 0;">{$value.nm_dokter}</p>
             </div>
@@ -233,6 +252,7 @@
                 text: "DPJP: {$value.nm_dokter}"
               });
             </script>
+            {/if}
           </div>
         </td>
       </tr>

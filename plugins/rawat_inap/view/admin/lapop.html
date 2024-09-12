@@ -1,0 +1,224 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <style>
+    body {
+      margin: 20px;
+    }
+
+    .col-md-2 {
+      font-size: 18px;
+    }
+
+    .col-md-3 {
+      font-size: 18px;
+    }
+
+    .col-md-4 {
+      font-size: 18px;
+    }
+
+    .col-md-8 {
+      font-size: 18px;
+    }
+
+    @media print {
+      .no-print {
+        display: none;
+      }
+    }
+
+    .title-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .title {
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    .secret {
+      float: right;
+      top: 80px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .rm-number {
+      position: absolute;
+      top: 75px;
+      right: 48px;
+      font-size: 20px;
+    }
+
+    .cetak {
+      background-color: rgb(123, 178, 221);
+      border-radius: 0.2em;
+    }
+  </style>
+  <script type="text/javascript" src="{?=url()?}/assets/jscripts/jquery.min.js"></script>
+  <script type="text/javascript" src="{?=url()?}/assets/jscripts/jquery.qrcode.js"></script>
+  <script type="text/javascript" src="{?=url()?}/assets/jscripts/qrcode.js"></script>
+  <script>
+    function printContent() {
+      window.print();
+    }
+  </script>
+</head>
+
+<body>
+  <fieldset style="page-break-before:always;">
+    <div class="no-print">
+      <button class="cetak" onclick="javascript:window.close();opener.window.focus();" type="button">Tutup</button>
+      <button class="cetak" onclick="printContent()" type="button">Cetak</button>
+    </div>
+    <br>
+    <table class="sep" width="1000" style="font-size:11px;padding:0;border:0px solid #fff;" border="0" padding="0">
+      <tr>
+        <td>
+          <table border="0" padding="0">
+            <tr>
+              <td width="95">
+                <img src="{?= url('/assets/img/rshd.png') ?}" alt="Image" width="90" height="55">
+              </td>
+              <td width="1000">
+                <div style="font-size:20px;text-align:left;font-weight:bold;">
+                  RSUD H. DAMANHURI
+                </div>
+                <div style="font-size:17px;text-align:left;">
+                  Jl. Murakata No.04 barabai Kab. Hulu Sungai Tengah </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <div class="title-container">
+      <!-- <div class="secret"><u>RAHASIA</u></div> -->
+      <div class="title">LAPORAN OPERASI</div>
+    </div>
+    <!-- <div class="rm-number">RM 66</div> -->
+    <table width="100%" border="1" align="center" cellpadding="3px" cellspacing="0" class="tbl_form">
+      {loop: $lap_op}
+      <tr class="isi">
+        <td valign="top" width="20%">NAMA PASIEN</td>
+        <td valign="top" width="1%" align="center">:</td>
+        <td valign="top" width="24%">{$value.nm_pasien}</td>
+      </tr>
+      <tr class="isi">
+        <td valign="top" width="20%">NO RM/NO RAWAT</td>
+        <td valign="top" width="1%" align="center">:</td>
+        <td valign="top" width="10%">{$value.no_rkm_medis} ({$value.no_rawat})</td>
+      </tr>
+      <tr class="isi">
+        <td valign="top" width="20%">Tanggal</td>
+        <td valign="top" width="1%" align="center">:</td>
+        <td valign="top" width="10%">{$value.tanggal_op}</td>
+      </tr>
+      <tr class="isi">
+        <td valign="top" width="20%">Nama Ahli Bedah</td>
+        <td valign="top" width="1%" align="center">:</td>
+        <td valign="top" colspan="7">{$value.nm_dokter}</td>
+      </tr>
+      {loop: $value.jadwal_operasi as $data}
+      <tr class="isi">
+        <td valign="top" width="20%">Nama Asisten</td>
+        <td valign="top" width="1%" align="center">:</td>
+        <td valign="top" colspan="7">{$data.asisten_operator1}</td>
+      </tr>
+      <tr class="isi">
+        <td valign="top" width="20%">Nama Perawat</td>
+        <td valign="top" width="1%" align="center">:</td>
+        <td valign="top" colspan="7">{$data.perawaat_resusitas}</td>
+      </tr>
+      <tr class="isi">
+        <td valign="top" width="20%">Nama Ahli Anesthesi</td>
+        <td valign="top" width="1%" align="center">:</td>
+        <td valign="top" colspan="7">{$data.dokter_anestesi}</td>
+      </tr>
+      <tr class="isi">
+        <td valign="top" width="20%">Jenis Anasthesi</td>
+        <td valign=" top" align="center">:</td>
+        <td valign="top" colspan="7">{$data.jenis_anasthesi}</td>
+      </tr>
+      <tr class="isi">
+        <td valign="top">Macam Pembedahan</td>
+        <td valign="top" align="center">:</td>
+        <td valign="top" colspan="7">{$data.kategori}</td>
+      </tr>
+      <tr class="isi">
+        <td valign="top">Nama / Macam Operasi</td>
+        <td valign="top" align="center">:</td>
+        <td valign="top" colspan="7">{$data.nm_paket}</td>
+      </tr>
+      <tr class="isi">
+        <td valign="top">Tanggal operasi</td>
+        <td valign="top" align="center">:</td>
+        <td valign="top" colspan="7">{$data.tanggal}
+      </tr>
+      <tr class="isi">
+        <td valign="top">Jam operasi dimulai</td>
+        <td valign="top" align="center">:</td>
+        <td valign="top" colspan="7">{$data.jam_mulai}
+      </tr>
+      <tr class="isi">
+        <td valign="top">Jam operasi selesai</td>
+        <td valign="top" align="center">:</td>
+        <td valign="top" colspan="7">{$data.jam_selesai}
+      </tr>
+      <tr class="isi">
+        <td valign="top">Lama operasi berlangsung</td>
+        <td valign="top" align="center">:</td>
+        <td valign="top" colspan="7">{$data.lama_operasi}<br>
+      </tr>
+        {/loop}
+       <tr class="isi">
+        <td valign="top">Diagnosis pre - operatif</td>
+        <td valign="top" align="center">:</td>
+        <td valign="top" colspan="7">{$value.pre_op}<br>
+      </tr>
+         <tr class="isi">
+        <td valign="top">Diagnosis post - operatif</td>
+        <td valign="top" align="center">:</td>
+        <td valign="top" colspan="7">{$value.post_op}<br>
+      </tr>
+         <tr class="isi">
+        <td valign="top">Pemakaian Implan</td>
+        <td valign="top" align="center">:</td>
+        <td valign="top" colspan="7">{$value.implan}<br>
+      </tr>
+      <tr class="isi">
+        <td valign="top">Pemeriksaan PA</td>
+        <td valign="top" align="center">:</td>
+        <td valign="top" colspan="7">{?=nl2br($value.kirim_pa)?}</td>
+      </tr>
+      <tr class="isi">
+        <td valign="top">Hasil Operasi</td>
+        <td valign="top" align="center">:</td>
+        <td valign="top" colspan="7">{?=nl2br($value.hasil_op)?}</td>
+      </tr>
+      <tr class="isi">
+        <td valign="top" colspan="9" align="right">
+          <div style="text-align: right; margin-top: 10px;">
+            <div style="display: inline-block; text-align: center;">
+              <p style="margin: 0;">Dokter</p><br>
+              <div class="qrcodeBedah"></div><br>
+              <p style="margin: 0;">{$value.nm_dokter}</p><br>
+            </div>
+            <script>
+              jQuery('.qrcodeBedah:last').qrcode({
+                text: "DPJP: {$value.nm_dokter}"
+              });
+            </script>
+          </div>
+        </td>
+      </tr>
+      {/loop}
+    </table>
+  </fieldset>
+</body>
+
+</html>

@@ -1,3 +1,29 @@
+<style  type="text/css">
+  .dropdown-menu li {
+position: relative;
+}
+.dropdown-menu .dropdown-submenu {
+display: none;
+position: absolute;
+left: 100%;
+top: -7px;
+}
+.dropdown-menu .dropdown-submenu-left {
+right: 100%;
+left: auto;
+}
+.dropdown-menu > li:hover > .dropdown-submenu {
+display: block;
+}
+
+.dropdown-hover:hover>.dropdown-menu {
+display: inline-block;
+}
+
+.dropdown-hover>.dropdown-toggle:active {
+pointer-events: none;
+}
+</style>
 <div id="display">
   <div class="table-responsive no-margin">
     <table class="table table-striped no-padding dataTables" width="100%">
@@ -16,6 +42,7 @@
           <th style="white-space: nowrap;">Stts. Lanjut</th>
           <th style="white-space: nowrap;">Stts. Bayar</th>
           <th style="white-space: nowrap;">Stts. Obat</th>
+          <th style="white-space: nowrap;">No. Telepon</th>
         </tr>
       </thead>
       <tbody>
@@ -25,11 +52,20 @@
             <span class="dropdown-toggle" data-toggle="dropdown" data-disabled="true" aria-expanded="true"><button type="button" name="button" class="btn btn-sm btn-default">{$value.no_rkm_medis} <span class="caret"></span></button></span>
             <ul class="dropdown-menu" role="menu">
               {if: $cek_vclaim}
-                <li><a href="{?=url([ADMIN, 'pasien', 'vclaim_bynokartu', $value.no_peserta, date('Y-m-d')])?}" data-toggle="modal" data-target="#asuransiModal">[BPJS] Cek Nomor Kartu</a></li>
-                <li><a href="{?=url([ADMIN, 'pasien', 'vclaim_bynik', $value.no_ktp, date('Y-m-d')])?}" data-toggle="modal" data-target="#asuransiModal">[BPJS] Cek Nomor KTP</a></li>
+              <li>
+                <a class="dropdown-item" href="#"> [BPJS] Cek Nomor &raquo; </a>
+                  <ul class="dropdown-menu dropdown-submenu">
+                    <li>
+                      <a href="{?=url([ADMIN, 'pasien', 'vclaim_bynokartu', $value.no_peserta, date('Y-m-d')])?}" data-toggle="modal" data-target="#asuransiModal">[BPJS] Cek Nomor Kartu</a>
+                    </li>
+                    <li>
+                      <a href="{?=url([ADMIN, 'pasien', 'vclaim_bynik', $value.no_ktp, date('Y-m-d')])?}" data-toggle="modal" data-target="#asuransiModal">[BPJS] Cek Nomor KTP</a>
+                    </li>
+                  </ul>
+              </li>
               {/if}
-              <li><a href="{?=url([ADMIN, 'pasien', 'resumeperawatan', $value.no_rkm_medis])?}" data-toggle="modal" data-target="#riwayatModal">Resume Perawatan</a></li>
-              <li><a href="{?=url([ADMIN, 'pasien', 'riwayatperawatan', $value.no_rkm_medis])?}" data-toggle="modal" data-target="#riwayatModal">Riwayat Perawatan</a></li>
+              <li><a href="{?=url([ADMIN, 'pasien', 'resumeperawatan', $value.no_rkm_medis])?}" data-toggle="modal" data-target="#riwayatModal">Elektronik Rekam Medis</a></li>
+              <!-- <li><a href="{?=url([ADMIN, 'pasien', 'riwayatperawatan', $value.no_rkm_medis])?}" data-toggle="modal" data-target="#riwayatModal">Riwayat Perawatan</a></li> -->
               {if: $this->core->getUserInfo('role') == 'admin' || $this->core->getUserInfo('role') == 'medis' || $this->core->getUserInfo('role') == 'paramedis'}
               <li><a href="#soap" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}">SOAP & Pemeriksaan</a></li>
               <li><a href="#layanan_obat" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}">Layanan & Tindakan</a></li>
@@ -53,7 +89,7 @@
               {/if}
             </ul>
           </td>
-          <td style="white-space: nowrap;"><a href="{?=url([ADMIN, 'pasien', 'riwayatperawatan', $value.no_rkm_medis])?}" data-toggle="modal" data-target="#riwayatModal">{$value.nm_pasien}</a></td>
+          <td style="white-space: nowrap;"><a href="{?=url([ADMIN, 'pasien', 'resumeperawatan', $value.no_rkm_medis])?}" data-toggle="modal" data-target="#riwayatModal">{$value.nm_pasien}</a></td>
           <td class="edit" data-no_rawat="{$value.no_rawat}">{$value.no_rawat}</td>
           <td style="white-space: nowrap;">
             <button type="button" name="button" class="btn btn-xs btn-warning antrian"
@@ -87,6 +123,7 @@
           <td class="edit" data-no_rawat="{$value.no_rawat}" style="white-space: nowrap;">{$value.status_lanjut}</td>
           <td class="edit" data-no_rawat="{$value.no_rawat}" style="white-space: nowrap;">{$value.status_bayar}</td>
           <td style="white-space: nowrap;">{if: $value.kronis !=''}KRONIS{/if}</td>
+          <td class="edit" data-no_rawat="{$value.no_rawat}" style="white-space: nowrap;">{$value.no_tlp}</td>
         </tr>
         {/loop}
       </tbody>

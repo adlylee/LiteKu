@@ -1228,7 +1228,7 @@ class Admin extends AdminModule
         $ft = 'FT';
         $pns = 'PNS';
 
-        $stts = $stts_kerja != $ft ? 'Direktur RSUD H. Damanhuri Barabai' : ($stts_kerja = $ft ? 'Kepala Bagian Tata Usaha' : '');
+        $stts = $stts_kerja != $ft ? 'Direktur RSUD H. Damanhuri Barabai' : ($stts_kerja = $ft ? 'Administrasi Umum dan Keuangan' : '');
         echo $stts;
 
         $nm_kepala = $stts_kerja != $pns ? 'Hernadi, SKM' : ($stts_kerja = $pns ? 'dr. Nanda Sujud Andi Yudha Utama, Sp. B' : '');
@@ -1488,7 +1488,7 @@ class Admin extends AdminModule
             'pengganti_visite' => $cuti_pegawai['pengganti_visite']
 
         ]);
-        $file = "Surat_Izin_Dokter" . date("d-m-Y") . ".docx";
+        $file = "Surat_Izin_Dokter_" . date("d-m-Y") . ".docx";
         header("Content-Description: File Transfer");
         header('Content-Disposition: attachment; filename="' . $file . '"');
         header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
@@ -1604,7 +1604,7 @@ class Admin extends AdminModule
 
         ]);
 
-        $file = "Surat_Cuti_Dokter" . date("d-m-Y") . ".docx";
+        $file = "Surat_Cuti_Dokter_" . date("d-m-Y") . ".docx";
         header("Content-Description: File Transfer");
         header('Content-Disposition: attachment; filename="' . $file . '"');
         header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');

@@ -44,16 +44,16 @@
         <td>{$value.berat}</td>
         <td>{$value.gcs}</td>
         <td>{$value.alergi}</td>
-        <td rowspan="7" style="vertical-align:top;">
+        <td rowspan="5" style="vertical-align:top;">
           {$value.instruksi}<br><br>
           <div class="qrcodePetugas{$value.nomor}" style="margin-top:10px;width:40px;margin-right: 120px;"></div>
           {$value.nama_petugas}
           <script>
-          	jQuery('.qrcodePetugas{$value.nomor}').qrcode({
+            jQuery('.qrcodePetugas{$value.nomor}').qrcode({
               width: 64,
               height: 64,
-          		text	: "Petugas: {$value.nama_petugas}"
-          	});
+              text  : "Petugas: {$value.nama_petugas}"
+            });
           </script>
         </td>
       </tr>
@@ -103,13 +103,8 @@
       {/loop}
       {loop: $pemeriksaan_ranap as $data}
       <tr>
-<<<<<<< HEAD
-        <td rowspan="3" style="vertical-align:top;">{$data.nomor}</td>
-        <td rowspan="2" style="vertical-align:top;white-space: nowrap;">
-=======
-        <td rowspan="6" style="vertical-align:top;">{$data.nomor}</td>
-        <td rowspan="5" style="vertical-align:top;white-space: nowrap;">
->>>>>>> e559a1d1b92cc6fa0e42bcbbc11a6e1194822ba3
+        <td rowspan="5" style="vertical-align:top;">{$data.nomor}</td>
+        <td rowspan="4" style="vertical-align:top;white-space: nowrap;">
           <b>Rawat Inap</b><br>
           {$data.tgl_perawatan} {$data.jam_rawat}<br>
           {$data.departemen_petugas}
@@ -122,26 +117,35 @@
         <td>{$data.berat}</td>
         <td>{$data.gcs}</td>
         <td>{$data.alergi}</td>
-        <td rowspan="6" style="vertical-align:top;">
+        <td rowspan="5" style="vertical-align:top;">
+          <h4 style="color: black; vertical-align:top">Instruksi</h4>
           {$data.instruksi}<br><br>
           <div class="qrcodePetugas{$data.nomor}" style="margin-top:10px;width:40px;margin-right: 120px;"></div>
           {$data.nama_petugas}
           <script>
-          	jQuery('.qrcodePetugas{$data.nomor}').qrcode({
+            jQuery('.qrcodePetugas{$data.nomor}').qrcode({
               width: 64,
               height: 64,
-          		text	: "Petugas: {$data.nama_petugas}"
-          	});
+              text  : "Petugas: {$data.nama_petugas}"
+            });
           </script>
+          <h4 style="color: black; vertical-align:top">Evaluasi</h4>
+          {?=nl2br($data.evaluasi)?}<br><br>
+
         </td>
       </tr>
       <tr>
-        <th colspan="2">Kesadaran</th>
-        <td colspan="6">{$data.kesadaran}</td>
+        <th colspan="2">Subyektif</th>
+        <td colspan="6" style="vertical-align:top">{?=nl2br($data.keluhan)?}</td>
       </tr>
       <tr>
-        <th colspan="2">Subyektif</th>
-        <td colspan="6">{$data.keluhan}</td>
+        <th colspan="2">Obyektif</th>
+        <td colspan="6" style="vertical-align:top">{?=nl2br($data.pemeriksaan)?}</td>
+      </tr>
+
+      <tr>
+        <th colspan="2">Assesment</th>
+        <td colspan="6" style="vertical-align:top">{?=nl2br($data.penilaian)?}</td>
       </tr>
       <tr>
         <td>
@@ -160,12 +164,9 @@
               data-alergi="{$data.alergi}"
               data-keluhan="{$data.keluhan}"
               data-pemeriksaan="{$data.pemeriksaan}"
-<<<<<<< HEAD
-=======
               data-penilaian="{$data.penilaian}"
               data-rtl="{$data.rtl}"
               data-instruksi="{$data.instruksi}"
->>>>>>> e559a1d1b92cc6fa0e42bcbbc11a6e1194822ba3
               disabled
               ><span class="fa fa-edit"></span><span class="hidden-xs"> Edit</span></button>
             <button type="button" name="button" class="btn btn-danger btn-xs hapus_soap"
@@ -176,8 +177,8 @@
               ><span class="fa fa-trash"></span><span class="hidden-xs"> Hapus</span></button>
           </div>
         </td>
-        <th colspan="2">Obyektif</th>
-        <td colspan="6">{$data.pemeriksaan}</td>
+        <th colspan="2">Plan</th>
+        <td colspan="6">{$data.rtl}</td>
       </tr>
       {/loop}
     </tbody>

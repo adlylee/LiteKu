@@ -75,9 +75,14 @@
             <div class="col-sm-9">
               <select class="form-control" name="provider" id="pilih_provider">
                 <option>Pilih provider</option>
+                {if: $this->core->getPegawaiInfo('nik', $username) == '07012062019202011' || 
+                    $this->core->getPegawaiInfo('nik', $username) == '198008182009032007'}
+                    <option value="rawat_jl_pr">Psikologi</option>
+                    {else}
                 <option value="rawat_jl_dr">Dokter</option>
                 <option value="rawat_jl_pr">Perawat</option>
-                <option value="rawat_jl_drpr">Dokter & Perawat</option>
+                <!-- <option value="rawat_jl_drpr">Dokter & Perawat</option> -->
+                {/if}
               </select>
             </div>
           </div>
@@ -93,7 +98,12 @@
             </div>
           </div>
           <div class="form-group" id="rawat_jl_pr">
+            {if: $this->core->getPegawaiInfo('nik', $username) == '07012062019202011' || 
+            $this->core->getPegawaiInfo('nik', $username) == '198008182009032007'}
+            <label for="" class="col-sm-3 control-label">Nama Psikologi</label>
+            {else}
             <label for="" class="col-sm-3 control-label">Nama Perawat</label>
+            {/if}
             <div class="col-sm-6">
               <input type="text" name="nama_provider2" id="nama_provider2" class="form-control" value="">
               <ul class="list-group" id="kode_providerList2" style="z-index:1000;position:absolute;width:100%;"></ul>

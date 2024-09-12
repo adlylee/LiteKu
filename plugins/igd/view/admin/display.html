@@ -1,3 +1,29 @@
+<style  type="text/css">
+  .dropdown-menu li {
+position: relative;
+}
+.dropdown-menu .dropdown-submenu {
+display: none;
+position: absolute;
+left: 100%;
+top: -7px;
+}
+.dropdown-menu .dropdown-submenu-left {
+right: 100%;
+left: auto;
+}
+.dropdown-menu > li:hover > .dropdown-submenu {
+display: block;
+}
+
+.dropdown-hover:hover>.dropdown-menu {
+display: inline-block;
+}
+
+.dropdown-hover>.dropdown-toggle:active {
+pointer-events: none;
+}
+</style>
 <div id="display">
   <div class="table-responsive no-margin">
     <table class="table table-striped no-padding dataTables" width="100%">
@@ -24,11 +50,29 @@
             <span class="dropdown-toggle" data-toggle="dropdown" data-disabled="true" aria-expanded="true"><button type="button" name="button" class="btn btn-sm btn-default">{$value.no_rkm_medis} <span class="caret"></span></button></span>
             <ul class="dropdown-menu" role="menu">
               {if: $cek_vclaim}
-                <li><a href="{?=url([ADMIN, 'pasien', 'vclaim_bynokartu', $value.no_peserta, date('Y-m-d')])?}" data-toggle="modal" data-target="#asuransiModal">[BPJS] Cek Nomor Kartu</a></li>
-                <li><a href="{?=url([ADMIN, 'pasien', 'vclaim_bynik', $value.no_ktp, date('Y-m-d')])?}" data-toggle="modal" data-target="#asuransiModal">[BPJS] Cek Nomor KTP</a></li>
-              {/if}
-              <li><a href="{?=url([ADMIN, 'pasien', 'resumeperawatan', $value.no_rkm_medis])?}" data-toggle="modal" data-target="#riwayatModal">Resume Perawatan</a></li>
-              <li><a href="{?=url([ADMIN, 'pasien', 'riwayatperawatan', $value.no_rkm_medis])?}" data-toggle="modal" data-target="#riwayatModal">Riwayat Perawatan</a></li>
+              <li>
+                <a class="dropdown-item" href="#"> [BPJS] Cek Nomor &raquo; </a>
+                  <ul class="dropdown-menu dropdown-submenu">
+                    <li>
+                      <a href="{?=url([ADMIN, 'pasien', 'vclaim_bynokartu', $value.no_peserta, date('Y-m-d')])?}" data-toggle="modal" data-target="#asuransiModal">[BPJS] Cek Nomor Kartu</a>
+                    </li>
+                    <li>
+                      <a href="{?=url([ADMIN, 'pasien', 'vclaim_bynik', $value.no_ktp, date('Y-m-d')])?}" data-toggle="modal" data-target="#asuransiModal">[BPJS] Cek Nomor KTP</a>
+                    </li>
+                  </ul>
+              </li>
+            {/if}
+              <li>
+                <a class="dropdown-item" href="#"> Elektronik Rekam Medis &raquo; </a>
+                  <ul class="dropdown-menu dropdown-submenu">
+                    <li>
+                      <a class="dropdown-item" href="{?=url([ADMIN, 'pasien', 'resumeperawatan', $value.no_rkm_medis])?}" data-toggle="modal" data-target="#riwayatModal">Resume Perawatan</a></li>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{?=url([ADMIN, 'pasien', 'riwayatperawatan', $value.no_rkm_medis])?}" data-toggle="modal" data-target="#riwayatModal">Riwayat Perawatan</a>
+                    </li>
+                  </ul>
+              </li>
               {if: $this->core->getUserInfo('role') == 'admin' || $this->core->getUserInfo('role') == 'medis' || $this->core->getUserInfo('role') == 'paramedis'}
               <li><a href="#soap" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}">SOAP & Pemeriksaan</a></li>
               <li><a href="#layanan_obat" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}">Layanan & Obat</a></li>
@@ -37,6 +81,12 @@
               <li><a href="#status_lanjut" data-no_rawat="{$value.no_rawat}">Status Lanjut</a></li>
               <li><a href="{?=url([ADMIN, 'bundles_hais', 'manage', $value.con_no_rawat])?}" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}" data-kd_kamar="{$value.kd_kamar}">Bundles HAIs</a></li>
               <li><a href="#orthanc" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}">Lihat Gambar Radiologi</a></li>
+              <li><a href="#transfer_pasien" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}" 
+                data-jenkel="{$value.jenkel}" data-tgllahir="{$value.tgllahir}" data-tglmasuk="{$value.tgl_registrasi} {$value.jam_reg}" 
+                data-kode_dok="{$value.kd_dokter}" data-nama_dok="{$value.nm_dokter}" data-tglpindah="{$value.tgl_pindah} {$value.jam_pindah}"  
+                data-kdruang="{$value.kd_ruanginap}" data-ruang="{$value.ruanginap}" data-kd_dpjp="{$value.kd_dpjp}" data-dpjp="{$value.dok_dpjp}" 
+                data-alergi="{$value.alergi}" data-suhu="{$value.suhu_tubuh}"  data-tensi="{$value.tensi}"  data-respirasi="{$value.respirasi}"  data-nyeri="{$value.skala_nyeri}" data-dx_medis="{$value.dx_medis}" data-dx_kep="{$value.dx_keperawatan}"  
+                >Transfer Pasien</a></li>
               {/if}
             </ul>
           </td>
@@ -291,6 +341,69 @@
       }
     });
   });
+  $('a[href="#transfer_pasien"]').click(function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+
+    var no_rawat = $(this).attr("data-no_rawat");
+    var no_rkm_medis = $(this).attr("data-no_rkm_medis");
+    var nm_pasien = $(this).attr("data-nm_pasien");
+    var tgl_registrasi = $(this).attr("data-tgl_registrasi");
+    var jenkel = $(this).attr("data-jenkel");
+    var tgllahir = $(this).attr("data-tgllahir");
+    var tglmasuk = $(this).attr("data-tglmasuk");
+    var kode_dok = $(this).attr("data-kode_dok");
+    var nama_dok = $(this).attr("data-nama_dok");
+    var tglpindah = $(this).attr("data-tglpindah");
+    var kdruang = $(this).attr("data-kdruang");
+    var ruang = $(this).attr("data-ruang");
+    var kd_dpjp = $(this).attr("data-kd_dpjp");
+    var dpjp = $(this).attr("data-dpjp");
+    var dx_medis = $(this).attr("data-dx_medis");
+    var dx_kep = $(this).attr("data-dx_kep");
+    var alergi =  $(this).attr("data-alergi");
+    var suhu =  $(this).attr("data-suhu");
+    var tensi =  $(this).attr("data-tensi");
+    var nadi =  $(this).attr("data-nadi");
+    var respirasi =  $(this).attr("data-respirasi");
+    var nyeri =  $(this).attr("data-nyeri");
+   
+    $('input:text[name=no_rawat]').val(no_rawat);
+    $('input:text[name=no_rkm_medis]').val(no_rkm_medis);
+    $('input:text[name=nm_pasien]').val(nm_pasien);
+    $('input:text[name=tgl_registrasi]').val(tgl_registrasi);
+    $('input:text[name=jenkel]').val(jenkel);
+    $('input:text[name=tgllahir]').val(tgllahir);
+    $('input:text[name=tglmasuk]').val(tglmasuk);
+    $('input:hidden[name=kode_dok]').val(kode_dok);
+    $('input:text[name=tglpindah]').val(tglpindah);
+    $('input:hidden[name=kdruang]').val(kdruang);
+    $('input:text[name=ruang]').val(ruang);
+    $('input:hidden[name=kd_dpjp]').val(kd_dpjp);
+    $('input:text[name=dpjp]').val(dpjp);
+    $('input:text[name=dx_medis]').val(dx_medis);
+    $('input:text[name=dx_kep]').val(dx_kep);
+    $('input:text[name=alergi]').val(alergi);
+    $('input:text[name=suhu]').val(suhu);
+    $('input:text[name=tensi]').val(tensi);
+    $('input:text[name=nadi]').val(nadi);
+    $('input:text[name=respirasi]').val(respirasi);
+    $('input:text[name=nyeri]').val(nyeri);
+
+    $("#display").hide();
+
+    var url = baseURL + '/igd/transferpasien?t=' + mlite.token;
+    $.post(url, {no_rawat : no_rawat,
+    }, function(data) {
+      // tampilkan data
+      $("#form_rincian").hide();
+      $("#form").hide();
+      $("#notif").hide();
+      $("#form_transferpasien").show();
+      $("#transferpasien").html(data).show();
+    });
+  });
+
   $(".alert-dismissible").fadeTo(3000, 500).slideUp(500);
   $('.dataTables').DataTable({
     "order": [[ 3, "desc" ]],

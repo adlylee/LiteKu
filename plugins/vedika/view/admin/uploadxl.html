@@ -1,7 +1,7 @@
 <article class="row">
     <div class="col-md-6">
         <div class="panel panel-default">
-            <div class="panel-heading">Unggah</div>
+            <div class="panel-heading">Unggah {$code}</div>
             <div class="panel-body">
                 {if: FILE_LOCK}
                 <div class="alert alert-danger">Pengunggahan berkas dimatikan, unggah modul melalui FTP.<span class="label pull-right">FILE_LOCK</span></div>
@@ -11,13 +11,13 @@
                         Pastikan file yang di upload berekstensi .xls.
                         <span class="label label-default pull-right">info</span>
                     </div>
-
                     <div class="well well-sm clearfix" style="margin: 15px 0 15px 0;">
                         <span class="text-danger">Data akan ditimpa apabila sudah ada.</span>
                         <span class="label label-danger pull-right">info</span>
                     </div>
 
                     <div class="form-group">
+                        <input type="hidden" name="code" value="{$code}">
                         <label>Pilih modul dengan akhiran .xls.</label>
                         <input type="file" class="form-control" name="xls_file" required />
                     </div>

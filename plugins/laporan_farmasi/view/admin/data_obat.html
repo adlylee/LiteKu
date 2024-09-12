@@ -1,0 +1,90 @@
+<article class="row">
+    <div id="manage" class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Cari Data Obat, Alkes & BHP Medis</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row clearfix">
+            <div class="col col-md-8">
+              </div>
+            <div class="col col-md-4"> 
+              <div class="input-group">
+                  <input type="text" name="s" minlength="3" class="form-control" placeholder="Search">
+                  <input type="hidden" name="t" value="{?=$_SESSION['token']?}">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" id="cari" type="submit">
+                    <span class="glyphicon glyphicon-search"></span>
+                  </button>
+                  </span>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive no-margin" id="display">
+            <table class="table table-striped no-margin" width="100%">
+              <thead>
+                <tr>
+                  <th>Nama Barang</th>
+                  <th>Kode Satuan</th>
+                  <th>Nama Satuan</th>
+                  <th>Letak Barang</th>
+                  <th>Harga Beli(Rp)</th>
+                  <th>Harga (Rp)</th>
+                  <th>Stok Minimal</th>
+                  <th>Stok Gudang</th>
+                  <th>Stok Rajal</th>
+                  <th>Stok Ranap</th>
+                  <th>Stok IGD</th>
+                  <th>Total Stok Depo</th>
+                </tr>
+              </thead>
+              <tbody>
+                {if: !empty($data_obat.list)} 
+                {loop: $data_obat.list}
+                <tr>
+                  <td>{$value.nama_brng}</td>
+                  <td>{$value.kode_sat}</td>
+                  <td>{$value.satuan}</td>
+                  <td>{$value.letak_barang}</td>
+                  <td>{$value.harga_beli}</td>
+                  <td>{$value.harga_ralan}</td>
+                  <td>{$value.stokminimal}</td>
+                  <td>{$value.stok_gudang}</td>
+                  <td>{$value.stok_rajal}</td>
+                  <td>{$value.stok_ranap}</td>
+                  <td>{$value.stok_igd}</td>
+                  <td>{$value.total_stok}</td>
+                </tr>
+                {/loop}  {else}
+                <tr>
+                  <td colspan="12" class="text-center">Kosong</td>
+                </tr>
+                {/if}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+  <script>
+    $(document).ready(function(){
+    $('#manage').on('click', '#cari', function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var url    = baseURL + '/laporan_farmasi/data_obat?t=' + mlite.token;
+    var s  = $('input:text[name=s]').val();
+
+    window.location.href = baseURL+'/laporan_farmasi/data_obat?s='+s+'&t='+ mlite.token;
+    event.stopPropagation();
+  
+  });
+    });
+  </script>
+  <!-- <script type="text/javascript">
+    $(document).ready(function () {
+      $("#pardah").DataTable({
+        dom: "Bfrtip",
+      });
+    });
+  </script> -->

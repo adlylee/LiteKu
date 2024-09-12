@@ -1,0 +1,79 @@
+<article class="row">
+  <div id="manage" class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="btn-group pull-right" style="margin-top:-8px;">
+          <span class="btn btn-sm dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-calendar"></i><span class="hidden-xs"> Periode Eresep</span>
+          </span>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <form method="POST" action="" class="form-inline mt-3">
+              <!-- <label for="date1">Tanggal mulai </label> -->
+              <li style="padding-left:5px;padding-right:5px;">
+                <input type="date" name="date1" id="date1"
+                  class="form-control shadow-sm border-left-primary">
+              </li>
+              <!-- <label for="date2">sampai </label> -->
+              <li style="padding-left:5px;padding-right:5px;margin-top:5px;">
+                <input type="date" name="date2" id="date2"
+                  class="form-control shadow-sm border-left-primary">
+              </li>
+              <li style="padding-left:5px;padding-right:5px;margin-top:5px;">
+                <button type="submit" name="submit" class="btn btn-primary btn-block">Cari</button>
+              </li>
+            </form>
+          </ul>
+        </div>
+        <h3 class="panel-title">Data Resep Elektronik</h3>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+        </div>
+        <div>
+        </div>
+        <div class="table-responsive no-margin" id="display">
+          <table class="table table-striped no-margin" id="pardah" width="100%">
+            <thead>
+              <tr>
+                <th>Nama Pasien</th>
+                <th style="text-align: center;">No. RM</th>
+                <th style="text-align: center;">Jenis Bayar</th>
+                <th style="text-align: center;">Status Periksa</th>
+                <th style="text-align: center;">Status Bayar</th>
+                <th style="text-align: center;">Resep</th>
+              </tr>
+            </thead>
+            <tbody>
+              {if: !empty($eresep.list)}
+              {loop: $eresep.list}
+              <tr>
+                <td>{$value.nm_pasien}</td>
+                <td>{$value.no_rkm_medis}</td>
+                <td>{$value.png_jawab}</td>
+                <td>{$value.stts}</td>
+                <td>{$value.status_bayar}</td>
+                <td>
+                  <ul>
+                    <!-- <li> -->
+                      {$value.resep_dokter}
+                    <!-- </li> -->
+                  </ul>
+                </td>
+              </tr>
+              {/loop}
+              {/if}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+<script type="text/javascript">
+  $(document).ready(function () {
+  $("#pardah").DataTable({
+    dom: "Bfrtip",
+    order: [[0, "asc"]],
+  });
+});
+</script>

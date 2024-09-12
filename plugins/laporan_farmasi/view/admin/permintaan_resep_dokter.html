@@ -1,0 +1,97 @@
+<article class="row">
+  <div id="manage" class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Data Permintaan Resep</h3>
+      </div>
+      <div class="panel-body">
+        <div class="row clearfix">
+        <form method="post" action="">
+          <div></div>
+           <div class="col-sm-2">
+            <div class="form-group">
+              <div class="form-line">
+                <select name="status" id="status" style="width:100%" class="form-control">
+                  <option value="Rajal">Rawat Jalan</option>
+                  <option value="Ranap">Rawat Inap</option>
+                  <option value="IGDK">IGD</option>
+                  <option value="U0019">Hemodialisa</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <div class="form-line">
+                <input type="text" name="tanggal"  id="tanggal" class="form-control tanggal">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <div class="form-line">
+                <input type="text" name="tanggal_akhir" id="tanggal_akhir" class="form-control tanggal">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <div class="form-line">
+                <input type="submit" name="submit" class="btn btn-primary" id="submit" value="Cari Data Resep">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+        <div class="table-responsive no-margin" id="display">
+          <table class="table table-striped no-margin" id="pardah" width="100%">
+            <thead>
+              <tr>
+                  <th>No Resep</th>
+                  <th>Tgl. Resep</th>
+                  <th>No. Rawat</th>
+                  <th>No. Rekam Medis</th>  
+                  <th>Nama Pasien</th>
+                  <th>Nama Dokter</th>
+                  <th>Ruang</th>
+                  <th>Status</th>            
+                </tr>
+            </thead>
+            <tbody>
+              {if: !empty($permintaan_resep.list)}
+              {loop: $permintaan_resep.list}
+              <tr>
+                <td>{$value.no_resep}</td>
+                <td>{$value.tgl_peresepan}</td>
+                <td>{$value.no_rawat}</td>
+                <td>{$value.no_rkm_medis}</td>
+                <td>{$value.nm_pasien}</td>
+                <td>{$value.nm_dokter}</td>
+                <td>{$value.ruang}</td>
+                <td>{$value.status} </td>
+              </tr>
+              {/loop}
+              {/if}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+<script type="text/javascript">
+  $(document).ready(function () {
+  $("#pardah").DataTable({
+    dom: "Bfrtip",
+  });
+});
+</script>
+<script type="text/javascript">
+  $(function () {
+    $('.tanggal').datetimepicker({
+      defaultDate: new Date(),
+      format: 'YYYY-MM-DD',
+      locale: 'id'
+    });
+  });
+</script>

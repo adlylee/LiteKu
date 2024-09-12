@@ -75,8 +75,10 @@
                           {/if}
                           <br/>
                           <a href="{$value.pdfURL}" target="_blank" class="btn btn-primary btn-xs">
-      											<i class="fa fa-print"></i> Lihat Data Klaim
-      										</a><br/>
+      						<i class="fa fa-print"></i> Lihat Data Klaim
+      				     </a>
+                          {if: $value.resume_sudah != ''} <span>✅</span> {/if} 
+                          <br/>
                           {if: $value.no_sep == ''}
                             <button class="btn btn-warning btn-xs">
         											<i class="fa fa-check"></i> Status
@@ -125,7 +127,17 @@
                               <td width='120px'>{if: $tab == 'ralan'}Poliklinik{else}Bangsal/kamar{/if}</td><td>: {$value.nm_poli}</td>
                             </tr>
                             <tr>
+                              {if: $value.status_lanjut == 'Ralan'}
                               <td width='120px'>Dokter</td><td>: {$value.nm_dokter}</td>
+                              {/if}
+                              {if: $value.status_lanjut == 'Ranap'}
+                              <td width='120px'>Dokter</td>
+                              <td>:
+                                {loop: $value.nm_dokter as $data}
+                                  - {$data.nm_dokter} ( {$data.jenis_dpjp} )<br>
+                                {/loop}
+                              </td>
+                              {/if}
                             </tr>
                             <tr>
                               <td width='120px'>Status</td><td>: {$value.status_lanjut} ({$value.png_jawab})</td>

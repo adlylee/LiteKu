@@ -7,6 +7,7 @@ $("#histori_pelayanan").hide();
 $("#notif").hide();
 $('#provider').hide();
 $('#aturan_pakai').hide();
+$("#form_transferpasien").hide();
 
 // tombol buka form diklik
 $("#index").on('click', '#bukaform', function(){
@@ -523,6 +524,9 @@ $("#soap").on("click",".hapus_soap", function(event){
         tgl_perawatan: tgl_perawatan,
         jam_rawat: jam_rawat
       } ,function(data) {
+         if (data === "Data ada ditriase") {
+          bootbox.alert("Maaf, Data pemeriksaan masih ada di Triage. Silakan periksa data Triage..!!");
+        } else {
         var url = baseURL + '/igd/soap?t=' + mlite.token;
         $.post(url, {no_rawat : no_rawat,
         }, function(data) {
@@ -551,6 +555,7 @@ $("#soap").on("click",".hapus_soap", function(event){
         "Data rincian riwayat telah dihapus!"+
         "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
         "</div>").show();
+        }
       });
     }
   });
@@ -567,6 +572,7 @@ $("#form_rincian").on("click", "#selesai", function(event){
   $("#rincian").hide();
   $("#soap").hide();
   $("#berkasdigital").hide();
+  $("#form_transferpasien").hide();
 });
 
 // tombol batal diklik
@@ -580,6 +586,7 @@ $("#form_soap").on("click", "#selesai_soap", function(event){
   $("#rincian").hide();
   $("#soap").hide();
   $("#berkasdigital").hide();
+  $("#form_transferpasien").hide();
 });
 
 // ketika baris data diklik
@@ -858,6 +865,99 @@ bersih();
   $("#orthanc").hide();
 });
 
+// tombol simpan diklik
+$("#form_transferpasien").on("click", "#simpan_transfer", function(event){
+  var baseURL = mlite.url + '/' + mlite.admin;
+  event.preventDefault();
+
+  var no_rawat        = $('input:text[name=no_rawat]').val();
+  var tanggal         = $('input:hidden[name=tanggal]').val();
+  var jam             = $('input:hidden[name=jam]').val();
+  var tglmasuk        = $('input:text[name=tglmasuk]').val();
+  var kode_dok        = $('input:hidden[name=kode_dok]').val();
+  var kd_ruang        = $('input:hidden[name=kd_ruang]').val();
+  var kode_petugas    = $('input:hidden[name=kode_petugas]').val();
+  var tglpindah       = $('input:text[name=tglpindah]').val();
+  var kd_dpjp         = $('input:hidden[name=kd_dpjp]').val();
+  var kdruang         = $('input:hidden[name=kdruang]').val();
+  var kode_petugas2   = $('input:hidden[name=kode_petugas2]').val();
+  var alasan          = $('select[name=alasan]').val();
+  var keterangan      = $('textarea[name=keterangan]').val();
+  var hasil_penunjang = [];
+  $('input[name="penunjang[]"]:checked').each(function() {
+    hasil_penunjang.push($(this).val());
+  });
+
+  if ($('#lainnya-antar').is(':checked')) {
+      hasil_penunjang.push($('#lain-antar1').val());
+  }
+
+  console.log(hasil_penunjang);
+
+  var url = baseURL + '/igd/savetransferpasien?t=' + mlite.token;
+  $.post(url, {
+    no_rawat : no_rawat,
+    tanggal: tanggal,
+    jam: jam,
+    tglmasuk: tglmasuk,
+    kode_dok: kode_dok ,
+    kd_ruang: kd_ruang,
+    kode_petugas: kode_petugas,
+    tglpindah : tglpindah,
+    kd_dpjp : kd_dpjp,
+    kdruang : kdruang,
+    kode_petugas2 : kode_petugas2,
+    alasan : alasan,
+    hasil_penunjang : hasil_penunjang,
+    keterangan : keterangan 
+  }, function(data) {
+    console.log(data);
+    // tampilkan data
+    var url = baseURL + '/igd/transferpasien?t=' + mlite.token;
+    $.post(url, {
+      no_rawat : no_rawat,
+    }, function(data) {
+      // tampilkan data
+      console.log(data);
+      $("#transferpasien").html(data).show();
+    });
+
+    $('input:hidden[name=tanggal]').val("{?=date('Y-m-d')?}");
+    $('input:hidden[name=jam]').val("{?=date('H:i:s')?}");
+    $('input:text[name=tglmasuk]').val("{?=date('Y-m-d H:i:s')?}");
+    $('input:hidden[name=kode_dok]').val("");
+    $('input:hidden[name=kd_ruang]').val("");
+    $('input:hidden[name=kode_petugas]').val("");
+    $('input:text[name=tglpindah]').val("{?=date('Y-m-d H:i:s')?}");
+    $('input:hidden[name=kd_dpjp]').val("");
+    $('input:hidden[name=kdruang]').val("");
+    $('input:hidden[name=kode_petugas2]').val("");
+    $('input:hidden[name=kode_petugas]').val("");
+    $('select[name=alasan]').val("");
+    $('textarea[name=keterangan]').val("");
+    $('input[name="penunjang[]"]').val("");
+
+    $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+    "Data Transfer Pasien telah disimpan!"+
+    "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+    "</div>").show();
+  });
+});
+
+// tombol batal diklik
+$("#form_transferpasien").on("click", "#selesai_transfer", function(event){
+  bersih();
+  $("#form_berkasdigital").hide();
+  $("#form_rincian").hide();
+  $("#form_soap").hide();
+  $("#form").show();
+  $("#display").show();
+  $("#rincian").hide();
+  $("#soap").hide();
+  $("#berkasdigital").hide();
+  $("#form_transferpasien").hide();
+  $("#transferpasien").hide();
+});
 
 function bersih(){
   $('input:text[name=no_rawat]').val("");

@@ -1,0 +1,86 @@
+<article class="row">
+  <div id="manage" class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Data Obat Expired</h3>
+      </div>
+      <div class="panel-body">
+        <div class="row clearfix">
+        <form method="post" action="">
+          <div></div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <div class="form-line">
+                <input type="date" name="tanggal"  id="tanggal" class="form-control">
+              </div>
+            </div>
+          </div>          
+          <div class="col-sm-2">
+            <div class="form-group">
+              <div class="form-line">
+                <select name="bangsal" id="bangsal" style="width:100%" class="form-control">
+                  <option value="">Semua</option>
+                  <option value="B0018">Apotek IGD</option>
+                  <option value="B0001">Apotek Ranap</option>
+                  <option value="B0014">Apotek Ralan</option>
+                  <option value="B0002">Apotek Gudang</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <div class="form-line">
+                <input type="submit" name="submit" class="btn btn-primary" id="submit" value="Cari">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+        <div class="table-responsive no-margin" id="display">
+          <table class="table table-striped no-margin" id="pardah" width="100%">
+            <thead>
+              <tr>
+                  <th>Nama Obat</th>
+                  <th>Kode Obat</th>
+                  <th>Stok Akhir</th>
+                  <th>Expired</th>
+                  <th>Update</th>
+              </tr>
+            </thead>
+            <tbody>
+              {if: !empty($obatexp.list)}
+              {loop: $obatexp.list}
+              <tr>
+                <td>{$value.nama_brng}</td>
+                <td>{$value.kode_brng}</td>
+                <td>{$value.stok_akhir}</td>
+                <td>{$value.expire}</td>
+                <td>{$value.tgl_update}</td>
+              </tr>
+              {/loop}
+              {/if}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+<script type="text/javascript">
+  $(document).ready(function () {
+  $("#pardah").DataTable({
+    dom: "Bfrtip",
+    order: [[0, "asc"]],
+  });
+});
+</script>
+<!-- <script type="text/javascript">
+  $(function () {
+    $('.tanggal').datetimepicker({
+      defaultDate: new Date(),
+      format: 'YYYY-MM-DD',
+      locale: 'id'
+    });
+  });
+</script> -->

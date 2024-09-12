@@ -1,0 +1,100 @@
+<style>
+    a.disabled {
+        pointer-events: none;
+        cursor: default;
+    }
+</style>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Ventilator</h3>
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#list" aria-controls="list" role="tab"
+                            data-toggle="tab">List</a></li>
+                    <li role="presentation"><a href="#input" aria-controls="input" role="tab"
+                            data-toggle="tab">Input</a></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div id="notif"></div>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" role="tabpanel" id="list">
+                        <table class="table table-responsive table-striped no-padding dataTables" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Jenis Tindakan</th>
+                                    <th>Intubasi</th>
+                                    <th>Ekstubasi</th>
+                                    <th>Jam Pemakaian</th>
+                                    <th>Dokter</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {loop: $list}
+                                <tr>
+                                    <td>{$value.jns_tindakan}</td>
+                                    <td>{$value.intubasi}</td>
+                                    <td>{$value.ekstubasi}</td>
+                                    <td>{$value.range}</td>
+                                    <td>{$value.nm_dokter}</td>
+                                    <td>
+                                        <a href="#{$value.id}" onclick="fiturDelete('{$value.id}')"
+                                            class="btn btn-danger {if: $value.muntah !='' }disabled{/if}">Hapus</a>
+                                    </td>
+                                </tr>
+                                {/loop}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade in" role="tabpanel" id="input">
+                        {include: ../plugins/rawat_inap/view/admin/form_ventilator.html}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('.dataTables').DataTable({
+        "order": [[3, "desc"]],
+        "pagingType": "full",
+        "language": {
+            "paginate": {
+                "first": "&laquo;",
+                "last": "&raquo;",
+                "previous": "‹",
+                "next": "›"
+            },
+            "search": "",
+            "searchPlaceholder": "Search..."
+        },
+        "lengthChange": false,
+        "scrollX": true,
+        dom: "<<'data-table-title'><'datatable-search'f>><'row'<'col-sm-12'tr>><<'pmd-datatable-pagination' l i p>>"
+    });
+
+    function fiturDelete(params) {
+        var conf = confirm('Apakah Ingin Dihapus');
+        if (conf == true) {
+            var obj = new Object();
+            obj.id = params;
+            var jsonString = JSON.stringify(obj);
+            // console.log(jsonString);
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    alert(this.responseText);
+                }
+            };
+            xhttp.open("POST", "{?=url([ADMIN,'rawat_inap','ventilatorhapus'])?}", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.send(jsonString);
+            window.location.reload()
+        }
+    }
+</script>

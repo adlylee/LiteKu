@@ -1,0 +1,58 @@
+<div class="row" id="manage_resume" style="margin-bottom:100px;">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+        <ul class="nav nav-tabs">
+          <li class="active">
+            <a href="{?=url([ADMIN,'rawat_inap','manage_listresume'])?}" role="tab">Sudah Resume</a>
+          </li>
+          <li>
+            <a href="{?=url([ADMIN,'rawat_inap','manage_listpulang'])?}" role="tab">Belum Resume</a>
+          </li>
+        </ul>
+        <div class='panel-title pull-right' style="padding-right: 260px">
+          <div class="btn-group pull-right" style="margin-top:-02px;">
+            <span class="btn btn-sm dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-calendar"></i><span class="hidden-xs"> Periode Rawat Inap</span>
+            </span>
+             <ul class="dropdown-menu dropdown-menu-right">
+            <li style="padding-left:5px;padding-right:5px;">
+              <input type="text" id="periode_resume" class="form-control periode_resume"
+                name="periode_resume" required>
+            </li>
+            <li style="padding-left:5px;padding-right:5px;margin-top:5px;">
+              <input type="text" id="periode_resume_akhir" class="form-control periode_resume"
+                name="periode_resume_akhir" required>
+            </li>
+            <li style="padding-left:5px;padding-right:5px;margin-top:5px;">
+              <div id="pulang_periode_resume" class="btn btn-primary btn-block">Pulang</div>
+            </li>
+          </ul>
+          </div>
+        </div>
+        <h3 class="panel-title">
+          Pasien Sudah Resume
+        </h3>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div id="notif"></div>
+        </div>
+        <div class="display">
+          {include: ../plugins/rawat_inap/view/admin/display.resume.html}
+        </div>
+        <div class="row">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(function () {
+    $('.periode_resume').datetimepicker({
+      defaultDate: '{?=date("Y-m-d")?}',
+      format: 'YYYY-MM-DD',
+      locale: 'id'
+    });
+  });
+</script>

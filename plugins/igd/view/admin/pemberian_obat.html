@@ -1,0 +1,52 @@
+<style media="screen">
+    table td,
+    table th {
+      padding: 5px;
+    }
+  </style>
+  <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span> Tutup</button>
+      <h4 class="modal-title">Input Riwayat Pemberian Obat</h4>
+  </div>
+  <div class="modal-body">
+    <div class="table table-responsive">
+        <form action="{?=url(ADMIN.'/rekap_diet/itemdietsave')?}" method="post">
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="tanggal">Tanggal</label>
+                        <input type="text" id="tanggal" name="tanggal" class="form-control tanggal" value="{?=date('Y-m-d')?}">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="jam">Jam Pemberian</label>
+                        <input type="time" name="jam" class="form-control jam" value="{?=date('H:i:s')?}">
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="form-group">
+                        <label for="obat">Obat</label>
+                        <input type="text" name="obat" class="form-control" value="">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <button type="submit" name="button" class="btn btn-primary" id="simpan"><i class="fa fa-save"></i><span class="hidden-xs"> Simpan</span></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+  </div>
+  <script>
+    $(function () {
+      $('.tanggal').datetimepicker({
+        format: 'YYYY-MM-DD',
+        locale: 'id',
+      });
+    });
+  </script>

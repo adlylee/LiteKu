@@ -1,0 +1,130 @@
+<article class="row">
+  <div id="manage" class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Mutasi Obat</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{?=url(ADMIN.'/laporan_farmasi/savemutasi')?}" method="POST" id="form_mutasi">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="panel panel-default">
+                  <div class="panel-body">
+                      <div class="form-group">
+                          <div class="row">
+                              <div class="col-sm-3">
+                                <label class="control-label">Obat</label>
+                                <input type="hidden" name="kode_brng" id="kode_brng" value="">
+                                <input type="text" class="form-control" name="nama_brng" id="nama_brng" value="" placeholder="Pilih Nama Obat">
+                                <ul class="list-group" id="nama_brngList" style="z-index:1000;position:absolute;width:100%;"></ul>
+                              </div>
+                              <div class="col-sm-3">
+                                <label class="control-label">Ke</label>
+                                <input type="hidden" name="kd_bangsal" value="">
+                                <input type="text" class="form-control" name="nm_bangsal" id="nm_bangsal" value="" placeholder="Pilih Tempat Tujuan Obat">
+                                <ul class="list-group" id="nm_bangsalList" style="z-index:1000;position:absolute;width:100%;"></ul>
+                              </div>
+                              <div class="col-sm-3">
+                                  <label for="jumlah">Jumlah</label>
+                                  <input type="text" name="jumlah" class="form-control" placeholder="" value="">
+                              </div>
+                              <div class="col-sm-3">
+                                  <label for="ket">Keterangan</label>
+                                  <input type="text" name="ket" class="form-control" placeholder="" value="">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="text-center">
+                        <input type="submit" name="simpan" class="btn btn-primary" value="Simpan" />
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="table-responsive no-margin" id="display">
+          <table class="table table-striped no-margin" id="pardah" width="100%">
+            <thead>
+              <tr>
+                <th>Nama Obat</th>
+                <th style="text-align: center;">Kode Obat</th>
+                <th style="text-align: center;">Stok Akhir</th>
+                <th style="text-align: center;">Ke</th>
+              </tr>
+            </thead>
+            <tbody>
+              {if: !empty($mutasi.list)}
+              {loop: $mutasi.list}
+              <tr>
+                <td>{$value.nama_brng}</td>
+                <td>{$value.kode_brng}</td>
+                <td>{$value.jml}</td>
+                <td>{$value.nm_bangsal}</td>
+              </tr>
+              {/loop}
+              {/if}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+<script>
+  $('input:text[name=nama_brng]').on('input', function (e) {
+    var baseURL = mlite.url + '/' + mlite.admin;
+    var url = baseURL + '/laporan_farmasi/obat?t=' + mlite.token;
+    var query = $('input:text[name=nama_brng]').val();
+    if (query != "") {
+      $.ajax({
+        url: url,
+        method: "POST",
+        data: { query: query },
+        success: function (data) {
+          $('#nama_brngList').fadeIn();
+          $('#nama_brngList').html(data);
+        }
+      });
+    }
+    $('#nama_brngList').fadeIn();
+  });
+
+  $('#nama_brngList').on('click', 'li', function () {
+    $('input:text[name=nama_brng]').val($(this).text());
+    $('input:hidden[name=kode_brng]').val($(this).data('id'))
+    $('#nama_brngList').fadeOut();
+  });
+</script>
+<script>
+  $('input:text[name=nm_bangsal]').on('input', function (e) {
+    var baseURL = mlite.url + '/' + mlite.admin;
+    var url = baseURL + '/laporan_farmasi/bangsallist?t=' + mlite.token;
+    var query = $('input:text[name=nm_bangsal]').val();
+    if (query != "") {
+      $.ajax({
+        url: url,
+        method: "POST",
+        data: { query: query },
+        success: function (data) {
+          $('#nm_bangsalList').fadeIn();
+          $('#nm_bangsalList').html(data);
+        }
+      });
+    }
+    $('#nm_bangsalList').fadeIn();
+  });
+
+  $('#nm_bangsalList').on('click', 'li', function () {
+    $('input:text[name=nm_bangsal]').val($(this).text());
+    $('input:hidden[name=kd_bangsal]').val($(this).data('id'))
+    $('#nm_bangsalList').fadeOut();
+  });
+</script>
+<script type="text/javascript">
+  $(document).ready(function () {
+  $("#pardah").DataTable({
+    dom: "Bfrtip",
+    order: [[0, "asc"]],
+  });
+});
+</script>

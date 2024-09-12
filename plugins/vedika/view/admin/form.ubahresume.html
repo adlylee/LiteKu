@@ -1,0 +1,197 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+      aria-hidden="true">&times;</span></button>
+  <h4 class="modal-title">Ubah Resume Medis</h4>
+</div>
+<div class="modal-body">
+  <article class="row">
+    <!-- <form name="vedika" action="" method="POST" enctype="multipart/form-data"> -->
+    
+    <div class="col-md-3">
+      <div class="form-group">
+        <label>No Rawat</label>
+        <input type="text" name="no_rawat" class="form-control" value="{$bio.no_rawat}" />
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        <label>No Rekam Medis</label>
+        <input type="text" name="no_rawat" class="form-control" value="{$bio.no_rkm_medis}" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Nama</label>
+        <input type="text" name="no_rawat" class="form-control" value="{$bio.nm_pasien}" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Diagnosa Awal</label>
+        <input type="text" name="diagnosa_awal" class="form-control" required value="{$resume.diagnosa_awal}" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Riwayat Perawatan</label>
+         <!-- <input type="text" name="keluhan_utama" class="form-control" required value="{$resume.keluhan_utama}" /> -->
+        <input type="text" name="jalannya_penyakit" class="form-control" required value="{$resume.jalannya_penyakit}" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Pemeriksaan Fisik</label>
+        <textarea name="pemeriksaan_fisik" id="" cols="20" rows="6"
+          class="form-control">{$resume.pemeriksaan_fisik}</textarea>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Pemeriksaan Penunjang Lainnya</label>
+        <textarea name="pemeriksaan_penunjang" id="" cols="20" rows="6"
+          class="form-control">{$resume.pemeriksaan_penunjang}</textarea>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Pemeriksaan Laboratorium</label>
+        <textarea name="hasil_laborat" id="" cols="20" rows="6" class="form-control">{$resume.hasil_laborat}</textarea>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Diagnosa Utama</label>
+        <input type="text" name="diagnosa_utama" class="form-control" required value="{$resume.diagnosa_utama}" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Diagnosa Sekunder</label>
+        <input type="text" name="diagnosa_sekunder" class="form-control" required value="{$resume.diagnosa_sekunder}" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Diagnosa Sekunder 2</label>
+        <input type="text" name="diagnosa_sekunder2" class="form-control" required
+          value="{$resume.diagnosa_sekunder2}" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Diagnosa Sekunder 3</label>
+        <input type="text" name="diagnosa_sekunder3" class="form-control" required
+          value="{$resume.diagnosa_sekunder3}" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Diagnosa Sekunder 4</label>
+        <input type="text" name="diagnosa_sekunder4" class="form-control" required
+          value="{$resume.diagnosa_sekunder4}" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Prosedur Utama</label>
+        <input type="text" name="prosedur_utama" class="form-control" required value="{$resume.prosedur_utama}" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Prosedur Sekunder</label>
+        <input type="text" name="prosedur_sekunder" class="form-control" required value="{$resume.prosedur_sekunder}" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Prosedur Sekunder 2</label>
+        <input type="text" name="prosedur_sekunder2" class="form-control" required
+          value="{$resume.prosedur_sekunder2}" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Prosedur Sekunder 3</label>
+        <input type="text" name="prosedur_sekunder3" class="form-control" required
+          value="{$resume.prosedur_sekunder3}" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Terapi</label>
+        <textarea name="obat_di_rs" id="" cols="20" rows="6" class="form-control">{$resume.obat_di_rs}</textarea>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Terapi Pulang</label>
+        <textarea name="obat_pulang" id="" cols="20" rows="6" class="form-control">{$resume.obat_pulang}</textarea>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <input type="button" class="btn btn-primary" onclick="simpan()" value="Simpan Ke SIMRS" />
+      </div>
+    </div>
+    <!-- </form> -->
+  </article>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+</div>
+<script type="text/javascript">
+  function simpan() {
+    const url = "{?=url(ADMIN.'/vedika/saveubahresume/')?}";
+
+    var no_rawat = $('input:text[name=no_rawat]').val();
+    var diagnosa_awal = $('input:text[name=diagnosa_awal]').val();
+   // var keluhan_utama = $('input:text[name=keluhan_utama]').val();
+    var jalannya_penyakit = $('input:text[name=jalannya_penyakit]').val();
+    var pemeriksaan_fisik = $('textarea[name=pemeriksaan_fisik]').val();
+    var pemeriksaan_penunjang = $('textarea[name=pemeriksaan_penunjang]').val();
+    var hasil_laborat = $('textarea[name=hasil_laborat]').val();
+    var diagnosa_utama = $('input:text[name=diagnosa_utama]').val();
+    var diagnosa_sekunder = $('input:text[name=diagnosa_sekunder]').val();
+    var diagnosa_sekunder2 = $('input:text[name=diagnosa_sekunder2]').val();
+    var diagnosa_sekunder3 = $('input:text[name=diagnosa_sekunder3]').val();
+    var diagnosa_sekunder4 = $('input:text[name=diagnosa_sekunder4]').val();
+    var prosedur_utama = $('input:text[name=prosedur_utama]').val();
+    var prosedur_sekunder = $('input:text[name=prosedur_sekunder]').val();
+    var prosedur_sekunder2 = $('input:text[name=prosedur_sekunder2]').val();
+    var prosedur_sekunder3 = $('input:text[name=prosedur_sekunder3]').val();
+    var obat_di_rs = $('textarea[name=obat_di_rs]').val();
+    var obat_pulang = $('textarea[name=obat_pulang]').val();
+    var json = {
+      no_rawat: no_rawat,
+      diagnosa_awal: diagnosa_awal,
+      //keluhan_utama: keluhan_utama,
+      jalannya_penyakit:jalannya_penyakit,
+      pemeriksaan_fisik: pemeriksaan_fisik,
+      pemeriksaan_penunjang: pemeriksaan_penunjang,
+      hasil_laborat: hasil_laborat,
+      diagnosa_utama: diagnosa_utama,
+      diagnosa_sekunder: diagnosa_sekunder,
+      diagnosa_sekunder2: diagnosa_sekunder2,
+      diagnosa_sekunder3: diagnosa_sekunder3,
+      diagnosa_sekunder4: diagnosa_sekunder4,
+      prosedur_utama: prosedur_utama,
+      prosedur_sekunder: prosedur_sekunder,
+      prosedur_sekunder2: prosedur_sekunder2,
+      prosedur_sekunder3: prosedur_sekunder3,
+      obat_di_rs: obat_di_rs,
+      obat_pulang: obat_pulang,
+    }
+    console.log(JSON.stringify(json));
+    json = JSON.stringify(json);
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        alert(xhr.responseText);
+      }
+    }
+    xhr.send(json);
+  }
+</script>

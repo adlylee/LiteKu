@@ -91,11 +91,18 @@
             <div class="col-sm-9">
               <select class="form-control" name="provider" id="pilih_provider">
                 <option>Pilih provider</option>
-                <option value="rawat_inap_dr">Dokter</option>
+                {if: $this->core->getPegawaiInfo('nik', $username) == '07012062019202011' || 
+                    $this->core->getPegawaiInfo('nik', $username) == '198008182009032007'}
+                    <option value="rawat_inap_pr">Psikologi</option>
+                    {else}
+                    <option value="rawat_inap_dr">Dokter</option>
                 <option value="rawat_inap_pr">Perawat</option>
                 <!-- <option value="rawat_inap_pr">{if: $this->core->getUserInfo('role') == 'apoteker'}Apoteker{else}Perawat {/if}</option> -->
-                <option value="rawat_inap_drpr">Dokter & Perawat</option>
+                <!-- <option value="rawat_inap_drpr">Dokter & Perawat</option> -->
                 <option value="rawat_inap_far">Apoteker</option>
+                <option value="rawat_inap_gizi">Gizi</option>
+                    {/if}
+                
               </select>
             </div>
           </div>
@@ -111,7 +118,12 @@
             </div>
           </div>
           <div class="form-group" id="rawat_inap_pr">
+            {if: $this->core->getPegawaiInfo('nik', $username) == '07012062019202011' || 
+            $this->core->getPegawaiInfo('nik', $username) == '198008182009032007'}
+            <label for="" class="col-sm-3 control-label">Nama Psikologi</label>
+            {else}
             <label for="" class="col-sm-3 control-label">Nama Perawat</label>
+            {/if}
             <!-- <label for="" class="col-sm-3 control-label">{if: $this->core->getUserInfo('role') == 'apoteker'}Nama Apoteker{else}Nama Perawat{/if}</label> -->
             <div class="col-sm-6">
               <input type="text" name="nama_provider2" id="nama_provider2" class="form-control" value="">
@@ -131,6 +143,17 @@
             <label for="" class="col-sm-1 control-label">Kode</label>
             <div class="col-sm-2">
               <input type="text" name="kode_provider3" id="kode_provider3" class="form-control" value="">
+            </div>
+          </div>
+          <div class="form-group" id="rawat_inap_gizi">
+            <label for="" class="col-sm-3 control-label">Nama Petugas Gizi</label>
+            <div class="col-sm-6">
+              <input type="text" name="nama_provider4" id="nama_provider4" class="form-control" value="">
+              <ul class="list-group" id="kode_providerList4" style="z-index:1000;position:absolute;width:100%;"></ul>
+            </div>
+            <label for="" class="col-sm-1 control-label">Kode</label>
+            <div class="col-sm-2">
+              <input type="text" name="kode_provider4" id="kode_provider4" class="form-control" value="">
             </div>
           </div>
 
@@ -280,23 +303,59 @@
   });
 </script>
 <script>
+  $('input:text[name=nama_provider4]').on('input',function(e){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    var url    = baseURL + '/rawat_inap/providerlist4?t=' + mlite.token;
+    var query = $('input:text[name=nama_provider4]').val();
+    if(query!="") {
+        $.ajax({
+             url: url,
+             method:"POST",
+             data:{query:query},
+             success:function(data)
+             {
+                  $('#kode_providerList4').fadeIn();
+                  $('#kode_providerList4').html(data);
+             }
+        });
+    }
+    $('#kode_providerList4').fadeIn();
+  });
+
+  $('#kode_providerList4').on('click', 'li', function(){
+       $('#nama_provider4').val($(this).text().split(': ')[1]);
+       $('#kode_provider4').val($(this).text().split(': ')[0]);
+       var kode_provider4 = $('#kode_provider4').val();
+       $('#kode_providerList4').fadeOut();
+  });
+</script>
+<script>
   $(function() {
       $('#rawat_inap_dr').hide();
       $('#rawat_inap_pr').hide();
       $('#rawat_inap_far').hide();
+      $('#rawat_inap_gizi').hide();
       $('#pilih_provider').change(function(){
           if($('#pilih_provider').val() == 'rawat_inap_dr') {
               $('#rawat_inap_dr').show();
               $('#rawat_inap_pr').hide();
               $('#rawat_inap_far').hide();
+              $('#rawat_inap_gizi').hide();
           } else if($('#pilih_provider').val() == 'rawat_inap_pr') {
               $('#rawat_inap_dr').hide();
               $('#rawat_inap_pr').show();
               $('#rawat_inap_far').hide();
+              $('#rawat_inap_gizi').hide();
           } else if($('#pilih_provider').val() == 'rawat_inap_far') {
               $('#rawat_inap_dr').hide();
               $('#rawat_inap_pr').hide();
               $('#rawat_inap_far').show();
+              $('#rawat_inap_gizi').hide();
+          } else if($('#pilih_provider').val() == 'rawat_inap_gizi') {
+              $('#rawat_inap_dr').hide();
+              $('#rawat_inap_pr').hide();
+              $('#rawat_inap_far').hide();
+              $('#rawat_inap_gizi').show();
           } else {
               $('#rawat_inap_dr').show();
               $('#rawat_inap_pr').show();

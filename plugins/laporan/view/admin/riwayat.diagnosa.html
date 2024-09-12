@@ -1,0 +1,132 @@
+<article class="row">
+    <div id="manage" class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Riwayat Diagnosa</h3>
+          <ul class="nav nav-tabs">
+            <li class="active">
+              <a href="{?=url([ADMIN,'laporan','riwayatdiagnosa'])?}" role="tab">Data Diagnosa</a>
+            </li>
+            <li>
+              <a href="{?=url([ADMIN,'laporan','riwayatprosedur'])?}" role="tab">Data Prosedur</a>
+            </li>
+          </ul>
+        </div>
+        <div class="panel-body">
+          <div class="row clearfix">
+            <div class="col-sm-3">
+                <div class="form-group">
+                  <div class="form-line">
+                  <h3 style="margin-top:5px;margin-bottom:15px;"> {if: !empty($riwayat_diagnosa.list)} Jumlah: {?=count($riwayat_diagnosa.totalRecords)?}{/if}</h3>
+                  </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+              <div class="form-group">
+                <div class="form-line">
+                  <input type="text" name="s" minlength="3" class="form-control" placeholder="Kode Penyakit" required>
+                  <input type="hidden" name="t" value="{?=$_SESSION['token']?}">
+                </div>
+              </div>
+            </div>
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <div class="form-line">
+                    <select name="status" id="status" style="width:100%" class="form-control">
+                      <option value="Ralan">Rawat Jalan</option>
+                      <option value="Ranap">Rawat Inap</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <div class="form-line">
+                    <input type="text" name="tanggal"  id="tanggal" class="form-control tanggal">
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <div class="form-line">
+                    <input type="text" name="tanggal_akhir" id="tanggal_akhir" class="form-control tanggal">
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-sm-1">
+                <div class="form-group">
+                  <div class="form-line">
+                    <input type="submit" id="submit_diagnosa" name="submit" class="btn btn-primary" value="Cari Diagnosa">
+                  </div>
+                </div>
+              </div>
+            <!-- </form> -->
+          </div>
+          <div class="table-responsive no-margin" id="display">
+            <table class="table table-striped no-margin" width="100%">
+              <thead>
+                <tr>
+                    <th>Tgl.Rawat</th>
+                    <th>No.Rawat</th>
+                    <th>No.RM</th>
+                    <th>Nama Pasien</th>  
+                    <th>Alamat</th>
+                    <th>NIK</th>
+                    <th>JK</th>
+                    <th>Tgl.Lahir</th>   
+                    <th>Umur</th>
+                    <th>Ruangan</th>
+                    <th>Kode</th>
+                    <th>Nama Penyakit</th>  
+                    <th>Status</th>
+                    <th>Kasus</th>
+                    <th>Stts. Pulang</th>        
+                  </tr>
+              </thead>
+              <tbody>
+                {if: !empty($riwayat_diagnosa.list)}
+                {loop: $riwayat_diagnosa.list}
+                <tr>
+                  <td>{$value.tgl_registrasi}</td>
+                  <td>{$value.no_rawat}</td>
+                  <td>{$value.no_rkm_medis}</td>
+                  <td>{$value.nm_pasien}</td>
+                  <td>{$value.alamat}</td>
+                  <td>{$value.no_ktp}</td>
+                  <td>{$value.jk}</td>
+                  <td>{$value.tgl_lahir} </td>
+                  <td>{$value.umurdaftar}</td>
+                  <td>{$value.ruangan}</td>
+                  <td>{$value.kd_penyakit}</td>
+                  <td>{$value.nm_penyakit}</td>
+                  <td>{$value.status}</td>
+                  <td>{$value.status_penyakit}</td>
+                  <td>{$value.pulang} </td>
+                </tr>
+                {/loop}
+                {else}
+                <tr>
+                  <td colspan="15" class="text-center">Kosong</td>
+                </tr>
+                {/if}
+              </tbody>
+            </table>
+          </div>
+          {if: !empty($riwayat_diagnosa.list)}
+          {$riwayat_diagnosa.pagination}
+          {/if}
+        </div>
+      </div>
+    </div>
+  </article>
+  <script type="text/javascript">
+    $(function () {
+      $('.tanggal').datetimepicker({
+        defaultDate: new Date(),
+        format: 'YYYY-MM-DD',
+        locale: 'id'
+      });
+    });
+  </script>
+  

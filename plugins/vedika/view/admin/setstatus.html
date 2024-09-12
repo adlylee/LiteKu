@@ -28,7 +28,8 @@
       <div class="col-md-6">
         <div class="form-group">
             <label>Status Klaim</label>
-            <select name="status" class="form-control">
+            <select name="status" class="form-control set-status">
+                <option value="Verifikasi">Verifikasi</option>
                 <option value="Lengkap">Lengkap</option>
                 <option value="Pengajuan">Pengajuan</option>
                 <option value="Perbaiki">Perbaiki</option>
@@ -81,5 +82,5 @@
     <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
 </div>
 <script type="text/javascript">
-  $('select').selectator();
+  $('.set-status').selectator();
 </script>

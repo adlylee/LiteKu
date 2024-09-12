@@ -15,7 +15,7 @@
       <div class="col-md-6">
         <div class="form-group">
             <label>Asal Rujukan</label>
-            <select name="asal_rujukan" class="form-control">
+            <select name="asal_rujukan" class="form-control form-sep">
                 <option value="1">Faskes 1</option>
                 <option value="2">Faskes 2</option>
             </select>
@@ -46,7 +46,7 @@
       <div class="col-md-6">
         <div class="form-group">
             <label>Dokter Penanggung Jawab</label>
-            <select name="kd_dokter" class="form-control">
+            <select name="kd_dokter" class="form-control form-sep form-sep">
                 {loop: $dokter}
                 <option value="{$value.kd_dokter}">{$value.nm_dokter}</option>
                 {/loop}
@@ -65,7 +65,7 @@
     <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
 </div>
 <script type="text/javascript">
-  $('select').selectator();
+  $('.form-sep').selectator();
   $('.tanggal').datetimepicker({
     format: 'YYYY-MM-DD',
     locale: 'id'

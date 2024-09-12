@@ -1,0 +1,86 @@
+<form action="{?=url(ADMIN.'/rawat_inap/bcsave')?}" method="post">
+  <div class="row clearfix">
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="">Makan</label>
+        <input type="hidden" name="id" value="{$id}">
+        <input type="hidden" name="no_rawat" value="{$bc.no_rawat}">
+        <input type="text" class="form-control" name="makan" value="{$bc.makan}" {if: $id != ""}disabled{/if}>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="">Minum</label>
+        <input type="text" class="form-control" name="minum" value="{$bc.minum}" {if: $id != ""}disabled{/if}>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="">Infus</label>
+        <input type="text" class="form-control" name="infus" value="{$bc.infus}" {if: $id != ""}disabled{/if}>
+      </div>
+    </div>
+  </div>
+  <div class="row clearfix">
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="">Muntah</label>
+        <input type="text" class="form-control" name="muntah" value="{$bc.muntah}" {if: $id == ""}disabled{/if}>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="">Urine</label>
+        <input type="text" class="form-control" name="urine" value="{$bc.urine}" {if: $id == ""}disabled{/if}>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="">BAB</label>
+        <input type="text" class="form-control" name="bab" value="{$bc.bab}" {if: $id == ""}disabled{/if}>
+      </div>
+    </div>
+  </div>
+  <div class="row clearfix">
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="">Tanggal</label>
+        <input type="date" name="tanggal" class="form-control" {if: $id != ""}disabled{/if} id="">
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="">Dari Jam</label>
+        <input type="time" name="bc_dari" class="form-control" {if: $id != ""}disabled{/if} id="">
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="">Ke Jam</label>
+        <input type="time" name="bc_ke" class="form-control" {if: $id != ""}disabled{/if} id="">
+      </div>
+    </div>
+    <!-- <div class="col-md-3">
+      <div class="form-group">
+        <label for="">Jenis Intake Outtake</label>
+        <select name="jenis" id="" class="form-control">
+          <option value="Intake">Intake</option>
+          <option value="Outtake">Outtake</option>
+        </select>
+      </div>
+    </div> -->
+  </div>
+  <div class="row clearfix">
+    <div class="col-md-4">
+      <input type="submit" value="Simpan" class="btn btn-primary form-control">
+    </div>
+  </div>
+</form>
+<script>
+  $(function () {
+    $('.tanggal').datetimepicker({
+      format: 'YYYY-MM-DD',
+      locale: 'id',
+    });
+  });
+</script>

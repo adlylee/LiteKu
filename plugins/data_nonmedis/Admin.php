@@ -155,12 +155,27 @@ public function getResep_Duplicate()
 {
     $this->_addHeaderFiles();
 
-    // Fetch duplicate data
-    $sql = "SELECT no_resep, kode_brng, jml, aturan_pakai, COUNT(*) as duplikat 
-            FROM resep_dokter 
-            GROUP BY no_resep, kode_brng, jml, aturan_pakai 
-            HAVING COUNT(*) > 1 
-            LIMIT 10";
+
+    // $sql = "SELECT no_resep, kode_brng, jml, aturan_pakai, COUNT(*) as duplikat 
+    //         FROM resep_dokter 
+    //         GROUP BY no_resep, kode_brng, jml, aturan_pakai 
+    //         HAVING COUNT(*) > 1 
+    //         LIMIT 10";
+    $today =  date('Y-m-d');
+    $sql = "SELECT 
+        rd.no_resep, 
+        rd.kode_brng, 
+        rd.jml, 
+        rd.aturan_pakai, 
+        ro.kd_dokter, 
+        COUNT(*) as duplikat, 
+        d.nm_dokter 
+    FROM resep_dokter rd
+    INNER JOIN resep_obat ro ON rd.no_resep = ro.no_resep
+    LEFT JOIN dokter d ON ro.kd_dokter = d.kd_dokter
+    WHERE ro.tgl_peresepan = '$today'
+    GROUP BY rd.no_resep, rd.kode_brng, rd.jml, rd.aturan_pakai, ro.kd_dokter, d.nm_dokter
+    HAVING COUNT(*) > 1 LIMIT 10";
 
     $stmt = $this->db()->pdo()->prepare($sql);
     $stmt->execute();

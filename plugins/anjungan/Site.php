@@ -1777,7 +1777,7 @@ $(document).ready(function() {
           $data = array();
           $query = $this->db('skdp_bpjs')
             ->join('dokter', 'dokter.kd_dokter = skdp_bpjs.kd_dokter')
-            ->join('booking_registrasi', 'booking_registrasi.tanggal_periksa = skdp_bpjs.tanggal_datang')
+            ->join('booking_registrasi', 'booking_registrasi.tanggal_periksa = skdp_bpjs.tanggal_datang AND booking_registrasi.no_rkm_medis = skdp_bpjs.no_rkm_medis')
             ->join('poliklinik', 'poliklinik.kd_poli = booking_registrasi.kd_poli')
             ->join('pasien', 'pasien.no_rkm_medis = skdp_bpjs.no_rkm_medis')
             ->where('skdp_bpjs.no_rkm_medis', $_POST['no_rkm_medis'])

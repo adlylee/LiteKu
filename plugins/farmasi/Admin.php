@@ -23,6 +23,7 @@ class Admin extends AdminModule
         ['name' => 'Obat & BHP', 'url' => url([ADMIN, 'farmasi', 'index']), 'icon' => 'medkit', 'desc' => 'Data obat dan barang habis pakai'],
         ['name' => 'Stok Opname', 'url' => url([ADMIN, 'farmasi', 'opname']), 'icon' => 'medkit', 'desc' => 'Tambah stok opname'],
         ['name' => 'Pengaturan', 'url' => url([ADMIN, 'farmasi', 'settings']), 'icon' => 'medkit', 'desc' => 'Pengaturan farmasi dan depo'],
+        ['name' => 'Laporan Obat ', 'url' => url([ADMIN, 'farmasi', 'lapobat']), 'icon' => 'medkit', 'desc' => 'Laporan Pemberian Obat'],
       ];
       return $this->draw('manage.html', ['sub_modules' => $sub_modules]);
     }
@@ -298,6 +299,141 @@ class Admin extends AdminModule
 
       }
       exit();
+    }
+
+ public function getLapObat()
+ {
+   $this->_addHeaderFiles();
+   $date = date('Y-m-d');
+    $rows = $this->db('detail_pemberian_obat')
+        ->select([
+          'jml' => 'sum(detail_pemberian_obat.jml)',
+          'tipe'=> 'kategori_barang.nama',
+          'depo' => 'bangsal.nm_bangsal'
+        ])
+        ->join('databarang', 'databarang.kode_brng = detail_pemberian_obat.kode_brng')
+        ->join('kategori_barang', 'kategori_barang.kode = databarang.kode_kategori')
+        ->join('reg_periksa', 'reg_periksa.no_rawat = detail_pemberian_obat.no_rawat')
+        ->join('bangsal', 'bangsal.kd_bangsal = detail_pemberian_obat.kd_bangsal')
+        ->where('detail_pemberian_obat.tgl_perawatan', $date)
+        ->group('kategori_barang.kode')
+        ->asc('kategori_barang.nama')
+        ->toArray();
+
+        $this->assign['list'] = [];
+        if (count($rows)) {
+            foreach ($rows as $row) {
+                $row = htmlspecialchars_array($row);
+
+                $this->assign['list'][] = $row;
+            }
+        }
+
+   return $this->draw('lap_pemberian_obat.html',[
+        'lap_obat' => $this->assign]);
+ }
+
+  public function postLapObat()
+    {
+      $this->_addHeaderFiles();
+
+      if (isset($_POST['submit'])) {
+
+        $date1 = $_POST['tanggal'];
+        $date2 = $_POST['tanggal_akhir'];
+        if ($_POST['bangsal'] == 'B0001') {
+                            $status = "Ranap";
+                        } else {
+                            $status = "Ralan";
+                        };
+        $penjab = $_POST['penjab'];
+
+        if (!empty($date1) && !empty($date2)) {
+          $sql = "SELECT 
+          SUM(detail_pemberian_obat.jml) AS jml, 
+          MAX(detail_pemberian_obat.tgl_perawatan) AS max_date,
+          MIN(detail_pemberian_obat.tgl_perawatan) AS min_date,
+            kategori_barang.nama AS tipe, 
+            bangsal.kd_bangsal, bangsal.nm_bangsal AS depo, kategori_barang.kode
+          FROM   
+              detail_pemberian_obat 
+          JOIN databarang 
+          JOIN kategori_barang 
+          JOIN reg_periksa 
+          JOIN bangsal ON detail_pemberian_obat.kode_brng = databarang.kode_brng 
+          AND databarang.kode_kategori = kategori_barang.kode 
+          AND detail_pemberian_obat.no_rawat = reg_periksa.no_rawat 
+          AND detail_pemberian_obat.kd_bangsal = bangsal.kd_bangsal 
+          WHERE detail_pemberian_obat.tgl_perawatan BETWEEN '$date1' AND '$date2' 
+          AND detail_pemberian_obat.status = '$status' 
+          AND detail_pemberian_obat.kd_bangsal = '{$_POST['bangsal']}' 
+          AND reg_periksa.kd_pj IN ($penjab) GROUP BY kategori_barang.kode ORDER BY kategori_barang.nama ASC";
+
+          $stmt = $this->db()->pdo()->prepare($sql);
+          $stmt->execute();
+          $rows = $stmt->fetchAll();
+
+          $this->assign['list'] = [];
+          foreach ($rows as $row) {
+             $row['penjab'] = $penjab;
+
+            $this->assign['list'][] = $row;
+          }
+        } else {
+          $this->getLapObat();
+        }
+      }
+      return $this->draw('lap_pemberian_obat.html', ['lap_obat' => $this->assign]);
+    }
+
+    public function getLihatObat()
+    {
+      $this->_addHeaderFiles(); 
+
+      $kode = $_GET['kode'];
+      $bangsal = $_GET['bangsal'];
+      $date1 = $_GET['date1'];
+      $date2 = $_GET['date2'];
+      if ($_GET['bangsal'] == 'B0001') {
+          $status = "Ranap";
+      } else {
+          $status = "Ralan";
+      };
+      $penjab = $_GET['penjab'];
+       $sql = "SELECT SUM(detail_pemberian_obat.jml) AS jumlah,
+                  kategori_barang.nama AS tipe,
+                  databarang.nama_brng AS nama_obat,
+                  detail_pemberian_obat.kode_brng AS kode_obat,
+                  resep_obat.kd_dokter AS kd_dokter
+              FROM detail_pemberian_obat
+              JOIN databarang ON detail_pemberian_obat.kode_brng = databarang.kode_brng
+              JOIN kategori_barang ON databarang.kode_kategori = kategori_barang.kode
+              JOIN reg_periksa ON detail_pemberian_obat.no_rawat = reg_periksa.no_rawat
+              JOIN resep_obat ON detail_pemberian_obat.no_rawat = resep_obat.no_rawat
+              JOIN bangsal ON detail_pemberian_obat.kd_bangsal = bangsal.kd_bangsal
+              WHERE
+                  detail_pemberian_obat.tgl_perawatan BETWEEN '$date1' AND '$date2'
+                  AND detail_pemberian_obat.status = '$status'
+                  AND detail_pemberian_obat.kd_bangsal = '$bangsal'
+                  AND kategori_barang.kode= '$kode'
+                  AND reg_periksa.kd_pj IN ($penjab)
+              GROUP BY 
+                kategori_barang.kode, databarang.kode_brng
+              ORDER BY
+                kategori_barang.nama ASC, databarang.nama_brng ASC";
+
+            $stmt = $this->db()->pdo()->prepare($sql);
+            $stmt->execute();
+            $rows = $stmt->fetchAll();
+
+            $this->assign['list'] = [];
+            foreach ($rows as $row) {
+              $dokter = $this->db('dokter')->where('kd_dokter', $row['kd_dokter'])->oneArray();
+              $row['nm_dokter'] = $dokter['nm_dokter'];
+      
+          $this->assign['list'][] = $row;
+          }
+      return $this->draw('display_listobat.html',['obat' => $this->assign]);
     }
 
     /* Settings Farmasi Section */

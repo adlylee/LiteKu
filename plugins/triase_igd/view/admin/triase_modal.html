@@ -1,0 +1,46 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title">Triase IGD</h4>
+</div>
+<div class="modal-body">
+    <form action="{?=url([ADMIN, 'triase_igd', 'inputtriase'])?}" method="post">
+        <input type="text" name="no_rawat" id="" value="{$id_input}" class="form-control" readonly>
+        <input type="text" name="nama" id="" value="{$nama}" class="form-control" readonly>
+        <br>
+        <h5>Triase</h5>
+        <label class="btn btn-danger">
+            <input type="radio" name="triase" value="merah"> Merah
+        </label>
+        <label class="btn" style="background-color: #FFFF33;border: 1px solid;">
+            <input type="radio" name="triase" value="kuning"> Kuning
+        </label>
+        <label class="btn btn-success">
+            <input type="radio" name="triase" value="hijau"> Hijau
+        </label>
+        <br>
+        <h5>Nomor Bed</h5>
+        <label class="btn btn-default">
+            <input type="radio" name="bed" value="1"> Bed 1
+        </label>
+        <label class="btn btn-default">
+            <input type="radio" name="bed" value="2"> Bed 2
+        </label>
+        <label class="btn btn-default">
+            <input type="radio" name="bed" value="3"> Bed 3
+        </label>
+        <label class="btn btn-default">
+            <input type="radio" name="bed" value="4"> Bed 4
+        </label>
+        <label class="btn btn-default">
+            <input type="radio" name="bed" value="5"> Bed 5
+        </label>
+        <label class="btn btn-default">
+            <input type="radio" name="bed" value="6"> Bed 6
+        </label>
+        <br><br>
+        <button type="submit" class="btn btn-primary">Simpan</button>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+</div>

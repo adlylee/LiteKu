@@ -6,11 +6,33 @@
         <div class="col-sm-6 col-md-6">
             <div class="thumbnail">
                 <a href="{?=url(WEBAPPS_URL.'/berkasrawat/'.$value.lokasi_file)?}" class="images">
-                    <img src="{?=url(WEBAPPS_URL.'/berkasrawat/'.$value.lokasi_file)?}" class="img-responsive"> <br>{$value.nama}   
+                    <img src="{?=url(WEBAPPS_URL.'/berkasrawat/'.$value.lokasi_file)?}" class="img-responsive"> <br>{$value.nama} 
                 </a>
+                {if: $this->core->getUserInfo('role') == 'admin'}
+                <button class="btn btn-danger btn-xs fa fa-trash hapus_berkas" data-no_rawat={?=convertNorawat($value.no_rawat)?} data-nama_file="{?=basename($value.lokasi_file, '.'.pathinfo($value.lokasi_file)["extension"])?}"></button>
+                {/if}
             </div>
         </div>
     {/loop}
     </div>
 </div>
 {/if}
+<script type="text/javascript">
+  // ketika tombol hapus ditekan
+  $("#berkasdigital").on("click",".hapus_berkas", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var url = baseURL + '/rawat_inap/hapusberkas?t=' + mlite.token;
+    var no_rawat = $(this).attr("data-no_rawat");
+    var nama_file = $(this).attr("data-nama_file");
+
+    bootbox.confirm("Apakah Anda yakin ingin menghapus data ini?", function(result){
+      // ketika ditekan tombol ok
+      if (result){
+        window.open(baseURL + '/rawat_inap/hapusberkas/' + no_rawat + '/' + nama_file + '?t=' + mlite.token, '_blank');
+      }
+    });
+    event.stopPropagation();
+    return false;
+  });
+</script>

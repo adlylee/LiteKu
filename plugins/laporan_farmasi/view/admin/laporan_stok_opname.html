@@ -1,0 +1,99 @@
+<article class="row">
+  <div id="manage" class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Laporan Stok Opname</h3>
+      </div>
+      <div class="panel-body">
+        <div class="row clearfix">
+        <form method="post" action="">
+          <div></div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <div class="form-line">
+                <input type="text" name="tanggal"  id="tanggal" class="form-control tanggal">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <div class="form-line">
+                <input type="text" name="tanggal_akhir" id="tanggal_akhir" class="form-control tanggal">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <div class="form-line">
+                <select name="status" id="status" style="width:100%" class="form-control">
+                  <option value="-" > --- Pilih Kategori ---</option>
+                  <option value="'K01'">Generik</option>
+                  <option value="'K03','K04'">Reguler</option>
+                  <option value="'K05'">BMHP</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <div class="form-line">
+                <input type="submit" name="submit" class="btn btn-primary" id="submit" value="Cari">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+        <div class="table-responsive no-margin" id="display">
+          <table class="table table-striped no-margin" id="pardah" width="100%">
+            <thead>
+              <tr>
+                  <th>Nama Barang</th>
+                  <th>Satuan</th>
+                  <th>Stok Awal</th>
+                  <th>Penerimaan</th>
+                  <th>Persediaan</th>
+                  <th>Pengeluaran</th>
+                  <th>Total Stok</th>
+                  <th>Harga Satuan</th>
+                  <th>Total Harga</th>
+              </tr>
+            </thead>
+            <tbody>
+              {if: $lap_stok_opname.list}
+              {loop: $lap_stok_opname.list}
+              <tr>
+                <td>{$value.nama_brng}</td>
+                <td>{$value.satuan}</td>
+                <td>{$value.stok}</td>
+                <td>{$value.masuk}</td>
+                <td>{$value.sedia}</td>
+                <td>{$value.keluar}</td>
+                <td>{$value.total}</td>
+                <td>{$value.harga_satuan}</td>
+                <td>{$value.harga_total}</td>
+              </tr>
+              {/loop}
+              {/if}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+<script type="text/javascript">
+  $(document).ready(function () {
+  $("#pardah").DataTable({
+    dom: "Bfrtip",
+  });
+});
+</script>
+<script type="text/javascript">
+  $(function () {
+    $('.tanggal').datetimepicker({
+      defaultDate: new Date(),
+      format: 'YYYY-MM-DD',
+      locale: 'id'
+    });
+  });
+</script>

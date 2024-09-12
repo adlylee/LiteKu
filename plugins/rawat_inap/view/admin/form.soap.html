@@ -24,6 +24,25 @@
           </div>
       </div>
     </div>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="form-group">
+          <a href="#" class="btn btn-primary form-control" id="balance_cairan">Balance Cairan</a>
+        </div>
+        <div class="form-group">
+          <a href="#" class="btn btn-warning form-control resume" id="resume_ranap">Resume Pasien</a>
+        </div>
+        <div class="form-group">
+          <button type="button" name="button" class="btn btn-info form-control" id="buka_riwayat">Riwayat</button>
+        </div>
+        <div class="form-group">
+          <a href="#" id="ventilator" class="form-control btn" style="background-image: linear-gradient(to right, rgb(221, 46, 233) , rgb(194, 48, 192)); color: white;">Ventilator</a>
+        </div>
+        <div class="form-group">
+          <a href="#" class="btn btn-danger form-control" id="lap_op">Laporan Operasi</a>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="col-md-9">
     <div class="panel panel-default">
@@ -105,7 +124,7 @@
           <label for="jenis">Evaluasi</label>
           <textarea name="evaluasi" id="evaluasi" rows="2" class="form-control"></textarea>
         </div>
-        {elseif: $this->core->getPegawaiInfo('bidang', $username) == 'Mubarak'}
+        {elseif: $this->core->getPegawaiInfo('bidang', $username) == 'Instalasi Gizi (Mubarak)'}
         <h4>ADIME</h4>
         <div class="form-group">
         <label for="jenis">Assesment</label>
@@ -135,7 +154,6 @@
         <div class="m-t-xl">
           <button type="button" name="button" class="btn btn-primary" id="simpan_soap"><i class="fa fa-save"></i><span class="hidden-xs"> Simpan</span></button>
           <button type="button" name="button" class="btn btn-danger" id="buka_icd10dan9"><i class="fa fa-download"></i><span class="hidden-xs"> ICD 10 & 9</span></button>
-          <button type="button" name="button" class="btn btn-info" id="buka_riwayat"><i class="fa fa-file-o"></i><span class="hidden-xs"> Riwayat</span></button>
           <button type="button" name="button" class="btn btn-success" id="selesai_soap"><i class="fa fa-check"></i><span class="hidden-xs"> Selesai</span></button>
         </div>
       </div>
@@ -343,6 +361,23 @@
       "</div>").show();
     });
   });
+  $("#form_soap").on("click","#balance_cairan", (event) => {
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var str = $('input:text[name=no_rawat]').val();
+    var no_rawat = str.replace(/\//g, '');
+    var url = baseURL + '/rawat_inap/balancecairan?no_rawat='+no_rawat+'&t=' + mlite.token;
+    window.open(url)
+  })
+  
+  $("#form_soap").on("click", "#ventilator", (event) => {
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var str = $('input:text[name=no_rawat]').val();
+    var no_rawat = str.replace(/\//g, '');
+    var url = baseURL + '/rawat_inap/ventilator?no_rawat=' + no_rawat + '&t=' + mlite.token;
+    location.href = url
+  })
 </script>
 <script type="text/javascript">
   // tombol simpan diklik
@@ -406,3 +441,25 @@
     $("#tutup_icd10dan9").attr("id", "buka_icd10dan9");
   });
 </script>
+<script type="text/javascript">
+$("#form_soap").on("click", "#resume_ranap", function(event){
+  var baseURL = mlite.url + '/' + mlite.admin;
+  event.preventDefault();
+  var no_rawat = $('input:text[name=no_rawat]').val();
+  console.log(no_rawat);
+  var loadURL = baseURL + '/rawat_inap/resume?no_rawat=' + no_rawat + '&t=' + mlite.token;
+  
+  window.open(loadURL, '_blank');
+});
+</script>
+<script type="text/javascript">
+  $("#form_soap").on("click", "#lap_op", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_rawat = $('input:text[name=no_rawat]').val();
+    console.log(no_rawat);
+    var loadURL = baseURL + '/rawat_inap/lapop?no_rawat=' + no_rawat + '&t=' + mlite.token;
+    
+    window.open(loadURL, '_blank');
+  });
+  </script>

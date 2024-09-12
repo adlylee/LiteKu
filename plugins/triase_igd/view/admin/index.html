@@ -1,0 +1,53 @@
+<article class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Triase IGD</h3>
+                <ul class="nav nav-tabs">
+
+                </ul>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive no-margin">
+                    <table class="table table-striped no-margin display" width='100%'>
+                        <thead>
+                            <tr>
+                                <th>No Rekam Medis</th>
+                                <th>Nama Pasien</th>
+                                <th>Nomer Bed</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {if: !empty($triase.list)}
+                            {loop: $triase.list}
+                        <tr {if: $value.warna == 'merah'} style="background-color: red !important;"{/if}{if: $value.warna == 'hijau'} style="background-color: rgb(50, 182, 50) !important;"{/if}{if: $value.warna == 'kuning'} style="background-color: yellow !important;"{/if}>
+                                <td>{$value.no_rkm_medis}</td>
+                                <td>{$value.nm_pasien}</td>
+                                <td>{$value.bed}</td>
+                                <td>
+                                    <a href="{?=url([ADMIN, 'triase_igd', 'pilih_triase', $value.norawatconv])?}"
+                                        class="btn btn-primary btn-xs" data-toggle="modal" data-target="#triase">Pilih
+                                        Triase</a>
+                                </td>
+                            </tr>
+                            {/loop}
+                            {else}
+                            <tr>
+                                <td colspan="3" class="text-center">Kosong</td>
+                            </tr>
+                            {/if}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="triase" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                ...
+            </div>
+        </div>
+    </div>
+</article>

@@ -1,0 +1,110 @@
+<article class="row">
+    <div id="manage" class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Mutasi Obat</h3>
+        </div>
+        <div class="panel-body">
+          <form action="{?=url(ADMIN.'/laporan_farmasi/savestokopname')?}" method="POST" id="form_mutasi">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                  <label class="control-label">Obat</label>
+                                  <input type="hidden" name="kode_brng" id="kode_brng" value="">
+                                  <input type="text" class="form-control" name="nama_brng" id="nama_brng" value="" placeholder="Pilih Nama Obat">
+                                  <ul class="list-group" id="nama_brngList" style="z-index:1000;position:absolute;width:100%;"></ul>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="stok_real">Real</label>
+                                    <input type="text" name="stok_real" id="stok_real" class="form-control" placeholder="" value="">
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="ket">Keterangan</label>
+                                    <input type="text" name="ket" id="ket" class="form-control" placeholder="" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-left">
+                          <input type="submit" name="simpan" class="btn btn-primary" value="Simpan" />
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </form>
+            <div class="table-responsive no-margin" id="display">
+                <table class="table table-striped no-margin" id="pardah" width="100%">
+                    <thead>
+                    <tr>
+                        <th>Nama Obat</th>
+                        <th>Kode Obat</th>
+                        <th>Stok</th>
+                        <th>Harga</th>
+                        <th>Lokasi</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {if: !empty($stok_opname.list)}
+                    {loop: $stok_opname.list}
+                    <tr>
+                        <td>{$value.nama_brng}</td>
+                        <td>{$value.kode_brng}</td>
+                        <td>{$value.stok}</td>
+                        <td>{$value.h_beli}</td>
+                        <td>{$value.nm_bangsal}</td>
+                    </tr>
+                    {/loop}
+                    {/if}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</article>
+<script type="text/javascript">
+$(document).ready(function () {
+$("#pardah").DataTable({
+dom: "Bfrtip",
+});
+});
+</script>
+<script type="text/javascript">
+$(function () {
+$('.tanggal').datetimepicker({
+defaultDate: new Date(),
+format: 'YYYY-MM-DD',
+locale: 'id'
+});
+});
+</script>
+
+<script>
+  $('input:text[name=nama_brng]').on('input', function (e) {
+    var baseURL = mlite.url + '/' + mlite.admin;
+    var url = baseURL + '/laporan_farmasi/obatlist?t=' + mlite.token;
+    var query = $('input:text[name=nama_brng]').val();
+    if (query != "") {
+      $.ajax({
+        url: url,
+        method: "POST",
+        data: { query: query },
+        success: function (data) {
+          $('#nama_brngList').fadeIn();
+          $('#nama_brngList').html(data);
+        }
+      });
+    }
+    $('#nama_brngList').fadeIn();
+  });
+
+  $('#nama_brngList').on('click', 'li', function () {
+    $('input:text[name=nama_brng]').val($(this).text());
+    $('input:hidden[name=kode_brng]').val($(this).data('id'))
+    $('#nama_brngList').fadeOut();
+  });
+</script>
